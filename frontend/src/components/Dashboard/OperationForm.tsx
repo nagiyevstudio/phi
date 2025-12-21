@@ -39,8 +39,6 @@ export default function OperationForm({
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const filteredCategories = categories.filter((cat) => cat.type === (operation?.type || 'expense'));
-
   const {
     register,
     handleSubmit,
