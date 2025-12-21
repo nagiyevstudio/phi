@@ -6,7 +6,7 @@
 
 ### Backend
 - PHP 8.x (чистый PHP + PDO)
-- PostgreSQL
+- MySQL 5.7+ / MariaDB 10.2+
 - JWT для аутентификации
 - REST API
 
@@ -48,7 +48,7 @@ PerFinance/
 ### Требования
 
 - PHP 8.0 или выше
-- PostgreSQL 12 или выше
+- MySQL 5.7+ или MariaDB 10.2+
 - Node.js 18 или выше
 - npm или yarn
 
@@ -65,18 +65,18 @@ cp .env.example .env
 
 ```env
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=3306
 DB_NAME=perfinance
-DB_USER=postgres
+DB_USER=root
 DB_PASSWORD=your_password
 
 JWT_SECRET=your-very-secret-key-change-in-production
 ```
 
-3. Создайте базу данных PostgreSQL:
+3. Создайте базу данных MySQL:
 
 ```sql
-CREATE DATABASE perfinance;
+CREATE DATABASE perfinance CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 4. Выполните миграции:
@@ -88,7 +88,7 @@ php utils/migrate.php
 Или выполните полную схему:
 
 ```bash
-psql -U postgres -d perfinance -f ../database/schema.sql
+mysql -u root -p perfinance < ../database/schema.sql
 ```
 
 5. Настройте веб-сервер (Apache/Nginx) для обслуживания `backend/` через точку входа `index.php`.
@@ -254,6 +254,45 @@ dailyLimit = max(0, remaining) / max(1, daysLeft)
 2. Разместите содержимое папки `dist/` на веб-сервере
 3. Настройте proxy для `/api` запросов на backend сервер
 4. Или настройте переменную окружения `VITE_API_BASE_URL` на полный URL backend
+
+#### Автоматическая загрузка на FTP
+
+Проект настроен для автоматической загрузки на FTP-сервер при каждом билде.
+
+**Настройка:**
+
+1. **Frontend** (автоматически при билде):
+   - Конфигурация: `frontend/ftp-config.json`
+   - Загружает `frontend/dist/` → `/finance.nagiyev.com` на FTP
+
+2. **Backend** (через скрипт):
+   - Конфигурация: `backend/ftp-config.json`
+   - Загружает `backend/` → `/api.nagiyev.com` на FTP
+
+**Команды для деплоя:**
+
+```bash
+# Деплой только фронтенда (автоматически при билде)
+npm run deploy:frontend
+# или просто
+npm run build
+
+# Деплой только бэкенда
+npm run deploy:backend
+
+# Деплой всего проекта (фронтенд + бэкенд)
+npm run deploy:all
+```
+
+**Первоначальная настройка:**
+
+Конфигурационные файлы уже настроены с вашими данными. Если нужно изменить пути:
+- `frontend/ftp-config.json` - настройки для фронтенда
+- `backend/ftp-config.json` - настройки для бэкенда
+
+Подробная инструкция: [frontend/FTP_SETUP.md](frontend/FTP_SETUP.md)
+
+⚠️ **Важно:** Файлы `ftp-config.json` содержат чувствительные данные и не должны коммититься в репозиторий.
 
 ## Безопасность
 

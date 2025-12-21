@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.nagiyev.com/api';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -39,10 +39,22 @@ class ApiService {
       (response) => response,
       (error: AxiosError<ApiResponse<unknown>>) => {
         if (error.response?.status === 401) {
-          // Unauthorized - clear token and redirect to login
-          localStorage.removeItem('auth_token');
-          localStorage.removeItem('user');
-          window.location.href = '/login';
+          // Не обрабатываем 401 для запросов логина/регистрации
+          const url = error.config?.url || '';
+          if (url.includes('/auth/login') || url.includes('/auth/register')) {
+            return Promise.reject(error);
+          }
+          
+          // Unauthorized - clear token and user
+          const hadToken = !!localStorage.getItem('auth_token');
+          if (hadToken) {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user');
+            
+            // Отправляем событие для обновления состояния авторизации
+            // React Router сам обработает редирект через PrivateRoute
+            window.dispatchEvent(new CustomEvent('auth:logout'));
+          }
         }
         return Promise.reject(error);
       }
@@ -50,43 +62,68 @@ class ApiService {
   }
 
   async get<T>(url: string, params?: Record<string, unknown>): Promise<T> {
-    const response = await this.client.get<ApiResponse<T>>(url, { params });
-    if (response.data.success && response.data.data !== undefined) {
-      return response.data.data;
+    const response = await this.client.get<ApiResponse<T> | T>(url, { params });
+    const payload = response.data;
+    if (payload && typeof payload === 'object' && 'success' in payload) {
+      const apiPayload = payload as ApiResponse<T>;
+      if (apiPayload.success) {
+        return apiPayload.data as T;
+      }
+      throw new Error(apiPayload.message || 'Request failed');
     }
-    throw new Error(response.data.message || 'Request failed');
+    return payload as T;
   }
 
   async post<T>(url: string, data?: unknown): Promise<T> {
-    const response = await this.client.post<ApiResponse<T>>(url, data);
-    if (response.data.success && response.data.data !== undefined) {
-      return response.data.data;
+    const response = await this.client.post<ApiResponse<T> | T>(url, data);
+    const payload = response.data;
+    if (payload && typeof payload === 'object' && 'success' in payload) {
+      const apiPayload = payload as ApiResponse<T>;
+      if (apiPayload.success) {
+        return apiPayload.data as T;
+      }
+      throw new Error(apiPayload.message || 'Request failed');
     }
-    throw new Error(response.data.message || 'Request failed');
+    return payload as T;
   }
 
   async put<T>(url: string, data?: unknown): Promise<T> {
-    const response = await this.client.put<ApiResponse<T>>(url, data);
-    if (response.data.success && response.data.data !== undefined) {
-      return response.data.data;
+    const response = await this.client.put<ApiResponse<T> | T>(url, data);
+    const payload = response.data;
+    if (payload && typeof payload === 'object' && 'success' in payload) {
+      const apiPayload = payload as ApiResponse<T>;
+      if (apiPayload.success) {
+        return apiPayload.data as T;
+      }
+      throw new Error(apiPayload.message || 'Request failed');
     }
-    throw new Error(response.data.message || 'Request failed');
+    return payload as T;
   }
 
   async patch<T>(url: string, data?: unknown): Promise<T> {
-    const response = await this.client.patch<ApiResponse<T>>(url, data);
-    if (response.data.success && response.data.data !== undefined) {
-      return response.data.data;
+    const response = await this.client.patch<ApiResponse<T> | T>(url, data);
+    const payload = response.data;
+    if (payload && typeof payload === 'object' && 'success' in payload) {
+      const apiPayload = payload as ApiResponse<T>;
+      if (apiPayload.success) {
+        return apiPayload.data as T;
+      }
+      throw new Error(apiPayload.message || 'Request failed');
     }
-    throw new Error(response.data.message || 'Request failed');
+    return payload as T;
   }
 
   async delete<T>(url: string): Promise<T> {
-    const response = await this.client.delete<ApiResponse<T>>(url);
-    if (response.data.success && response.data.data !== undefined) {
-      return response.data.data;
+    const response = await this.client.delete<ApiResponse<T> | T>(url);
+    const payload = response.data;
+    if (payload && typeof payload === 'object' && 'success' in payload) {
+      const apiPayload = payload as ApiResponse<T>;
+      if (apiPayload.success) {
+        return apiPayload.data as T;
+      }
+      throw new Error(apiPayload.message || 'Request failed');
     }
-    throw new Error(response.data.message || 'Request failed');
+    return payload as T;
   }
 
   // Download file (for export)
@@ -160,6 +197,7 @@ export interface BudgetData {
   remaining: number;
   daysLeft: number;
   dailyLimit: number;
+  todayExpenseSum: number;
   isOverBudget: boolean;
 }
 

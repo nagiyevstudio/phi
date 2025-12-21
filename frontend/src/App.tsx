@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './store/auth';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Operations from './pages/Operations';
 import Categories from './pages/Categories';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
@@ -19,12 +20,20 @@ const queryClient = new QueryClient({
 
 function PrivateRoute({ children }: { children: React.ReactElement }) {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  // Проверяем токен в localStorage, так как состояние React может обновляться асинхронно
+  const tokenInStorage = localStorage.getItem('auth_token');
+  const userInStorage = localStorage.getItem('user');
+  const isReallyAuthenticated = isAuthenticated || (!!tokenInStorage && !!userInStorage);
+  return isReallyAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
 function PublicRoute({ children }: { children: React.ReactElement }) {
   const { isAuthenticated } = useAuth();
-  return !isAuthenticated ? children : <Navigate to="/" replace />;
+  // Проверяем токен в localStorage для корректной проверки авторизации
+  const tokenInStorage = localStorage.getItem('auth_token');
+  const userInStorage = localStorage.getItem('user');
+  const isReallyAuthenticated = isAuthenticated || (!!tokenInStorage && !!userInStorage);
+  return !isReallyAuthenticated ? children : <Navigate to="/" replace />;
 }
 
 function AppRoutes() {
@@ -51,6 +60,14 @@ function AppRoutes() {
         element={
           <PrivateRoute>
             <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/operations"
+        element={
+          <PrivateRoute>
+            <Operations />
           </PrivateRoute>
         }
       />

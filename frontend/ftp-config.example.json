@@ -1,0 +1,17 @@
+{
+  "host": "your-ftp-host.com",
+  "user": "your-username",
+  "password": "your-password",
+  "port": 21,
+  "localRoot": "./dist",
+  "remoteRoot": "/",
+  "include": ["*", "**/*"],
+  "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**"],
+  "deleteRemote": false,
+  "forcePasv": true,
+  "secure": false,
+  "secureOptions": {
+    "rejectUnauthorized": false
+  }
+}
+

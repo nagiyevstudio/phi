@@ -1,7 +1,7 @@
 <?php
 /**
  * Database Configuration
- * PostgreSQL connection settings
+ * MySQL connection settings
  */
 
 // Load environment variables if .env file exists
@@ -17,9 +17,9 @@ if (file_exists($envFile)) {
 
 return [
     'host' => $_ENV['DB_HOST'] ?? 'localhost',
-    'port' => $_ENV['DB_PORT'] ?? '5432',
+    'port' => $_ENV['DB_PORT'] ?? '3306',
     'dbname' => $_ENV['DB_NAME'] ?? 'perfinance',
-    'username' => $_ENV['DB_USER'] ?? 'postgres',
+    'username' => $_ENV['DB_USER'] ?? 'root',
     'password' => $_ENV['DB_PASSWORD'] ?? '',
 ];
 

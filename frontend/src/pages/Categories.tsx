@@ -1,7 +1,27 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Layout from '../components/common/Layout';
+import MaterialIcon from '../components/common/MaterialIcon';
 import { categoriesApi, Category, CreateCategoryRequest } from '../services/api';
+
+const actionBase =
+  'inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
+const actionNeutral = `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+const actionConfirm = `${actionBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
+const primaryButton =
+  'inline-flex items-center gap-2 h-10 px-4 rounded-full text-sm font-medium shadow-sm bg-[#d27b30] text-white hover:bg-[#b56726] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
+const actionIconBase =
+  'inline-flex items-center justify-center h-10 w-10 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
+const actionEditIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+const actionArchiveIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+const tabBase =
+  'inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
+const tabExpenseBase =
+  'border-red-200 text-red-700 bg-red-50/60 hover:bg-red-100/70 dark:border-red-500/40 dark:text-red-200 dark:bg-red-500/10';
+const tabExpenseActive = 'bg-red-600 text-white border-red-600';
+const tabIncomeBase =
+  'border-emerald-200 text-emerald-700 bg-emerald-50/60 hover:bg-emerald-100/70 dark:border-emerald-500/40 dark:text-emerald-200 dark:bg-emerald-500/10';
+const tabIncomeActive = 'bg-emerald-600 text-white border-emerald-600';
 
 export default function Categories() {
   const [activeTab, setActiveTab] = useState<'expense' | 'income'>('expense');
@@ -20,6 +40,7 @@ export default function Categories() {
   const createMutation = useMutation({
     mutationFn: (data: CreateCategoryRequest) => categoriesApi.create(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories', activeTab] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       setShowAddForm(false);
       setNewCategoryName('');
@@ -30,6 +51,7 @@ export default function Categories() {
     mutationFn: ({ id, data }: { id: string; data: { name?: string; color?: string | null } }) =>
       categoriesApi.update(id, data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories', activeTab] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       setEditingCategory(null);
     },
@@ -38,6 +60,7 @@ export default function Categories() {
   const archiveMutation = useMutation({
     mutationFn: (id: string) => categoriesApi.archive(id),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories', activeTab] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
   });
@@ -67,69 +90,73 @@ export default function Categories() {
   return (
     <Layout>
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Категории</h1>
-
-          <div className="border-b border-gray-200 dark:border-gray-700">
-            <nav className="-mb-px flex space-x-8">
-              <button
-                onClick={() => setActiveTab('expense')}
-                className={`${
-                  activeTab === 'expense'
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-200'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-              >
-                Расходы
-              </button>
-              <button
-                onClick={() => setActiveTab('income')}
-                className={`${
-                  activeTab === 'income'
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-200'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
-              >
-                Доходы
-              </button>
-            </nav>
+        <div className="mb-6 text-left">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setActiveTab('expense')}
+              className={`${tabBase} ${activeTab === 'expense' ? tabExpenseActive : tabExpenseBase}`}
+              aria-pressed={activeTab === 'expense'}
+            >
+              <MaterialIcon name="expense" className="h-4 w-4" />
+              Расходы
+            </button>
+            <button
+              onClick={() => setActiveTab('income')}
+              className={`${tabBase} ${activeTab === 'income' ? tabIncomeActive : tabIncomeBase}`}
+              aria-pressed={activeTab === 'income'}
+            >
+              <MaterialIcon name="income" className="h-4 w-4" />
+              Доходы
+            </button>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-          <div className="mb-4 flex justify-between items-center">
+        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 text-left">
+          <div className="mb-4 flex items-center justify-between gap-3">
             <h2 className="text-lg font-medium text-gray-900 dark:text-white">
               Категории {activeTab === 'expense' ? 'расходов' : 'доходов'}
             </h2>
             <button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
+              className={`${showAddForm ? actionNeutral : primaryButton} h-10 w-10 justify-center sm:w-auto sm:px-4`}
+              aria-label={showAddForm ? 'Отменить' : 'Добавить категорию'}
             >
-              {showAddForm ? 'Отмена' : '+ Добавить категорию'}
+              {showAddForm ? (
+                <>
+                  <MaterialIcon name="close" className="h-4 w-4" />
+                  <span className="hidden sm:inline">Отмена</span>
+                </>
+              ) : (
+                <>
+                  <MaterialIcon name="add" className="h-4 w-4" />
+                  <span className="hidden sm:inline">Добавить категорию</span>
+                </>
+              )}
             </button>
           </div>
 
           {showAddForm && (
             <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="flex space-x-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <input
                   type="text"
                   placeholder="Название категории"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  className="flex-1 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                  className="pf-input flex-1"
                 />
                 <input
                   type="color"
                   value={newCategoryColor}
                   onChange={(e) => setNewCategoryColor(e.target.value)}
-                  className="w-16 h-10 rounded border-gray-300 dark:border-gray-600"
+                  className="pf-color"
                 />
                 <button
                   onClick={handleAddCategory}
                   disabled={!newCategoryName.trim() || createMutation.isPending}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 text-sm"
+                  className={`${actionConfirm} disabled:opacity-50`}
                 >
+                  <MaterialIcon name="check" className="h-4 w-4" />
                   Сохранить
                 </button>
               </div>
@@ -149,6 +176,7 @@ export default function Categories() {
                   key={cat.id}
                   category={cat}
                   editing={editingCategory?.id === cat.id}
+                  isSaving={updateMutation.isPending && editingCategory?.id === cat.id}
                   onEdit={(name, color) => handleUpdateCategory(cat.id, name, color)}
                   onStartEdit={() => setEditingCategory(cat)}
                   onCancelEdit={() => setEditingCategory(null)}
@@ -166,6 +194,7 @@ export default function Categories() {
 interface CategoryCardProps {
   category: Category;
   editing: boolean;
+  isSaving?: boolean;
   onEdit: (name: string, color: string | null) => void;
   onStartEdit: () => void;
   onCancelEdit: () => void;
@@ -175,6 +204,7 @@ interface CategoryCardProps {
 function CategoryCard({
   category,
   editing,
+  isSaving,
   onEdit,
   onStartEdit,
   onCancelEdit,
@@ -184,35 +214,43 @@ function CategoryCard({
   const [color, setColor] = useState(category.color || '#3B82F6');
 
   const handleSave = () => {
-    onEdit(name.trim(), color);
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      return;
+    }
+    onEdit(trimmedName, color);
   };
 
   if (editing) {
     return (
-      <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700">
+      <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700 text-left">
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full mb-2 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:text-white text-sm"
+          className="pf-input mb-2"
         />
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             type="color"
             value={color}
             onChange={(e) => setColor(e.target.value)}
-            className="w-10 h-8 rounded border-gray-300 dark:border-gray-600"
+            className="pf-color"
           />
           <button
             onClick={handleSave}
-            className="flex-1 px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700"
+            className={`${actionConfirm} disabled:opacity-50`}
+            disabled={isSaving || !name.trim()}
           >
-            Сохранить
+            <MaterialIcon name="check" className="h-4 w-4" />
+            {isSaving ? 'Сохранение...' : 'Сохранить'}
           </button>
           <button
             onClick={onCancelEdit}
-            className="px-2 py-1 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs hover:bg-gray-400 dark:hover:bg-gray-500"
+            className={`${actionNeutral} disabled:opacity-50`}
+            disabled={isSaving}
           >
+            <MaterialIcon name="close" className="h-4 w-4" />
             Отмена
           </button>
         </div>
@@ -221,24 +259,35 @@ function CategoryCard({
   }
 
   return (
-    <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-      <div className="flex items-center space-x-3">
+    <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-left">
+      <div className="flex items-start gap-3">
         <div
-          className="w-4 h-4 rounded-full"
+          className="mt-1 h-3.5 w-3.5 rounded-full"
           style={{ backgroundColor: category.color || '#9CA3AF' }}
         />
-        <span className="flex-1 text-gray-900 dark:text-white font-medium">{category.name}</span>
+        <span
+          className="flex-1 font-semibold"
+          style={{ color: category.color || '#6B7280' }}
+        >
+          {category.name}
+        </span>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
         <button
           onClick={onStartEdit}
-          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 text-sm"
+          className={actionEditIcon}
+          aria-label="Изменить"
+          title="Изменить"
         >
-          Изменить
+          <MaterialIcon name="edit" className="h-4 w-4" />
         </button>
         <button
           onClick={onArchive}
-          className="text-red-600 hover:text-red-800 dark:text-red-400 text-sm"
+          className={actionArchiveIcon}
+          aria-label="Архивировать"
+          title="Архивировать"
         >
-          Архивировать
+          <MaterialIcon name="archive" className="h-4 w-4" />
         </button>
       </div>
     </div>

@@ -28,17 +28,22 @@ class Category {
             throw new InvalidArgumentException('Invalid color format');
         }
         
+        $categoryId = generateUUID();
+        
         $stmt = $this->pdo->prepare("
-            INSERT INTO categories (user_id, type, name, color, is_archived, created_at, updated_at)
-            VALUES (?, ?, ?, ?, FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            RETURNING id, user_id, type, name, color, is_archived, created_at, updated_at
+            INSERT INTO categories (id, user_id, type, name, color, is_archived, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         ");
         
         try {
-            $stmt->execute([$userId, $type, $name, $color]);
+            $stmt->execute([$categoryId, $userId, $type, $name, $color]);
+            
+            // Fetch created category
+            $stmt = $this->pdo->prepare("SELECT id, user_id, type, name, color, is_archived, created_at, updated_at FROM categories WHERE id = ?");
+            $stmt->execute([$categoryId]);
             return $stmt->fetch();
         } catch (PDOException $e) {
-            if (strpos($e->getCode(), '23505') !== false) { // Unique violation
+            if ($e->getCode() == 1062) { // Unique violation
                 throw new Exception('Category with this name already exists');
             }
             throw $e;
@@ -108,11 +113,13 @@ class Category {
         $params[] = $id;
         $params[] = $userId;
         
-        $sql = "UPDATE categories SET " . implode(', ', $updates) . " WHERE id = ? AND user_id = ? RETURNING *";
+        $sql = "UPDATE categories SET " . implode(', ', $updates) . " WHERE id = ? AND user_id = ?";
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetch();
+        
+        // Fetch updated category
+        return $this->findById($id, $userId);
     }
     
     public function archive($id, $userId) {
@@ -121,27 +128,16 @@ class Category {
         $stmt->execute([$id]);
         $count = $stmt->fetchColumn();
         
-        if ($count > 0) {
-            // Archive instead of delete
-            $stmt = $this->pdo->prepare("
-                UPDATE categories 
-                SET is_archived = TRUE, updated_at = CURRENT_TIMESTAMP 
-                WHERE id = ? AND user_id = ?
-                RETURNING *
-            ");
-            $stmt->execute([$id, $userId]);
-            return $stmt->fetch();
-        }
-        
-        // If not used, we can delete (but for consistency, archive anyway)
+        // Archive category
         $stmt = $this->pdo->prepare("
             UPDATE categories 
             SET is_archived = TRUE, updated_at = CURRENT_TIMESTAMP 
             WHERE id = ? AND user_id = ?
-            RETURNING *
         ");
         $stmt->execute([$id, $userId]);
-        return $stmt->fetch();
+        
+        // Fetch updated category
+        return $this->findById($id, $userId);
     }
     
     public function isUsed($id) {

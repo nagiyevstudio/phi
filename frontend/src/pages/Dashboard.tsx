@@ -4,14 +4,17 @@ import Layout from '../components/common/Layout';
 import MonthSelector from '../components/Dashboard/MonthSelector';
 import BudgetCard from '../components/Dashboard/BudgetCard';
 import DailyLimitCard from '../components/Dashboard/DailyLimitCard';
-import OperationsList from '../components/Dashboard/OperationsList';
+import AnalyticsTotals from '../components/Analytics/AnalyticsTotals';
+import OperationsPanel from '../components/Operations/OperationsPanel';
 import OperationForm from '../components/Dashboard/OperationForm';
 import { getCurrentMonth } from '../utils/format';
 import {
   budgetApi,
+  analyticsApi,
   operationsApi,
   categoriesApi,
   CreateOperationRequest,
+  OperationsListResponse,
   Operation,
 } from '../services/api';
 
@@ -22,7 +25,7 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
 
   // Fetch budget
-  const { data: budget, isLoading: budgetLoading } = useQuery({
+  const { data: budget } = useQuery({
     queryKey: ['budget', selectedMonth],
     queryFn: () => budgetApi.getBudget(selectedMonth),
   });
@@ -33,7 +36,11 @@ export default function Dashboard() {
     queryFn: () => operationsApi.list({ month: selectedMonth, pageSize: 100 }),
   });
 
-  // Fetch categories
+  const { data: analyticsData, isLoading: analyticsLoading } = useQuery({
+    queryKey: ['analytics', selectedMonth],
+    queryFn: () => analyticsApi.get(selectedMonth),
+  });
+
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoriesApi.list(),
@@ -47,12 +54,12 @@ export default function Dashboard() {
     },
   });
 
-  // Mutation for creating/updating operations
   const operationMutation = useMutation({
     mutationFn: (data: CreateOperationRequest) =>
       editingOperation ? operationsApi.update(editingOperation.id, data) : operationsApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['operations', selectedMonth] });
+      queryClient.invalidateQueries({ queryKey: ['operations'] });
       queryClient.invalidateQueries({ queryKey: ['budget', selectedMonth] });
       queryClient.invalidateQueries({ queryKey: ['analytics'] });
       setShowOperationForm(false);
@@ -60,17 +67,19 @@ export default function Dashboard() {
     },
   });
 
-  // Mutation for deleting operations
   const deleteOperationMutation = useMutation({
     mutationFn: (id: string) => operationsApi.delete(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
+      removeOperationFromCache(['operations', selectedMonth], id);
+      removeOperationFromCache(['operations'], id);
       queryClient.invalidateQueries({ queryKey: ['operations', selectedMonth] });
+      queryClient.invalidateQueries({ queryKey: ['operations'] });
       queryClient.invalidateQueries({ queryKey: ['budget', selectedMonth] });
       queryClient.invalidateQueries({ queryKey: ['analytics'] });
     },
   });
 
-  const handleAddExpense = () => {
+  const handleAddOperation = () => {
     setEditingOperation(null);
     setShowOperationForm(true);
   };
@@ -88,8 +97,27 @@ export default function Dashboard() {
     await operationMutation.mutateAsync(data);
   };
 
+  const removeOperationFromCache = (queryKey: unknown[], id: string) => {
+    queryClient.setQueryData<OperationsListResponse>(queryKey, (oldData) => {
+      if (!oldData) return oldData;
+      const nextOperations = oldData.operations.filter((op) => op.id !== id);
+      if (nextOperations.length === oldData.operations.length) {
+        return oldData;
+      }
+      return {
+        ...oldData,
+        operations: nextOperations,
+        pagination: {
+          ...oldData.pagination,
+          total: Math.max(0, oldData.pagination.total - 1),
+        },
+      };
+    });
+  };
+
+
   const handleSaveBudget = () => {
-    const amount = prompt('Введите бюджет на месяц (в AZN):');
+    const amount = prompt('Введите бюджет на месяц (₼):');
     if (amount) {
       const amountMinor = Math.round(parseFloat(amount) * 100);
       if (!isNaN(amountMinor) && amountMinor >= 0) {
@@ -100,6 +128,15 @@ export default function Dashboard() {
 
   const categories = categoriesData?.categories || [];
   const operations = operationsData?.operations || [];
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const todayExpenseSumFromOps = operations.reduce((sum, operation) => {
+    if (operation.type === 'expense' && operation.date.slice(0, 10) === todayKey) {
+      return sum + operation.amountMinor;
+    }
+    return sum;
+  }, 0);
+  const todayExpenseSum = Math.max(budget?.todayExpenseSum || 0, todayExpenseSumFromOps);
 
   return (
     <Layout>
@@ -112,39 +149,36 @@ export default function Dashboard() {
             spent={budget?.expenseSum || 0}
             remaining={budget?.remaining || 0}
             isOverBudget={budget?.isOverBudget || false}
+            onEdit={handleSaveBudget}
           />
           <DailyLimitCard
             daysLeft={budget?.daysLeft || 0}
             dailyLimit={budget?.dailyLimit || 0}
+            todayExpenseSum={todayExpenseSum}
             isOverBudget={budget?.isOverBudget || false}
           />
         </div>
 
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Операции</h2>
-          <div className="flex space-x-2">
-            <button
-              onClick={handleSaveBudget}
-              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm"
-            >
-              Установить бюджет
-            </button>
-            <button
-              onClick={handleAddExpense}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-            >
-              + Добавить операцию
-            </button>
-          </div>
+        <div className="mb-6">
+          <AnalyticsTotals totals={analyticsData?.totals} isLoading={analyticsLoading} />
         </div>
 
-        <OperationsList
-          operations={operations}
-          categories={categories}
-          onEdit={handleEditOperation}
-          onDelete={handleDeleteOperation}
-          isLoading={operationsLoading || budgetLoading}
-        />
+        {operationsLoading && (
+          <div className="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
+            Обновляем операции для расчета лимита...
+          </div>
+        )}
+
+        <div className="mt-8">
+          <OperationsPanel
+            operations={operations}
+            isLoading={operationsLoading}
+            limit={10}
+            onAdd={handleAddOperation}
+            onEdit={handleEditOperation}
+            onDelete={handleDeleteOperation}
+          />
+        </div>
 
         {showOperationForm && (
           <OperationForm

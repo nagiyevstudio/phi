@@ -1,14 +1,25 @@
 import { useState } from 'react';
 import Layout from '../components/common/Layout';
+import MaterialIcon from '../components/common/MaterialIcon';
 import { useAuth } from '../store/auth';
-import { exportApi } from '../services/api';
+import { authApi, exportApi } from '../services/api';
 import { getCurrentMonth } from '../utils/format';
 
 export default function Settings() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [exportMonth, setExportMonth] = useState(getCurrentMonth());
   const [isExporting, setIsExporting] = useState(false);
   const [exportAll, setExportAll] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+    logout();
+    window.location.href = '/login';
+  };
 
   const handleExportJSON = async () => {
     try {
@@ -37,81 +48,94 @@ export default function Settings() {
   return (
     <Layout>
       <div className="px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Настройки</h1>
-
-        <div className="space-y-6">
-          {/* Profile */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Профиль</h2>
-            <div className="space-y-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Email
-                </label>
-                <p className="mt-1 text-sm text-gray-900 dark:text-white">{user?.email}</p>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
+            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 text-left">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Профиль</h2>
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-[#d27b30]/10 text-[#d27b30] flex items-center justify-center">
+                  <MaterialIcon name="settings" className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Email
+                  </div>
+                  <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    {user?.email}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Export */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-              Экспорт данных
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <label className="flex items-center space-x-2">
+            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 text-left">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                Экспорт данных
+              </h2>
+              <div className="space-y-4">
+                <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                   <input
                     type="checkbox"
                     checked={exportAll}
                     onChange={(e) => setExportAll(e.target.checked)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="pf-checkbox"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    Экспортировать все данные
-                  </span>
+                  Экспортировать все данные
                 </label>
-              </div>
 
-              {!exportAll && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Месяц для экспорта
-                  </label>
-                  <input
-                    type="month"
-                    value={exportMonth}
-                    onChange={(e) => setExportMonth(e.target.value)}
-                    className="rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                  />
+                {!exportAll && (
+                  <div>
+                    <label className="block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">
+                      Месяц для экспорта
+                    </label>
+                    <input
+                      type="month"
+                      value={exportMonth}
+                      onChange={(e) => setExportMonth(e.target.value)}
+                      className="pf-input w-full sm:w-auto max-w-xs"
+                    />
+                  </div>
+                )}
+
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={handleExportJSON}
+                    disabled={isExporting}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#d27b30] text-white hover:bg-[#b56726] disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <MaterialIcon name="archive" className="h-4 w-4" />
+                    {isExporting ? 'Экспорт...' : 'Экспорт JSON'}
+                  </button>
+                  <button
+                    onClick={handleExportCSV}
+                    disabled={isExporting}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#d27b30] text-[#d27b30] hover:bg-[#d27b30]/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <MaterialIcon name="archive" className="h-4 w-4" />
+                    {isExporting ? 'Экспорт...' : 'Экспорт CSV'}
+                  </button>
                 </div>
-              )}
-
-              <div className="flex space-x-3">
-                <button
-                  onClick={handleExportJSON}
-                  disabled={isExporting}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isExporting ? 'Экспорт...' : 'Экспорт JSON'}
-                </button>
-                <button
-                  onClick={handleExportCSV}
-                  disabled={isExporting}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isExporting ? 'Экспорт...' : 'Экспорт CSV'}
-                </button>
               </div>
             </div>
           </div>
 
-          {/* Currency Info */}
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Валюта</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Текущая валюта: <span className="font-medium">AZN (Азербайджанский манат)</span>
-            </p>
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 text-left">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Валюта</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Текущая валюта: <span className="font-medium">₼ (Азербайджанский манат)</span>
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 text-left">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Сессия</h2>
+              <button
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-700 hover:bg-red-500/20 dark:text-red-300"
+              >
+                <MaterialIcon name="logout" className="h-4 w-4" />
+                Выйти
+              </button>
+            </div>
           </div>
         </div>
       </div>

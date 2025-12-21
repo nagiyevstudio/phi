@@ -1,0 +1,17 @@
+{
+  "host": "your-ftp-host.com",
+  "user": "your-username",
+  "password": "your-password",
+  "port": 21,
+  "localRoot": ".",
+  "remoteRoot": "/api.nagiyev.com",
+  "include": ["*", "**/*"],
+  "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**", "vendor/**", "error.log", "test-connection.php", "config-example.txt"],
+  "deleteRemote": false,
+  "forcePasv": true,
+  "secure": false,
+  "secureOptions": {
+    "rejectUnauthorized": false
+  }
+}
+

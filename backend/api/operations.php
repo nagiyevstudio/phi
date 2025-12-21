@@ -93,7 +93,7 @@ function handleListOperations($operationModel, $userId) {
                 'categoryName' => $op['category_name'],
                 'categoryType' => $op['category_type'],
                 'categoryColor' => $op['category_color'],
-                'date' => $op['date'],
+                'date' => formatOperationDate($op['date']),
                 'createdAt' => $op['created_at'],
                 'updatedAt' => $op['updated_at']
             ];
@@ -135,7 +135,7 @@ function handleGetOperation($operationModel, $userId, $id) {
             'categoryName' => $operation['category_name'],
             'categoryType' => $operation['category_type'],
             'categoryColor' => $operation['category_color'],
-            'date' => $operation['date'],
+            'date' => formatOperationDate($operation['date']),
             'createdAt' => $operation['created_at'],
             'updatedAt' => $operation['updated_at']
         ]);
@@ -173,9 +173,9 @@ function handleCreateOperation($operationModel, $userId) {
         $errors['categoryId'] = 'Invalid category ID format';
     }
     
-    $date = $data['date'] ?? date('Y-m-d');
+    $date = $data['date'] ?? date('Y-m-d H:i:s');
     if (!validateDate($date)) {
-        $errors['date'] = 'Invalid date format (expected YYYY-MM-DD)';
+        $errors['date'] = 'Invalid date format (expected YYYY-MM-DD or YYYY-MM-DDTHH:MM)';
     }
     
     $note = isset($data['note']) ? sanitizeString($data['note']) : null;
@@ -193,7 +193,7 @@ function handleCreateOperation($operationModel, $userId) {
             'amountMinor' => (int)$operation['amount_minor'],
             'note' => $operation['note'],
             'categoryId' => $operation['category_id'],
-            'date' => $operation['date'],
+            'date' => formatOperationDate($operation['date']),
             'createdAt' => $operation['created_at'],
             'updatedAt' => $operation['updated_at']
         ], 'Operation created successfully', 201);
@@ -241,7 +241,7 @@ function handleUpdateOperation($operationModel, $userId, $id) {
     
     if (isset($data['date'])) {
         if (!validateDate($data['date'])) {
-            sendValidationError(['date' => 'Invalid date format (expected YYYY-MM-DD)']);
+            sendValidationError(['date' => 'Invalid date format (expected YYYY-MM-DD or YYYY-MM-DDTHH:MM)']);
         }
         $updateData['date'] = $data['date'];
     }
@@ -267,12 +267,25 @@ function handleUpdateOperation($operationModel, $userId, $id) {
             'amountMinor' => (int)$operation['amount_minor'],
             'note' => $operation['note'],
             'categoryId' => $operation['category_id'],
-            'date' => $operation['date'],
+            'date' => formatOperationDate($operation['date']),
             'updatedAt' => $operation['updated_at']
         ], 'Operation updated successfully');
         
     } catch (Exception $e) {
         sendError('Failed to update operation: ' . $e->getMessage(), 500);
+    }
+}
+
+function formatOperationDate($value) {
+    if (!$value) {
+        return $value;
+    }
+
+    try {
+        $dt = new DateTime($value);
+        return $dt->format('Y-m-d\TH:i:s');
+    } catch (Exception $e) {
+        return $value;
     }
 }
 

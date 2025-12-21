@@ -1,0 +1,15 @@
+# Database Configuration
+# Пример конфигурации для .env файла
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=alterace_perfin
+DB_USER=alterace_perfin
+DB_PASSWORD=5HZv27Jon-
+
+# JWT Secret (generate a strong random string for production)
+JWT_SECRET=change-this-secret-key-in-production
+
+# Application Settings
+APP_ENV=production
+APP_URL=https://api.nagiyev.com
+

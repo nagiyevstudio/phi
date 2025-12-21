@@ -1,0 +1,15 @@
+{
+  "name": "perfinance",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "deploy:frontend": "cd frontend && npm run build",
+    "deploy:backend": "cd backend && node deploy.js",
+    "deploy:all": "npm run deploy:frontend && npm run deploy:backend"
+  },
+  "devDependencies": {
+    "ftp-deploy": "^2.4.7"
+  }
+}
+

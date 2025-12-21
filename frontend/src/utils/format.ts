@@ -4,12 +4,12 @@
 
 export function formatCurrency(amountMinor: number): string {
   const amount = amountMinor / 100;
-  return new Intl.NumberFormat('ru-RU', {
-    style: 'currency',
-    currency: 'AZN',
+  const formatted = new Intl.NumberFormat('ru-RU', {
+    style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
+  return `${formatted} ₼`;
 }
 
 export function formatDate(date: string): string {
@@ -18,6 +18,22 @@ export function formatDate(date: string): string {
     month: 'long',
     day: 'numeric',
   });
+}
+
+export function formatDateTime(date: string): string {
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) {
+    return date;
+  }
+
+  const pad = (value: number) => String(value).padStart(2, '0');
+  const day = pad(parsed.getDate());
+  const month = pad(parsed.getMonth() + 1);
+  const year = String(parsed.getFullYear()).slice(-2);
+  const hours = pad(parsed.getHours());
+  const minutes = pad(parsed.getMinutes());
+
+  return `${day}.${month}.${year} - ${hours}:${minutes}`;
 }
 
 export function formatMonth(month: string): string {

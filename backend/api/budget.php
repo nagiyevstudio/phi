@@ -68,6 +68,18 @@ function handleGetBudget($userId, $month) {
             $dailyLimit = max(0, $remaining) / max(1, $daysLeft);
         }
         
+        // Calculate expense sum for today (only if selected month is current month)
+        $currentDate = new DateTime();
+        $currentMonth = $currentDate->format('Y-m');
+        $targetMonth = DateTime::createFromFormat('Y-m-d', $month . '-01')->format('Y-m');
+        $todayExpenseSum = 0;
+        
+        if ($targetMonth === $currentMonth) {
+            // Only calculate today's expenses if viewing current month
+            $todayDate = $currentDate->format('Y-m-d');
+            $todayExpenseSum = $operationModel->getSumByTypeToday($userId, 'expense', $todayDate);
+        }
+        
         sendSuccess([
             'month' => $month,
             'planned' => $planned,
@@ -76,6 +88,7 @@ function handleGetBudget($userId, $month) {
             'remaining' => $remaining,
             'daysLeft' => $daysLeft,
             'dailyLimit' => round($dailyLimit, 2),
+            'todayExpenseSum' => $todayExpenseSum,
             'isOverBudget' => $remaining < 0
         ]);
         

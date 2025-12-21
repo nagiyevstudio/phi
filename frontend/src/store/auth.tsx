@@ -41,7 +41,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [user]);
 
+  // Слушаем событие logout из api interceptor
+  useEffect(() => {
+    const handleLogout = () => {
+      setToken(null);
+      setUser(null);
+    };
+    
+    window.addEventListener('auth:logout', handleLogout);
+    return () => {
+      window.removeEventListener('auth:logout', handleLogout);
+    };
+  }, []);
+
   const login = (newToken: string, newUser: User) => {
+    // Сохраняем токен и пользователя сразу в localStorage
+    localStorage.setItem('auth_token', newToken);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    // Затем обновляем состояние
     setToken(newToken);
     setUser(newUser);
   };

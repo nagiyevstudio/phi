@@ -24,18 +24,30 @@ class MonthlyBudget {
             throw new InvalidArgumentException('Planned amount must be non-negative');
         }
         
-        $stmt = $this->pdo->prepare("
-            INSERT INTO monthly_budgets (user_id, month, planned_amount_minor, created_at, updated_at)
-            VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            ON CONFLICT (user_id, month)
-            DO UPDATE SET 
-                planned_amount_minor = EXCLUDED.planned_amount_minor,
-                updated_at = CURRENT_TIMESTAMP
-            RETURNING *
-        ");
+        // Check if budget already exists
+        $existing = $this->findByMonth($userId, $month);
         
-        $stmt->execute([$userId, $month, $plannedAmountMinor]);
-        return $stmt->fetch();
+        if ($existing) {
+            // Update existing budget
+            $stmt = $this->pdo->prepare("
+                UPDATE monthly_budgets 
+                SET planned_amount_minor = ?, updated_at = CURRENT_TIMESTAMP
+                WHERE user_id = ? AND month = ?
+            ");
+            $stmt->execute([$plannedAmountMinor, $userId, $month]);
+            return $this->findByMonth($userId, $month);
+        } else {
+            // Create new budget
+            $budgetId = generateUUID();
+            $stmt = $this->pdo->prepare("
+                INSERT INTO monthly_budgets (id, user_id, month, planned_amount_minor, created_at, updated_at)
+                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            ");
+            $stmt->execute([$budgetId, $userId, $month, $plannedAmountMinor]);
+            
+            // Fetch created budget
+            return $this->findByMonth($userId, $month);
+        }
     }
     
     public function findByMonth($userId, $month) {
@@ -68,9 +80,16 @@ class MonthlyBudget {
             throw new InvalidArgumentException('Invalid month format (expected YYYY-MM)');
         }
         
-        $stmt = $this->pdo->prepare("DELETE FROM monthly_budgets WHERE user_id = ? AND month = ? RETURNING id");
+        // Fetch budget before deletion
+        $budget = $this->findByMonth($userId, $month);
+        if (!$budget) {
+            return null;
+        }
+        
+        $stmt = $this->pdo->prepare("DELETE FROM monthly_budgets WHERE user_id = ? AND month = ?");
         $stmt->execute([$userId, $month]);
-        return $stmt->fetch();
+        
+        return ['id' => $budget['id']];
     }
 }
 

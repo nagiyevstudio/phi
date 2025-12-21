@@ -34,13 +34,18 @@ class User {
         
         // Hash password and create user
         $passwordHash = hashPassword($password);
+        $userId = generateUUID();
+        
         $stmt = $this->pdo->prepare("
-            INSERT INTO users (email, password_hash, created_at, updated_at)
-            VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            RETURNING id, email, created_at, updated_at
+            INSERT INTO users (id, email, password_hash, created_at, updated_at)
+            VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         ");
         
-        $stmt->execute([$email, $passwordHash]);
+        $stmt->execute([$userId, $email, $passwordHash]);
+        
+        // Fetch created user
+        $stmt = $this->pdo->prepare("SELECT id, email, created_at, updated_at FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
         return $stmt->fetch();
     }
     

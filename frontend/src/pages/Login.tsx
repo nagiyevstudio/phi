@@ -33,10 +33,10 @@ export default function Login() {
       setError(null);
       const response = await authApi.login(data);
       login(response.token, response.user);
+      await new Promise(resolve => setTimeout(resolve, 100));
       navigate('/');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Ошибка входа');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -50,7 +50,7 @@ export default function Login() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
             Или{' '}
-            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link to="/register" className="font-medium text-[#d27b30] hover:text-[#b56726]">
               зарегистрируйтесь
             </Link>
           </p>
@@ -61,7 +61,7 @@ export default function Login() {
               <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
             </div>
           )}
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="space-y-3">
             <div>
               <label htmlFor="email" className="sr-only">
                 Email
@@ -70,7 +70,7 @@ export default function Login() {
                 {...register('email')}
                 type="email"
                 autoComplete="email"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-800 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="pf-input"
                 placeholder="Email адрес"
               />
               {errors.email && (
@@ -85,7 +85,7 @@ export default function Login() {
                 {...register('password')}
                 type="password"
                 autoComplete="current-password"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-800 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="pf-input"
                 placeholder="Пароль"
               />
               {errors.password && (
@@ -98,7 +98,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#d27b30] hover:bg-[#b56726] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#d27b30] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? 'Вход...' : 'Войти'}
             </button>

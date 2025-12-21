@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Operation, Category } from '../../services/api';
-import { formatCurrency, formatDate } from '../../utils/format';
+import { useState } from "react";
+import { Operation } from "../../services/api";
+import { formatCurrency, formatDateTime } from "../../utils/format";
+import MaterialIcon from "../common/MaterialIcon";
 
 interface OperationsListProps {
   operations: Operation[];
-  categories: Category[];
   onEdit: (operation: Operation) => void;
   onDelete: (id: string) => Promise<void>;
   isLoading?: boolean;
@@ -12,30 +12,32 @@ interface OperationsListProps {
 
 export default function OperationsList({
   operations,
-  categories,
   onEdit,
   onDelete,
   isLoading,
 }: OperationsListProps) {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
-  const [typeFilter, setTypeFilter] = useState<'all' | 'expense' | 'income'>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredOperations = operations.filter((op) => {
-    if (typeFilter !== 'all' && op.type !== typeFilter) return false;
-    if (categoryFilter !== 'all' && op.categoryId !== categoryFilter) return false;
-    if (searchQuery && !op.note?.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !op.categoryName.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    return true;
-  });
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const actionBase =
+    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed";
+  const actionIconBase =
+    "inline-flex items-center justify-center h-10 w-10 rounded-full shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed";
+  const actionEditIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+  const actionDeleteIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+  const actionConfirm = `${actionBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
+  const actionCancel = `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+  const actionConfirmIcon = `${actionIconBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
+  const actionCancelIcon = `${actionIconBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
 
   const handleDelete = async (id: string) => {
     try {
+      setDeletingId(id);
       await onDelete(id);
-      setDeleteConfirm(null);
     } catch (error) {
-      console.error('Delete error:', error);
+      console.error("Delete error:", error);
+    } finally {
+      setDeleteConfirm(null);
+      setDeletingId(null);
     }
   };
 
@@ -46,122 +48,131 @@ export default function OperationsList({
   return (
     <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Операции</h3>
-
-        {/* Filters */}
-        <div className="mb-4 space-y-3">
-          <div className="flex flex-wrap gap-2">
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value as typeof typeFilter)}
-              className="rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
-            >
-              <option value="all">Все типы</option>
-              <option value="expense">Расходы</option>
-              <option value="income">Доходы</option>
-            </select>
-
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
-            >
-              <option value="all">Все категории</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-
-            <input
-              type="text"
-              placeholder="Поиск по заметке или категории..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 min-w-[200px] rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
-            />
-          </div>
-        </div>
-
         {/* Operations */}
-        {filteredOperations.length === 0 ? (
+        {operations.length === 0 ? (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             Нет операций для отображения
           </div>
         ) : (
           <div className="space-y-2">
-            {filteredOperations.map((op) => (
+            {operations.map((op) => (
               <div
                 key={op.id}
-                className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+                className="relative flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
               >
-                <div className="flex items-center space-x-4 flex-1">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: op.categoryColor || '#9CA3AF' }}
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">
-                        {op.categoryName}
-                      </span>
-                      <span
-                        className={`text-xs px-2 py-0.5 rounded ${
-                          op.type === 'expense'
-                            ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                            : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                        }`}
-                      >
-                        {op.type === 'expense' ? 'Расход' : 'Доход'}
-                      </span>
+                <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+                  <div className="flex min-w-0 flex-1 items-start gap-3">
+                    <div
+                      className="mt-1 h-2.5 w-2.5 rounded-full"
+                      style={{ backgroundColor: op.categoryColor || "#9CA3AF" }}
+                    />
+                    <div className="min-w-0 text-left pr-12 sm:pr-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span
+                          className="text-sm font-semibold truncate"
+                          style={{ color: op.categoryColor || "#9CA3AF" }}
+                        >
+                          {op.categoryName}
+                        </span>
+                        <span
+                          className={`absolute top-3 right-3 sm:static inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium ${
+                            op.type === "expense"
+                              ? "bg-red-500/10 text-red-700 dark:text-red-300"
+                              : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+                          }`}
+                        >
+                          <MaterialIcon
+                            name={op.type === "expense" ? "expense" : "income"}
+                            className="h-3 w-3"
+                          />
+                          {op.type === "expense" ? "Расход" : "Доход"}
+                        </span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">
+                          {formatDateTime(op.date)}
+                        </span>
+                      </div>
+                      {op.note && (
+                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 text-left">
+                          {op.note}
+                        </p>
+                      )}
                     </div>
-                    {op.note && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{op.note}</p>
-                    )}
-                    <p className="text-xs text-gray-400 dark:text-gray-500">{formatDate(op.date)}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
                     <p
-                      className={`text-lg font-semibold ${
-                        op.type === 'expense' ? 'text-red-600' : 'text-green-600'
+                      className={`text-[1.85rem] font-light whitespace-nowrap ${
+                        op.type === "expense" ? "text-red-600" : "text-green-600"
                       }`}
                     >
-                      {op.type === 'expense' ? '-' : '+'}
+                      {op.type === "expense" ? "-" : "+"}
                       {formatCurrency(op.amountMinor)}
                     </p>
-                  </div>
-                </div>
-                <div className="ml-4 flex space-x-2">
-                  <button
-                    onClick={() => onEdit(op)}
-                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
-                  >
-                    Редактировать
-                  </button>
-                  {deleteConfirm === op.id ? (
-                    <div className="flex space-x-1">
-                      <button
-                        onClick={() => handleDelete(op.id)}
-                        className="text-red-600 hover:text-red-800 dark:text-red-400 text-sm"
-                      >
-                        Подтвердить
-                      </button>
-                      <button
-                        onClick={() => setDeleteConfirm(null)}
-                        className="text-gray-600 hover:text-gray-800 dark:text-gray-400 text-sm"
-                      >
-                        Отмена
-                      </button>
+                    <div className="flex items-center gap-2">
+                      {deleteConfirm !== op.id && (
+                        <button
+                          onClick={() => onEdit(op)}
+                          className={actionEditIcon}
+                          aria-label="Редактировать"
+                          title="Редактировать"
+                          disabled={deletingId === op.id}
+                        >
+                          <MaterialIcon name="edit" className="h-4 w-4" />
+                        </button>
+                      )}
+                      {deleteConfirm === op.id ? (
+                        <>
+                          <div className="hidden sm:flex flex-wrap items-center gap-2">
+                            <button
+                              onClick={() => handleDelete(op.id)}
+                              className={actionConfirm}
+                              disabled={deletingId === op.id}
+                            >
+                              <MaterialIcon name="check" className="h-4 w-4" />
+                              {deletingId === op.id ? "Удаление..." : "Подтвердить"}
+                            </button>
+                            <button
+                              onClick={() => setDeleteConfirm(null)}
+                              className={actionCancel}
+                              disabled={deletingId === op.id}
+                            >
+                              <MaterialIcon name="close" className="h-4 w-4" />
+                              Отмена
+                            </button>
+                          </div>
+                          <div className="flex sm:hidden items-center gap-2">
+                            <button
+                              onClick={() => handleDelete(op.id)}
+                              className={actionConfirmIcon}
+                              disabled={deletingId === op.id}
+                              aria-label="Подтвердить удаление"
+                              title="Подтвердить"
+                            >
+                              <MaterialIcon name="check" className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => setDeleteConfirm(null)}
+                              className={actionCancelIcon}
+                              disabled={deletingId === op.id}
+                              aria-label="Отменить удаление"
+                              title="Отмена"
+                            >
+                              <MaterialIcon name="close" className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => setDeleteConfirm(op.id)}
+                          className={actionDeleteIcon}
+                          aria-label="Удалить"
+                          title="Удалить"
+                          disabled={deletingId === op.id}
+                        >
+                          <MaterialIcon name="delete" className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
-                  ) : (
-                    <button
-                      onClick={() => setDeleteConfirm(op.id)}
-                      className="text-red-600 hover:text-red-800 dark:text-red-400 text-sm"
-                    >
-                      Удалить
-                    </button>
-                  )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -171,4 +182,3 @@ export default function OperationsList({
     </div>
   );
 }
-

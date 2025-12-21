@@ -12,7 +12,7 @@ require_once __DIR__ . '/../config/database.php';
 function getDatabaseConnection() {
     try {
         $config = require __DIR__ . '/../config/database.php';
-        $dsn = "pgsql:host={$config['host']};port={$config['port']};dbname={$config['dbname']}";
+        $dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['dbname']};charset=utf8mb4";
         $pdo = new PDO($dsn, $config['username'], $config['password'], [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -26,7 +26,7 @@ function getDatabaseConnection() {
 function createMigrationsTable($pdo) {
     $sql = "CREATE TABLE IF NOT EXISTS schema_migrations (
         version VARCHAR(255) PRIMARY KEY,
-        executed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        executed_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )";
     $pdo->exec($sql);
 }
@@ -37,7 +37,7 @@ function getExecutedMigrations($pdo) {
 }
 
 function recordMigration($pdo, $version) {
-    $stmt = $pdo->prepare("INSERT INTO schema_migrations (version) VALUES (?) ON CONFLICT DO NOTHING");
+    $stmt = $pdo->prepare("INSERT IGNORE INTO schema_migrations (version) VALUES (?)");
     $stmt->execute([$version]);
 }
 

@@ -31,6 +31,10 @@ class Operation {
         if (!validateDate($date)) {
             throw new InvalidArgumentException('Invalid date format');
         }
+        $normalizedDate = normalizeOperationDate($date);
+        if (!$normalizedDate) {
+            throw new InvalidArgumentException('Invalid date format');
+        }
         
         // Verify category belongs to user and is correct type
         $categoryStmt = $this->pdo->prepare("SELECT id, type FROM categories WHERE id = ? AND user_id = ? AND is_archived = FALSE");
@@ -45,14 +49,17 @@ class Operation {
             throw new Exception('Category type does not match operation type');
         }
         
+        $operationId = generateUUID();
+        
         $stmt = $this->pdo->prepare("
-            INSERT INTO operations (user_id, type, amount_minor, category_id, date, note, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            RETURNING *
+            INSERT INTO operations (id, user_id, type, amount_minor, category_id, date, note, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         ");
         
-        $stmt->execute([$userId, $type, $amountMinor, $categoryId, $date, $note]);
-        return $stmt->fetch();
+        $stmt->execute([$operationId, $userId, $type, $amountMinor, $categoryId, $normalizedDate, $note]);
+        
+        // Fetch created operation
+        return $this->findById($operationId, $userId);
     }
     
     public function findById($id, $userId = null) {
@@ -81,7 +88,7 @@ class Operation {
         
         // Apply filters
         if (!empty($filters['month'])) {
-            $sql .= " AND DATE_TRUNC('month', o.date) = DATE_TRUNC('month', ?::date)";
+            $sql .= " AND DATE_FORMAT(o.date, '%Y-%m-01') = DATE_FORMAT(?, '%Y-%m-01')";
             $params[] = $filters['month'] . '-01';
         }
         
@@ -96,7 +103,7 @@ class Operation {
         }
         
         if (!empty($filters['q'])) {
-            $sql .= " AND (o.note ILIKE ? OR c.name ILIKE ?)";
+            $sql .= " AND (o.note LIKE ? OR c.name LIKE ?)";
             $searchTerm = '%' . $filters['q'] . '%';
             $params[] = $searchTerm;
             $params[] = $searchTerm;
@@ -181,8 +188,12 @@ class Operation {
             if (!validateDate($data['date'])) {
                 throw new InvalidArgumentException('Invalid date format');
             }
+            $normalizedDate = normalizeOperationDate($data['date']);
+            if (!$normalizedDate) {
+                throw new InvalidArgumentException('Invalid date format');
+            }
             $updates[] = "date = ?";
-            $params[] = $data['date'];
+            $params[] = $normalizedDate;
         }
         
         if (isset($data['note'])) {
@@ -198,17 +209,26 @@ class Operation {
         $params[] = $id;
         $params[] = $userId;
         
-        $sql = "UPDATE operations SET " . implode(', ', $updates) . " WHERE id = ? AND user_id = ? RETURNING *";
+        $sql = "UPDATE operations SET " . implode(', ', $updates) . " WHERE id = ? AND user_id = ?";
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetch();
+        
+        // Fetch updated operation
+        return $this->findById($id, $userId);
     }
     
     public function delete($id, $userId) {
-        $stmt = $this->pdo->prepare("DELETE FROM operations WHERE id = ? AND user_id = ? RETURNING id");
+        // Fetch operation before deletion
+        $operation = $this->findById($id, $userId);
+        if (!$operation) {
+            return null;
+        }
+        
+        $stmt = $this->pdo->prepare("DELETE FROM operations WHERE id = ? AND user_id = ?");
         $stmt->execute([$id, $userId]);
-        return $stmt->fetch();
+        
+        return ['id' => $id];
     }
     
     public function getSumByType($userId, $type, $month = null) {
@@ -218,12 +238,26 @@ class Operation {
         $params = [$userId, $type];
         
         if ($month) {
-            $sql .= " AND DATE_TRUNC('month', date) = DATE_TRUNC('month', ?::date)";
+            $sql .= " AND DATE_FORMAT(date, '%Y-%m-01') = DATE_FORMAT(?, '%Y-%m-01')";
             $params[] = $month . '-01';
         }
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
+        return (int)$stmt->fetchColumn();
+    }
+    
+    public function getSumByTypeToday($userId, $type, $date = null) {
+        if ($date === null) {
+            $date = date('Y-m-d');
+        }
+        
+        $sql = "SELECT COALESCE(SUM(amount_minor), 0) as total
+                FROM operations
+                WHERE user_id = ? AND type = ? AND DATE(date) = ?";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$userId, $type, $date]);
         return (int)$stmt->fetchColumn();
     }
 }

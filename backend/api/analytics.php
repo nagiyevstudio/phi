@@ -50,7 +50,7 @@ try {
         LEFT JOIN operations o ON c.id = o.category_id 
             AND o.user_id = ? 
             AND o.type = 'expense'
-            AND DATE_TRUNC('month', o.date) = DATE_TRUNC('month', ?::date)
+            AND DATE_FORMAT(o.date, '%Y-%m-01') = DATE_FORMAT(?, '%Y-%m-01')
         WHERE c.user_id = ? 
             AND c.type = 'expense'
             AND c.is_archived = FALSE
@@ -81,15 +81,15 @@ try {
     // Expenses by day
     $dailyExpensesSql = "
         SELECT 
-            o.date,
+            DATE(o.date) as date,
             COALESCE(SUM(o.amount_minor), 0) as total_minor,
             COUNT(o.id) as transaction_count
         FROM operations o
         WHERE o.user_id = ? 
             AND o.type = 'expense'
-            AND DATE_TRUNC('month', o.date) = DATE_TRUNC('month', ?::date)
-        GROUP BY o.date
-        ORDER BY o.date ASC
+            AND DATE_FORMAT(o.date, '%Y-%m-01') = DATE_FORMAT(?, '%Y-%m-01')
+        GROUP BY DATE(o.date)
+        ORDER BY DATE(o.date) ASC
     ";
     
     $stmt = $pdo->prepare($dailyExpensesSql);
