@@ -63,11 +63,11 @@ export default function Analytics() {
               <AnalyticsTotals isLoading />
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+              <div className="bg-white dark:bg-[#1c140f] p-6 rounded-lg shadow">
                 <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
                 <div className="pf-skeleton h-72 w-full rounded-2xl" />
               </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+              <div className="bg-white dark:bg-[#1c140f] p-6 rounded-lg shadow">
                 <div className="pf-skeleton h-5 w-40 rounded-full mb-4" />
                 <div className="pf-skeleton h-72 w-full rounded-2xl" />
               </div>
@@ -82,8 +82,8 @@ export default function Analytics() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-                <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              <div className="bg-white dark:bg-[#1c140f] p-6 rounded-lg shadow">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-[#f8eee5] mb-4">
                   Расходы по категориям
                 </h2>
                 {categoryData.length > 0 ? (
@@ -97,7 +97,7 @@ export default function Analytics() {
                           labelLine={false}
                           label={({ name, percentage }) => `${name}: ${percentage.toFixed(1)}%`}
                           outerRadius={80}
-                          fill="#8884d8"
+                          fill="#d27b30"
                           dataKey="value"
                         >
                           {categoryData.map((entry, index) => (
@@ -118,13 +118,15 @@ export default function Analytics() {
                                   item.color || FALLBACK_COLORS[index % FALLBACK_COLORS.length],
                               }}
                             />
-                            <span className="text-gray-900 dark:text-white">{item.categoryName}</span>
+                            <span className="text-gray-900 dark:text-[#f8eee5]">
+                              {item.categoryName}
+                            </span>
                           </div>
                           <div className="text-right">
-                            <span className="font-medium text-gray-900 dark:text-white">
+                            <span className="font-medium text-gray-900 dark:text-[#f8eee5]">
                               {formatCurrency(item.totalMinor)}
                             </span>
-                            <span className="text-gray-500 dark:text-gray-400 ml-2">
+                            <span className="text-gray-500 dark:text-[#c7b0a0] ml-2">
                               ({item.percentage.toFixed(1)}%)
                             </span>
                           </div>
@@ -133,14 +135,14 @@ export default function Analytics() {
                     </div>
                   </>
                 ) : (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500 dark:text-[#c7b0a0]">
                     Нет данных о расходах
                   </div>
                 )}
               </div>
 
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-                <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              <div className="bg-white dark:bg-[#1c140f] p-6 rounded-lg shadow">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-[#f8eee5] mb-4">
                   Расходы по дням
                 </h2>
                 {dailyData.length > 0 ? (
@@ -167,7 +169,7 @@ export default function Analytics() {
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-center py-8 text-gray-500 dark:text-[#c7b0a0]">
                     Нет данных о расходах
                   </div>
                 )}
@@ -179,3 +181,4 @@ export default function Analytics() {
     </Layout>
   );
 }
+

@@ -167,7 +167,7 @@ export default function Dashboard() {
         </div>
 
         {operationsLoading && (
-          <div className="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-center py-6 text-sm text-gray-500 dark:text-[#c7b0a0]">
             Обновляем операции для расчета лимита...
           </div>
         )}
@@ -199,4 +199,5 @@ export default function Dashboard() {
     </Layout>
   );
 }
+
 

@@ -5,17 +5,20 @@ import MaterialIcon from '../components/common/MaterialIcon';
 import { categoriesApi, Category, CreateCategoryRequest } from '../services/api';
 
 const actionBase =
-  'inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
-const actionNeutral = `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+  'inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f]';
+const actionNeutral =
+  `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
 const actionConfirm = `${actionBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
 const primaryButton =
-  'inline-flex items-center gap-2 h-10 px-4 rounded-full text-sm font-medium shadow-sm bg-[#d27b30] text-white hover:bg-[#b56726] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
+  'inline-flex items-center gap-2 h-10 px-4 rounded-full text-sm font-medium shadow-sm bg-[#d27b30] text-white hover:bg-[#b56726] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f]';
 const actionIconBase =
-  'inline-flex items-center justify-center h-10 w-10 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
-const actionEditIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
-const actionArchiveIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20`;
+  'inline-flex items-center justify-center h-10 w-10 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f]';
+const actionEditIcon =
+  `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
+const actionArchiveIcon =
+  `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
 const tabBase =
-  'inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800';
+  'inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f]';
 const tabExpenseBase =
   'border-red-200 text-red-700 bg-red-50/60 hover:bg-red-100/70 dark:border-red-500/40 dark:text-red-200 dark:bg-red-500/10';
 const tabExpenseActive = 'bg-red-600 text-white border-red-600';
@@ -28,7 +31,7 @@ export default function Categories() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
-  const [newCategoryColor, setNewCategoryColor] = useState('#3B82F6');
+  const [newCategoryColor, setNewCategoryColor] = useState('#d27b30');
 
   const queryClient = useQueryClient();
 
@@ -111,9 +114,9 @@ export default function Categories() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 text-left">
+        <div className="bg-white dark:bg-[#1c140f] shadow rounded-lg p-6 text-left">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+            <h2 className="text-lg font-medium text-gray-900 dark:text-[#f8eee5]">
               Категории {activeTab === 'expense' ? 'расходов' : 'доходов'}
             </h2>
             <button
@@ -136,7 +139,7 @@ export default function Categories() {
           </div>
 
           {showAddForm && (
-            <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div className="mb-4 p-4 bg-gray-50 dark:bg-[#2a1f18] rounded-lg">
               <div className="flex flex-wrap items-center gap-2">
                 <input
                   type="text"
@@ -170,7 +173,7 @@ export default function Categories() {
               ))}
             </div>
           ) : categories.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-8 text-gray-500 dark:text-[#c7b0a0]">
               Нет категорий. Добавьте первую категорию.
             </div>
           ) : (
@@ -215,7 +218,7 @@ function CategoryCard({
   onArchive,
 }: CategoryCardProps) {
   const [name, setName] = useState(category.name);
-  const [color, setColor] = useState(category.color || '#3B82F6');
+  const [color, setColor] = useState(category.color || '#d27b30');
 
   const handleSave = () => {
     const trimmedName = name.trim();
@@ -227,7 +230,7 @@ function CategoryCard({
 
   if (editing) {
     return (
-      <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700 text-left">
+      <div className="p-4 border border-gray-200 dark:border-[#3a2a20] rounded-lg bg-gray-50 dark:bg-[#2a1f18] text-left">
         <input
           type="text"
           value={name}
@@ -263,7 +266,7 @@ function CategoryCard({
   }
 
   return (
-    <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-left">
+    <div className="p-4 border border-gray-200 dark:border-[#3a2a20] rounded-lg hover:bg-gray-50 dark:hover:bg-[#31251d] text-left">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div
@@ -299,4 +302,6 @@ function CategoryCard({
     </div>
   );
 }
+
+
 

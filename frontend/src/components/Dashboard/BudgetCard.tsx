@@ -20,7 +20,7 @@ export default function BudgetCard({
 }: BudgetCardProps) {
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+      <div className="bg-white dark:bg-[#1c140f] overflow-hidden shadow rounded-lg">
         <div className="p-5 space-y-4">
           <div className="flex items-center gap-4">
             <div className="pf-skeleton h-10 w-10 rounded-full" />
@@ -45,7 +45,7 @@ export default function BudgetCard({
     'inline-flex items-center justify-center h-9 w-9 rounded-full bg-[#d27b30]/10 text-[#d27b30] hover:bg-[#d27b30]/20';
 
   return (
-    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+    <div className="bg-white dark:bg-[#1c140f] overflow-hidden shadow rounded-lg">
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-1 items-center">
@@ -54,10 +54,10 @@ export default function BudgetCard({
             </div>
             <div className="ml-5 min-w-0">
               <dl>
-                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                <dt className="text-sm font-medium text-gray-500 dark:text-[#c7b0a0] truncate">
                   Бюджет месяца
                 </dt>
-                <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                <dd className="text-lg font-medium text-gray-900 dark:text-[#f8eee5]">
                   {formatCurrency(planned)}
                 </dd>
               </dl>
@@ -77,17 +77,17 @@ export default function BudgetCard({
         </div>
         <div className="mt-4">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600 dark:text-gray-400">Потрачено:</span>
+            <span className="text-gray-600 dark:text-[#c7b0a0]">Потрачено:</span>
             <span
               className={`font-medium ${
-                isOverBudget ? 'text-red-600' : 'text-gray-900 dark:text-white'
+                isOverBudget ? 'text-red-600' : 'text-gray-900 dark:text-[#f8eee5]'
               }`}
             >
               {formatCurrency(spent)}
             </span>
           </div>
           <div className="mt-2 flex justify-between text-sm">
-            <span className="text-gray-600 dark:text-gray-400">Осталось:</span>
+            <span className="text-gray-600 dark:text-[#c7b0a0]">Осталось:</span>
             <span
               className={`font-medium ${
                 isOverBudget ? 'text-red-600' : 'text-green-600 dark:text-green-400'
@@ -98,11 +98,11 @@ export default function BudgetCard({
           </div>
           <div className="mt-4">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-xs font-medium text-gray-700 dark:text-[#e4d1c1]">
                 Прогресс: {percentage.toFixed(1)}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-[#2a1f18] rounded-full h-2">
               <div
                 className={`h-2 rounded-full transition-all ${
                   isOverBudget
@@ -120,3 +120,5 @@ export default function BudgetCard({
     </div>
   );
 }
+
+

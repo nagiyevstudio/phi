@@ -2,12 +2,12 @@ export type ThemePreference = 'light' | 'dark' | 'auto';
 
 const THEME_STORAGE_KEY = 'pf-theme';
 const THEME_COLORS = {
-  light: '#f9fafb',
-  dark: '#111827',
+  light: '#f9f6f2',
+  dark: '#120c08',
 } as const;
 const THEME_TEXT_COLORS = {
-  light: '#111827',
-  dark: '#f9fafb',
+  light: '#1f130c',
+  dark: '#f8eee5',
 } as const;
 
 const normalizeTheme = (value: string | null): ThemePreference => {

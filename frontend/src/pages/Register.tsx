@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 
 export default function Register() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center pf-app-bg py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6 text-center">
-        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">
+        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-[#f8eee5]">
           Регистрация закрыта
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-gray-600 dark:text-[#c7b0a0]">
           Используйте существующий логин.
         </p>
         <Link
@@ -20,3 +20,4 @@ export default function Register() {
     </div>
   );
 }
+

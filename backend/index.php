@@ -1,4 +1,8 @@
 <?php
+// Align date calculations (e.g., daily limits) with the expected local timezone.
+$defaultTimezone = getenv('APP_TIMEZONE') ?: 'Asia/Baku';
+date_default_timezone_set($defaultTimezone);
+
 // Устанавливаем заголовки CORS в самом начале, до любых операций
 // Разрешаем запросы с production домена и localhost для разработки
 $allowedOrigins = [

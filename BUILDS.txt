@@ -1,0 +1,3 @@
+Build series: 1.0.xxx
+
+1.0.001 - Align backend date calculations to local timezone; warm dark theme palette around #d27b30; add gradient app background; update analytics/chart accents; remove exported report snapshot.
