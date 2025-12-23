@@ -31,6 +31,10 @@ function validateMonth($month) {
     return preg_match('/^\d{4}-\d{2}$/', $month) === 1;
 }
 
+function validateYear($year) {
+    return preg_match('/^\d{4}$/', $year) === 1;
+}
+
 function validateAmount($amount) {
     return is_numeric($amount) && $amount > 0;
 }

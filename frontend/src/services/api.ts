@@ -315,8 +315,27 @@ export interface AnalyticsData {
   }>;
 }
 
+export interface YearlyIncomeAnalyticsData {
+  year: string;
+  totalMinor: number;
+  incomeByCategory: Array<{
+    categoryId: string;
+    categoryName: string;
+    color: string | null;
+    totalMinor: number;
+    percentage: number;
+    transactionCount: number;
+  }>;
+  incomeByMonth: Array<{
+    month: string;
+    totalMinor: number;
+    transactionCount: number;
+  }>;
+}
+
 export const analyticsApi = {
   get: (month: string) => api.get<AnalyticsData>('/analytics', { month }),
+  getYearIncome: (year: string) => api.get<YearlyIncomeAnalyticsData>('/analytics', { year }),
 };
 
 // Export API
