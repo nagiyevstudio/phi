@@ -6,9 +6,9 @@ import { formatCurrency } from "../../utils/format";
 import { getCategoryStyle } from "../../utils/categoryStyle";
 
 const typeButtonBase =
-  "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f]";
+  "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
 const typeAllBase =
-  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#3a2a20] dark:text-[#f3e7dd] dark:bg-[#1c140f]/70 dark:hover:bg-[#251a14]";
+  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
 const typeAllActive =
   "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
 const typeExpenseBase =
@@ -19,9 +19,9 @@ const typeIncomeBase =
 const typeIncomeActive = "bg-emerald-600 text-white border-emerald-600";
 
 const chipBase =
-  "inline-flex items-center gap-2 h-9 px-3 rounded-full border text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f]";
+  "inline-flex items-center gap-2 h-9 px-3 rounded-full border text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
 const chipAllInactive =
-  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#3a2a20] dark:text-[#f3e7dd] dark:bg-[#1c140f]/70 dark:hover:bg-[#251a14]";
+  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
 const chipAllActive =
   "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
 
@@ -173,7 +173,7 @@ export default function OperationsPanel({
           <button
             type="button"
             onClick={() => setShowSearch((prev) => !prev)}
-            className="sm:hidden inline-flex items-center justify-center h-10 w-10 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-[#3a2a20] dark:text-[#e4d1c1] dark:hover:bg-[#251a14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+            className="sm:hidden inline-flex items-center justify-center h-10 w-10 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:hover:bg-[#212121] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
             aria-pressed={showSearch}
             aria-label="Поиск и фильтр по дате"
             title="Поиск и фильтр по дате"
@@ -185,7 +185,7 @@ export default function OperationsPanel({
           <button
             type="button"
             onClick={() => setShowSearch((prev) => !prev)}
-            className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-[#3a2a20] dark:text-[#e4d1c1] dark:hover:bg-[#251a14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+            className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:hover:bg-[#212121] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
             aria-pressed={showSearch}
             aria-label="Поиск и фильтр по дате"
             title="Поиск и фильтр по дате"
@@ -214,10 +214,10 @@ export default function OperationsPanel({
         </button>
       )}
 
-      <div className="bg-white dark:bg-[#1c140f] shadow rounded-lg p-6 text-left">
+      <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
         <div className="space-y-6">
           <div>
-            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#c7b0a0]">
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3]">
               Категории
             </p>
             <div className="mt-2 flex flex-wrap gap-2 justify-start">
@@ -258,7 +258,7 @@ export default function OperationsPanel({
           {showSearch && (
             <div className="grid gap-3 md:grid-cols-3">
               <div className="min-w-0">
-                <label className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#c7b0a0]">
+                <label className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3]">
                   Поиск
                 </label>
                 <input
@@ -270,7 +270,7 @@ export default function OperationsPanel({
                 />
               </div>
               <div className="min-w-0">
-                <label className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#c7b0a0]">
+                <label className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3]">
                   С даты
                 </label>
                 <input
@@ -281,7 +281,7 @@ export default function OperationsPanel({
                 />
               </div>
               <div className="min-w-0">
-                <label className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#c7b0a0]">
+                <label className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3]">
                   По дату
                 </label>
                 <input

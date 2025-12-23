@@ -13,8 +13,8 @@ interface AnalyticsTotalsProps {
 export default function AnalyticsTotals({ totals, isLoading }: AnalyticsTotalsProps) {
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-[#1c140f] rounded-lg shadow">
-        <div className="flex flex-nowrap items-center justify-between divide-x divide-gray-200 dark:divide-[#3a2a20]">
+      <div className="bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+        <div className="flex flex-nowrap items-center justify-between divide-x divide-gray-200 dark:divide-[#2a2a2a]">
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={`totals-skeleton-${index}`}
@@ -36,11 +36,11 @@ export default function AnalyticsTotals({ totals, isLoading }: AnalyticsTotalsPr
   const muted = totals ? '' : 'opacity-60';
 
   return (
-    <div className={`bg-white dark:bg-[#1c140f] rounded-lg shadow ${muted}`}>
-      <div className="flex flex-nowrap items-center justify-between divide-x divide-gray-200 dark:divide-[#3a2a20]">
+    <div className={`bg-white dark:bg-[#1a1a1a] rounded-lg shadow ${muted}`}>
+      <div className="flex flex-nowrap items-center justify-between divide-x divide-gray-200 dark:divide-[#2a2a2a]">
         <div className="flex flex-1 items-center justify-center gap-1 sm:gap-2 px-3 py-3 sm:py-4">
           <MaterialIcon name="income" className="h-4 w-4 text-emerald-500" />
-          <span className="hidden sm:inline text-sm font-medium text-gray-500 dark:text-[#c7b0a0]">
+          <span className="hidden sm:inline text-sm font-medium text-gray-500 dark:text-[#a3a3a3]">
             Доходы:
           </span>
           <span className="text-sm sm:text-xl font-semibold text-emerald-600 whitespace-nowrap">
@@ -49,7 +49,7 @@ export default function AnalyticsTotals({ totals, isLoading }: AnalyticsTotalsPr
         </div>
         <div className="flex flex-1 items-center justify-center gap-1 sm:gap-2 px-3 py-3 sm:py-4">
           <MaterialIcon name="expense" className="h-4 w-4 text-red-500" />
-          <span className="hidden sm:inline text-sm font-medium text-gray-500 dark:text-[#c7b0a0]">
+          <span className="hidden sm:inline text-sm font-medium text-gray-500 dark:text-[#a3a3a3]">
             Расходы:
           </span>
           <span className="text-sm sm:text-xl font-semibold text-red-600 whitespace-nowrap">
@@ -58,7 +58,7 @@ export default function AnalyticsTotals({ totals, isLoading }: AnalyticsTotalsPr
         </div>
         <div className="flex flex-1 items-center justify-center gap-1 sm:gap-2 px-3 py-3 sm:py-4">
           <MaterialIcon name="wallet" className="h-4 w-4 text-[#d27b30] dark:text-[#f0b27a]" />
-          <span className="hidden sm:inline text-sm font-medium text-gray-500 dark:text-[#c7b0a0]">
+          <span className="hidden sm:inline text-sm font-medium text-gray-500 dark:text-[#a3a3a3]">
             Итого:
           </span>
           <span className="text-sm sm:text-xl font-semibold text-[#d27b30] dark:text-[#f0b27a] whitespace-nowrap">

@@ -19,19 +19,19 @@ export default function OperationsList({
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const actionBase =
-    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f] disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed";
   const actionIconBase =
-    "inline-flex items-center justify-center h-10 w-10 rounded-full shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f] disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center h-10 w-10 rounded-full shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed";
   const actionEditIcon =
-    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
+    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
   const actionDeleteIcon =
-    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
+    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
   const actionConfirm = `${actionBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
   const actionCancel =
-    `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
+    `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
   const actionConfirmIcon = `${actionIconBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
   const actionCancelIcon =
-    `${actionIconBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
+    `${actionIconBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
 
   const formatOperationCount = (count: number) => {
     const mod10 = count % 10;
@@ -119,14 +119,14 @@ export default function OperationsList({
 
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-[#1c140f] shadow rounded-lg">
+      <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg">
         <div className="px-4 py-5 sm:p-6">
           <div className="space-y-6">
             {Array.from({ length: 3 }).map((_, groupIndex) => (
               <div key={`op-skeleton-${groupIndex}`} className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="pf-skeleton h-4 w-24 rounded-full" />
-                  <div className="h-px flex-1 bg-gray-200 dark:bg-[#2a1f18]" />
+                  <div className="h-px flex-1 bg-gray-200 dark:bg-[#1f1f1f]" />
                   <div className="pf-skeleton h-4 w-16 rounded-full" />
                 </div>
                 <div className="space-y-2">
@@ -146,11 +146,11 @@ export default function OperationsList({
   }
 
   return (
-    <div className="bg-white dark:bg-[#1c140f] shadow rounded-lg">
+    <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
         {/* Operations */}
         {operations.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-[#c7b0a0]">
+          <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">
             Нет операций для отображения
           </div>
         ) : (
@@ -158,11 +158,11 @@ export default function OperationsList({
             {groupedOperations.map((group, groupIndex) => (
               <div key={`${group.dateKey}-${groupIndex}`} className="space-y-2">
                 <div className="flex items-center gap-4">
-                  <span className="text-sm font-semibold text-gray-700 dark:text-[#f3e7dd]">
+                  <span className="text-sm font-semibold text-gray-700 dark:text-[#d4d4d8]">
                     {group.dateLabel}
                   </span>
-                  <div className="h-px flex-1 bg-gray-200 dark:bg-[#2a1f18]" />
-                  <span className="text-xs text-gray-500 dark:text-[#c7b0a0]">
+                  <div className="h-px flex-1 bg-gray-200 dark:bg-[#1f1f1f]" />
+                  <span className="text-xs text-gray-500 dark:text-[#a3a3a3]">
                     {formatOperationCount(group.items.length)}
                   </span>
                   <span
@@ -171,7 +171,7 @@ export default function OperationsList({
                         ? "text-emerald-600"
                         : group.totalMinor < 0
                         ? "text-red-600"
-                        : "text-gray-500 dark:text-[#c7b0a0]"
+                        : "text-gray-500 dark:text-[#a3a3a3]"
                     }`}
                   >
                     {formatSignedAmount(group.totalMinor)}
@@ -181,7 +181,7 @@ export default function OperationsList({
                   {group.items.map((op) => (
                     <div
                       key={op.id}
-                      className="relative flex items-center justify-between p-4 border border-gray-200 dark:border-[#3a2a20] rounded-lg hover:bg-gray-50 dark:hover:bg-[#31251d]"
+                      className="relative flex items-center justify-between p-4 border border-gray-200 dark:border-[#2a2a2a] rounded-lg hover:bg-gray-50 dark:hover:bg-[#252525]"
                     >
                       <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
                         <div className="flex min-w-0 flex-1 items-start gap-3">
@@ -212,7 +212,7 @@ export default function OperationsList({
                               </span>
                             </div>
                             {op.note && (
-                              <p className="mt-1 text-sm text-gray-500 dark:text-[#c7b0a0] text-left">
+                              <p className="mt-1 text-sm text-gray-500 dark:text-[#a3a3a3] text-left">
                                 {op.note}
                               </p>
                             )}

@@ -4,27 +4,27 @@
 
 @layer components {
   .pf-input {
-    @apply h-11 w-full min-w-0 rounded-full border border-gray-200 bg-white/80 px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#3a2a20] dark:bg-[#1c140f]/70 dark:text-[#fbf2ea];
+    @apply h-11 w-full min-w-0 rounded-full border border-gray-200 bg-white/80 px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#2a2a2a] dark:bg-[#1a1a1a]/70 dark:text-[#e5e7eb];
   }
 
   .pf-select {
-    @apply h-11 w-full min-w-0 rounded-full border border-gray-200 bg-white/80 px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#3a2a20] dark:bg-[#1c140f]/70 dark:text-[#fbf2ea];
+    @apply h-11 w-full min-w-0 rounded-full border border-gray-200 bg-white/80 px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#2a2a2a] dark:bg-[#1a1a1a]/70 dark:text-[#e5e7eb];
   }
 
   .pf-textarea {
-    @apply w-full min-h-[96px] rounded-2xl border border-gray-200 bg-white/80 px-4 py-3 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#3a2a20] dark:bg-[#1c140f]/70 dark:text-[#fbf2ea];
+    @apply w-full min-h-[96px] rounded-2xl border border-gray-200 bg-white/80 px-4 py-3 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#2a2a2a] dark:bg-[#1a1a1a]/70 dark:text-[#e5e7eb];
   }
 
   .pf-checkbox {
-    @apply h-5 w-5 rounded-md border-gray-300 accent-[#d27b30] focus:ring-[#d27b30] dark:border-[#4a3628] dark:bg-[#1c140f];
+    @apply h-5 w-5 rounded-md border-gray-300 accent-[#d27b30] focus:ring-[#d27b30] dark:border-[#3a3a3a] dark:bg-[#1a1a1a];
   }
 
   .pf-color {
-    @apply h-11 w-11 rounded-full border border-gray-200 bg-white/80 shadow-sm dark:border-[#3a2a20];
+    @apply h-11 w-11 rounded-full border border-gray-200 bg-white/80 shadow-sm dark:border-[#2a2a2a];
   }
 
   .pf-skeleton {
-    @apply animate-pulse rounded-lg bg-gray-200/70 dark:bg-[#2a1f18]/60;
+    @apply animate-pulse rounded-lg bg-gray-200/70 dark:bg-[#1f1f1f]/60;
   }
 }
 
@@ -33,7 +33,7 @@
 }
 
 .dark .pf-app-bg {
-  background: linear-gradient(135deg, #25160f 0%, #160f0b 55%, #0e0a08 100%);
+  background: linear-gradient(135deg, #1b1b1d 0%, #141414 55%, #0e0e0f 100%);
 }
 
 .pf-input[type='date'],

@@ -116,11 +116,11 @@ export default function OperationForm({
   const [amountInput, setAmountInput] = useState('0');
   const previousType = useRef<OperationFormData['type'] | null>(null);
   const actionBase =
-    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1c140f]";
+    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
   const actionDelete = `${actionBase} bg-red-500/10 text-red-700 hover:bg-red-500/20 dark:text-red-300`;
   const actionConfirm = `${actionBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
   const actionCancel =
-    `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#2a1f18]/70 dark:text-[#e4d1c1] dark:hover:bg-[#31251d]`;
+    `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
   const actionPrimary = `${actionBase} px-4 bg-[#d27b30] text-white hover:bg-[#b56726]`;
   const typeButtonBase =
     'inline-flex items-center justify-center h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:peer-focus-visible:ring-offset-gray-800';
@@ -226,23 +226,23 @@ export default function OperationForm({
 
   return (
     <div className="fixed inset-0 bg-[#120c08]/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50">
-      <div className="relative top-10 mx-auto w-[92vw] max-w-lg p-6 sm:p-7 border shadow-xl rounded-3xl bg-white dark:bg-[#1c140f]">
+      <div className="relative top-10 mx-auto w-[92vw] max-w-lg p-6 sm:p-7 border shadow-xl rounded-3xl bg-white dark:bg-[#1a1a1a]">
         <button
           type="button"
           onClick={onCancel}
-          className="absolute right-4 top-4 inline-flex h-12 w-12 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 dark:text-[#e4d1c1] dark:hover:bg-[#31251d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+          className="absolute right-4 top-4 inline-flex h-12 w-12 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 dark:text-[#d4d4d8] dark:hover:bg-[#252525] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
           aria-label="Закрыть"
           title="Закрыть"
         >
           <MaterialIcon name="close" className="h-7 w-7" />
         </button>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-[#f8eee5] mb-6">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-[#e5e7eb] mb-6">
           {operation ? 'Редактировать операцию' : 'Добавить операцию'}
         </h3>
 
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-[#e4d1c1]">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8]">
               Тип
             </label>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -269,7 +269,7 @@ export default function OperationForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-[#e4d1c1]">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8]">
               Сумма
             </label>
             <div className="relative mt-2">
@@ -327,7 +327,7 @@ export default function OperationForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-[#e4d1c1]">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8]">
               Категория
             </label>
             <select
@@ -347,7 +347,7 @@ export default function OperationForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-[#e4d1c1]">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8]">
               Дата и время
             </label>
             <input
@@ -359,7 +359,7 @@ export default function OperationForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-[#e4d1c1]">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8]">
               Заметка
             </label>
             <textarea
@@ -368,7 +368,7 @@ export default function OperationForm({
               className="pf-textarea mt-1"
             />
             {noteSuggestions.length > 0 && (
-              <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500 dark:text-[#c7b0a0]">
+              <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500 dark:text-[#a3a3a3]">
                 <span className="text-[10px] uppercase tracking-wide text-gray-400 dark:text-[#ad8f7a]">
                   Подсказки
                 </span>
@@ -383,7 +383,7 @@ export default function OperationForm({
                         setValue('note', note, { shouldDirty: true });
                       }
                     }}
-                    className="cursor-pointer text-gray-600 hover:text-gray-900 dark:text-[#e4d1c1] dark:hover:text-white"
+                    className="cursor-pointer text-gray-600 hover:text-gray-900 dark:text-[#d4d4d8] dark:hover:text-white"
                   >
                     {note}
                     {index < noteSuggestions.length - 1 && (

@@ -1,5 +1,39 @@
-Build series: 1.0.xxx
+# Version History
 
-1.0.003 - Add yearly income analytics (API + charts) on analytics page.
-1.0.002 - Add shorthand deploy plan (build/ftp, full-push) and bump app version.
-1.0.001 - Align backend date calculations to local timezone; warm dark theme palette around #d27b30; add gradient app background; update analytics/chart accents; remove exported report snapshot.
+Series: 1.0.x
+
+## Versioning Rules
+- Each completed task increments the patch version by 1.
+- If a release includes multiple tasks, increase the patch version by the total count of tasks.
+- Example: 5 tasks in one release => patch version +5.
+
+## 1.0.011
+- Date: 2025-12-23
+- Status: released
+- Changes:
+  1. Refresh dark theme palette across the UI.
+  2. Add daily expense stats (max/min/avg) and expected remaining spending for the month.
+  3. Add monthly income stats (max/min/average for the year).
+  4. Document version history format and full-push process.
+
+## 1.0.007
+- Date: unknown
+- Status: released
+- Changes:
+  1. Add yearly income analytics (API + charts) on analytics page.
+
+## 1.0.006
+- Date: unknown
+- Status: released
+- Changes:
+  1. Add shorthand deploy plan (build/ftp, full-push) and bump app version.
+
+## 1.0.005
+- Date: unknown
+- Status: released
+- Changes:
+  1. Align backend date calculations to local timezone.
+  2. Warm dark theme palette around #d27b30.
+  3. Add gradient app background.
+  4. Update analytics/chart accents.
+  5. Remove exported report snapshot.

@@ -68,7 +68,7 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen pf-app-bg">
-      <nav className="sticky top-0 z-50 bg-white/90 dark:bg-[#1c140f]/95 shadow">
+      <nav className="sticky top-0 z-50 bg-white/90 dark:bg-[#1a1a1a]/95 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -79,7 +79,7 @@ export default function Layout({ children }: LayoutProps) {
                   className="flex items-center gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] rounded-md"
                 >
                   <img src={logoUrl} alt="PerFinance" className="h-8 w-auto" />
-                  <span className="text-base sm:text-lg font-semibold tracking-wide text-gray-900 dark:text-[#f8eee5]">
+                  <span className="text-base sm:text-lg font-semibold tracking-wide text-gray-900 dark:text-[#e5e7eb]">
                     {sectionTitle}
                   </span>
                 </button>
@@ -91,8 +91,8 @@ export default function Layout({ children }: LayoutProps) {
                     to={item.path}
                     className={`${
                       location.pathname === item.path
-                        ? 'border-[#d27b30] text-gray-900 dark:text-[#f8eee5]'
-                        : 'border-transparent text-gray-500 dark:text-[#e4d1c1] hover:border-gray-300 hover:text-gray-700 dark:hover:text-[#f3e7dd]'
+                        ? 'border-[#d27b30] text-gray-900 dark:text-[#e5e7eb]'
+                        : 'border-transparent text-gray-500 dark:text-[#d4d4d8] hover:border-gray-300 hover:text-gray-700 dark:hover:text-[#d4d4d8]'
                     } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                   >
                     {item.label}
@@ -101,7 +101,7 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             </div>
             <div className="flex items-center">
-              <span className="hidden sm:inline text-sm text-gray-700 dark:text-[#e4d1c1] mr-4">
+              <span className="hidden sm:inline text-sm text-gray-700 dark:text-[#d4d4d8] mr-4">
                 {displayName} {roleLabel}
               </span>
             </div>
@@ -117,7 +117,7 @@ export default function Layout({ children }: LayoutProps) {
         onTouchCancel={handleTouchEnd}
       >
         <div
-          className="flex items-end justify-center text-xs text-gray-500 dark:text-[#c7b0a0] transition-[height] duration-150"
+          className="flex items-end justify-center text-xs text-gray-500 dark:text-[#a3a3a3] transition-[height] duration-150"
           style={{ height: pullDistance }}
         >
           <span className={pullDistance > 0 ? 'pb-2' : 'sr-only'}>
@@ -131,7 +131,7 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
 
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 dark:border-[#3a2a20] bg-white/95 dark:bg-[#1c140f]/95 backdrop-blur">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 dark:border-[#2a2a2a] bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur">
         <div className="flex items-center justify-around px-2 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
@@ -142,7 +142,7 @@ export default function Layout({ children }: LayoutProps) {
                 className={`flex flex-col items-center gap-1 px-2 py-1 text-[11px] font-medium ${
                   isActive
                     ? 'text-[#d27b30] dark:text-[#f0b27a]'
-                    : 'text-gray-500 dark:text-[#c7b0a0]'
+                    : 'text-gray-500 dark:text-[#a3a3a3]'
                 }`}
               >
                 <MaterialIcon

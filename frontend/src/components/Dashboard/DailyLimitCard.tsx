@@ -18,7 +18,7 @@ export default function DailyLimitCard({
 }: DailyLimitCardProps) {
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-[#1c140f] overflow-hidden shadow rounded-lg">
+      <div className="bg-white dark:bg-[#1a1a1a] overflow-hidden shadow rounded-lg">
         <div className="p-5 space-y-4">
           <div className="flex items-center gap-4">
             <div className="pf-skeleton h-10 w-10 rounded-full" />
@@ -58,7 +58,7 @@ export default function DailyLimitCard({
   const displayPercentage = isOverDailyLimit ? 100 : Math.min(Math.max(percentage, 0), 100);
 
   return (
-    <div className="bg-white dark:bg-[#1c140f] overflow-hidden shadow rounded-lg">
+    <div className="bg-white dark:bg-[#1a1a1a] overflow-hidden shadow rounded-lg">
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-1 items-center">
@@ -67,7 +67,7 @@ export default function DailyLimitCard({
             </div>
             <div className="ml-5 min-w-0">
               <dl>
-                <dt className="text-sm font-medium text-gray-500 dark:text-[#c7b0a0] truncate">
+                <dt className="text-sm font-medium text-gray-500 dark:text-[#a3a3a3] truncate">
                   Дневной лимит
                 </dt>
                 <dd
@@ -85,29 +85,29 @@ export default function DailyLimitCard({
         </div>
         <div className="mt-4">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600 dark:text-[#c7b0a0]">Потрачено сегодня:</span>
+            <span className="text-gray-600 dark:text-[#a3a3a3]">Потрачено сегодня:</span>
             <span
               className={`font-medium ${
                 isOverDailyLimit || (dailyLimitMinor === 0 && todayExpenseSum > 0)
                   ? 'text-red-600'
-                  : 'text-gray-900 dark:text-[#f8eee5]'
+                  : 'text-gray-900 dark:text-[#e5e7eb]'
               }`}
             >
               {formatCurrency(todayExpenseSum)}
             </span>
           </div>
           <div className="mt-2 flex justify-between text-sm">
-            <span className="text-gray-600 dark:text-[#c7b0a0]">Оставшихся дней:</span>
-            <span className="font-medium text-gray-900 dark:text-[#f8eee5]">{daysLeft}</span>
+            <span className="text-gray-600 dark:text-[#a3a3a3]">Оставшихся дней:</span>
+            <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">{daysLeft}</span>
           </div>
           {daysLeft > 0 && (
             <div className="mt-4">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-gray-700 dark:text-[#e4d1c1]">
+                <span className="text-xs font-medium text-gray-700 dark:text-[#d4d4d8]">
                   Прогресс: {percentage.toFixed(1)}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-[#2a1f18] rounded-full h-2">
+              <div className="w-full bg-gray-200 dark:bg-[#1f1f1f] rounded-full h-2">
                 <div
                   className={`h-2 rounded-full transition-all ${
                     isOverDailyLimit || (dailyLimitMinor === 0 && todayExpenseSum > 0)
