@@ -1,6 +1,6 @@
 {
   "name": "perfinance",
-  "version": "1.0.025",
+  "version": "1.0.030",
   "private": true,
   "scripts": {
     "build": "cd frontend && npm run build",
