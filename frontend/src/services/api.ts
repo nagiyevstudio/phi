@@ -337,10 +337,39 @@ export interface IncomeYearsData {
   years: string[];
 }
 
+export interface OverallIncomeAnalyticsData {
+  totalMinor: number;
+  incomeByCategory: Array<{
+    categoryId: string;
+    categoryName: string;
+    color: string | null;
+    totalMinor: number;
+    percentage: number;
+    transactionCount: number;
+  }>;
+  incomeByCategoryYear: Array<{
+    year: string;
+    categoryId: string;
+    categoryName: string;
+    color: string | null;
+    totalMinor: number;
+  }>;
+  incomeByYear: Array<{
+    year: string;
+    totalMinor: number;
+  }>;
+  yearStats: {
+    max: { year: string; totalMinor: number };
+    min: { year: string; totalMinor: number };
+    averageMinor: number;
+  } | null;
+}
+
 export const analyticsApi = {
   get: (month: string) => api.get<AnalyticsData>('/analytics', { month }),
   getYearIncome: (year: string) => api.get<YearlyIncomeAnalyticsData>('/analytics', { year }),
   getIncomeYears: () => api.get<IncomeYearsData>('/analytics', { years: 'income' }),
+  getOverallIncome: () => api.get<OverallIncomeAnalyticsData>('/analytics', { overall: 'income' }),
 };
 
 // Export API

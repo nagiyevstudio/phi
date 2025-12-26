@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import MaterialIcon from "../common/MaterialIcon";
 import OperationsList from "../Dashboard/OperationsList";
 import { Operation } from "../../services/api";
@@ -10,8 +11,7 @@ const typeButtonBase =
   "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
 const typeAllBase =
   "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
-const typeAllActive =
-  "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
+const typeAllActive = "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
 const typeExpenseBase =
   "border-red-200 text-red-700 bg-red-50/60 hover:bg-red-100/70 dark:border-red-500/40 dark:text-red-200 dark:bg-red-500/10";
 const typeExpenseActive = "bg-red-600 text-white border-red-600";
@@ -23,8 +23,13 @@ const chipBase =
   "inline-flex items-center gap-2 h-9 px-3 rounded-full border text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
 const chipAllInactive =
   "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
-const chipAllActive =
-  "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
+const chipAllActive = "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
+const categoryActionBase =
+  "inline-flex items-center justify-center h-8 w-8 rounded-full border text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
+const categoryActionSecondary =
+  "border-gray-200 text-gray-600 bg-white/70 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/60 dark:hover:bg-[#212121]";
+const categoryActionPrimary =
+  "border-[#d27b30]/40 text-[#b56726] bg-[#d27b30]/10 hover:bg-[#d27b30]/20";
 
 interface ActiveCategory {
   id: string;
@@ -88,6 +93,11 @@ export default function OperationsPanel({
     }
     return activeCategories.filter((cat) => cat.type === typeFilter);
   }, [activeCategories, typeFilter]);
+  const categoryTypeParam = typeFilter === "all" ? "" : `&type=${typeFilter}`;
+  const addCategoryHref = `/categories?action=add${categoryTypeParam}`;
+  const editCategoryHref = `/categories${
+    typeFilter === "all" ? "" : `?type=${typeFilter}`
+  }`;
 
   useEffect(() => {
     if (categoryFilter === "all") {
@@ -209,20 +219,40 @@ export default function OperationsPanel({
       {onAdd && (
         <button
           onClick={onAdd}
-          className="sm:hidden fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-6 z-50 h-14 w-14 rounded-full bg-[#d27b30] text-white shadow-lg shadow-[#d27b30]/30 hover:bg-[#b56726] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+          className="sm:hidden fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-6 z-50 h-14 w-14 rounded-full bg-[#d27b30] text-white shadow-lg shadow-[#d27b30]/30 hover:bg-[#b56726] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] flex items-center justify-center"
           aria-label={t("operations.add")}
         >
-          <MaterialIcon name="add" className="h-6 w-6 mx-auto" />
+          <MaterialIcon name="add" className="h-6 w-6 -translate-y-[1px]" />
         </button>
       )}
 
       <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
         <div className="space-y-6">
           <div>
-            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3]">
-              {t("filters.categories")}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2 justify-start">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3">
+              <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3]">
+                {t("filters.categories")}
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  to={editCategoryHref}
+                  className={`${categoryActionBase} ${categoryActionSecondary}`}
+                  aria-label={t("categories.editAction")}
+                  title={t("categories.editAction")}
+                >
+                  <MaterialIcon name="edit" className="h-3.5 w-3.5" />
+                </Link>
+                <Link
+                  to={addCategoryHref}
+                  className={`${categoryActionBase} ${categoryActionPrimary}`}
+                  aria-label={t("categories.addCategory")}
+                  title={t("categories.addCategory")}
+                >
+                  <MaterialIcon name="add" className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2 justify-start">
               <button
                 type="button"
                 onClick={() => setCategoryFilter("all")}
@@ -307,4 +337,3 @@ export default function OperationsPanel({
     </div>
   );
 }
-

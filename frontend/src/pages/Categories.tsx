@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Layout from '../components/common/Layout';
 import MaterialIcon from '../components/common/MaterialIcon';
@@ -29,6 +30,7 @@ const tabIncomeActive = 'bg-emerald-600 text-white border-emerald-600';
 
 export default function Categories() {
   const { t } = useI18n();
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<'expense' | 'income'>('expense');
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -36,6 +38,19 @@ export default function Categories() {
   const [newCategoryColor, setNewCategoryColor] = useState('#d27b30');
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const typeParam = searchParams.get('type');
+    if (typeParam === 'expense' || typeParam === 'income') {
+      setActiveTab(typeParam);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (searchParams.get('action') === 'add') {
+      setShowAddForm(true);
+    }
+  }, [searchParams]);
 
   const { data: categoriesData, isLoading } = useQuery({
     queryKey: ['categories', activeTab],

@@ -7,6 +7,7 @@ type MaterialIconName =
   | 'edit'
   | 'logout'
   | 'menu'
+  | 'more-vert'
   | 'chevron-left'
   | 'chevron-right'
   | 'home'
@@ -29,6 +30,7 @@ const ICON_NAME_MAP: Record<MaterialIconName, string> = {
   edit: 'edit',
   logout: 'logout',
   menu: 'menu',
+  'more-vert': 'more_vert',
   'chevron-left': 'chevron_left',
   'chevron-right': 'chevron_right',
   home: 'home',

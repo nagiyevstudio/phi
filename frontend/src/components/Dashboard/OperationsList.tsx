@@ -1,8 +1,44 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Operation } from "../../services/api";
 import { formatCurrency, formatCurrencyParts, formatDateTime } from "../../utils/format";
 import MaterialIcon from "../common/MaterialIcon";
 import { useI18n } from "../../i18n";
+
+const formatTime = (date: string): string => {
+  if (!date) return '';
+  const normalized = date.trim();
+  if (!normalized) return '';
+  
+  try {
+    const parsed = new Date(normalized.replace(' ', 'T'));
+    if (Number.isNaN(parsed.getTime())) return '';
+    
+    // Проверяем, есть ли время в строке
+    const hasTime = /[T ]\d{2}:\d{2}/.test(normalized);
+    if (!hasTime) return '';
+    
+    return parsed.toLocaleTimeString('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return '';
+  }
+};
+
+const formatShortDate = (date: string): string => {
+  if (!date) return '';
+  try {
+    const parsed = new Date(date.replace(' ', 'T'));
+    if (Number.isNaN(parsed.getTime())) return '';
+    return parsed.toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'short',
+    });
+  } catch {
+    return '';
+  }
+};
 
 interface OperationsListProps {
   operations: Operation[];
@@ -20,31 +56,35 @@ export default function OperationsList({
   const { t, tPlural } = useI18n();
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const actionBase =
-    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed";
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+
   const actionIconBase =
-    "inline-flex items-center justify-center h-10 w-10 rounded-full shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center h-8 w-8 rounded-full shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed";
   const actionEditIcon =
     `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
   const actionDeleteIcon =
     `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
-  const actionConfirm = `${actionBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
+  const actionConfirm = "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300";
   const actionCancel =
-    `${actionBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
+    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]";
   const actionConfirmIcon = `${actionIconBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
   const actionCancelIcon =
-    `${actionIconBase} bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
+    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
+
+  const toggleGroup = (dateKey: string) => {
+    setExpandedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(dateKey)) {
+        next.delete(dateKey);
+      } else {
+        next.add(dateKey);
+      }
+      return next;
+    });
+  };
 
   const formatOperationCount = (count: number) =>
     tPlural("operations.count", count, { count });
-
-  const formatSignedAmount = (amountMinor: number) => {
-    if (amountMinor === 0) {
-      return formatCurrency(0);
-    }
-    const sign = amountMinor > 0 ? "+" : "-";
-    return `${sign}${formatCurrency(Math.abs(amountMinor))}`;
-  };
 
   const renderOperationAmount = (amountMinor: number, type: Operation["type"]) => {
     const sign = type === "expense" ? "-" : "+";
@@ -52,16 +92,16 @@ export default function OperationsList({
 
     return (
       <>
-        <span className="text-[1.85rem] font-semibold">
+        <span className="text-xl font-semibold">
           {sign}
           {parts.integer}
         </span>
-        <span className="text-[1.1rem] font-light opacity-70">
+        <span className="text-sm font-light opacity-70">
           {parts.decimal}
           {parts.fraction}
         </span>
         {parts.symbol && (
-          <span className="ml-1 text-[0.95rem] font-light opacity-60">{parts.symbol}</span>
+          <span className="ml-1 text-xs font-light opacity-60">{parts.symbol}</span>
         )}
       </>
     );
@@ -71,7 +111,8 @@ export default function OperationsList({
     const groups: Array<{
       dateKey: string;
       dateLabel: string;
-      totalMinor: number;
+      incomeMinor: number;
+      expenseMinor: number;
       items: Operation[];
     }> = [];
 
@@ -79,25 +120,41 @@ export default function OperationsList({
       const dateKey = op.date ? op.date.slice(0, 10) : "";
       const normalizedKey = dateKey || "unknown";
       const lastGroup = groups[groups.length - 1];
-      const signedAmount = op.type === "expense" ? -op.amountMinor : op.amountMinor;
 
       if (!lastGroup || lastGroup.dateKey !== normalizedKey) {
         groups.push({
           dateKey: normalizedKey,
           dateLabel:
             normalizedKey === "unknown" ? t("operations.noDate") : formatDateTime(normalizedKey),
-          totalMinor: signedAmount,
+          incomeMinor: op.type === "income" ? op.amountMinor : 0,
+          expenseMinor: op.type === "expense" ? op.amountMinor : 0,
           items: [op],
         });
         return;
       }
 
       lastGroup.items.push(op);
-      lastGroup.totalMinor += signedAmount;
+      if (op.type === "income") {
+        lastGroup.incomeMinor += op.amountMinor;
+      } else {
+        lastGroup.expenseMinor += op.amountMinor;
+      }
     });
 
     return groups;
-  }, [operations]);
+  }, [operations, t]);
+
+  // Открываем только сегодняшнюю группу по умолчанию
+  useEffect(() => {
+    if (groupedOperations.length > 0 && expandedGroups.size === 0) {
+      const today = new Date().toISOString().split('T')[0];
+      const todayGroup = groupedOperations.find(g => g.dateKey === today);
+      if (todayGroup) {
+        setExpandedGroups(new Set([today]));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [operations.length]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -149,153 +206,197 @@ export default function OperationsList({
           </div>
         ) : (
           <div className="space-y-6">
-            {groupedOperations.map((group, groupIndex) => (
-              <div key={`${group.dateKey}-${groupIndex}`} className="space-y-2">
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-semibold text-gray-700 dark:text-[#d4d4d8]">
-                    {group.dateLabel}
-                  </span>
-                  <div className="h-px flex-1 bg-gray-200 dark:bg-[#1f1f1f]" />
-                  <span className="text-xs text-gray-500 dark:text-[#a3a3a3]">
-                    {formatOperationCount(group.items.length)}
-                  </span>
-                  <span
-                    className={`text-sm font-semibold ${
-                      group.totalMinor > 0
-                        ? "text-emerald-600"
-                        : group.totalMinor < 0
-                        ? "text-red-600"
-                        : "text-gray-500 dark:text-[#a3a3a3]"
-                    }`}
+            {groupedOperations.map((group, groupIndex) => {
+              const isExpanded = expandedGroups.has(group.dateKey);
+              return (
+                <div key={`${group.dateKey}-${groupIndex}`} className="border border-gray-200 dark:border-[#2a2a2a] rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => toggleGroup(group.dateKey)}
+                    className="w-full px-4 pt-3 pb-3 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors"
                   >
-                    {formatSignedAmount(group.totalMinor)}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  {group.items.map((op) => (
-                    <div
-                      key={op.id}
-                      className="relative flex items-center justify-between p-4 border border-gray-200 dark:border-[#2a2a2a] rounded-lg hover:bg-gray-50 dark:hover:bg-[#252525]"
-                    >
-                      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
-                        <div className="flex min-w-0 flex-1 items-start gap-3">
-                          <div
-                            className="mt-1 h-2.5 w-2.5 rounded-full"
-                            style={{ backgroundColor: op.categoryColor || "#9CA3AF" }}
-                          />
-                          <div className="min-w-0 text-left pr-12 sm:pr-0">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span
-                                className="text-sm font-semibold truncate"
-                                style={{ color: op.categoryColor || "#9CA3AF" }}
-                              >
-                                {op.categoryName}
-                              </span>
-                              <span
-                                className={`absolute top-3 right-3 sm:static inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium ${
-                                  op.type === "expense"
-                                    ? "bg-red-500/10 text-red-700 dark:text-red-300"
-                                    : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+                    <span className="hidden sm:inline-flex">
+                      <MaterialIcon
+                        name="chevron-right"
+                        className={`h-5 w-5 text-gray-500 dark:text-[#a3a3a3] transition-transform ${
+                          isExpanded ? "rotate-90" : ""
+                        }`}
+                      />
+                    </span>
+                    <span className="text-sm font-semibold text-gray-700 dark:text-[#d4d4d8]">
+                      {group.dateLabel}
+                    </span>
+                    <span className="hidden sm:inline text-xs text-gray-500 dark:text-[#a3a3a3]">
+                      {formatOperationCount(group.items.length)}
+                    </span>
+                    <div className="flex items-center gap-3 ml-auto">
+                      {group.incomeMinor > 0 && (
+                        <span className="text-sm font-semibold text-emerald-600">
+                          +{formatCurrency(group.incomeMinor)}
+                        </span>
+                      )}
+                      {group.expenseMinor > 0 && (
+                        <span className="text-sm font-semibold text-red-600">
+                          -{formatCurrency(group.expenseMinor)}
+                        </span>
+                      )}
+                      {group.incomeMinor === 0 && group.expenseMinor === 0 && (
+                        <span className="text-sm font-semibold text-gray-500 dark:text-[#a3a3a3]">
+                          {formatCurrency(0)}
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                  {isExpanded && (
+                    <div className="divide-y divide-gray-200 dark:divide-[#2a2a2a] border-t border-gray-200 dark:border-[#2a2a2a]">
+                      {group.items.map((op) => (
+                        <div
+                          key={op.id}
+                          className="relative flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-[#252525]"
+                        >
+                          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+                            <div className="flex min-w-0 flex-1 items-start gap-3">
+                              <div
+                                className="mt-1 h-2.5 w-2.5 rounded-full"
+                                style={{ backgroundColor: op.categoryColor || "#9CA3AF" }}
+                              />
+                              <div className="min-w-0 text-left pr-12 sm:pr-0">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <span
+                                    className="text-sm font-semibold truncate"
+                                    style={{ color: op.categoryColor || "#9CA3AF" }}
+                                  >
+                                    {op.categoryName}
+                                  </span>
+                                  <span
+                                    className={`absolute top-3 right-3 sm:static inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium ${
+                                      op.type === "expense"
+                                        ? "bg-red-500/10 text-red-700 dark:text-red-300"
+                                        : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+                                    }`}
+                                  >
+                                    <MaterialIcon
+                                      name={op.type === "expense" ? "expense" : "income"}
+                                      className="h-3 w-3"
+                                    />
+                                    {op.type === "expense"
+                                      ? t("operations.typeExpense")
+                                      : t("operations.typeIncome")}
+                                  </span>
+                                  {formatTime(op.date) && (
+                                    <span className="text-xs text-gray-500 dark:text-[#a3a3a3]">
+                                      {formatTime(op.date)}
+                                    </span>
+                                  )}
+                                </div>
+                                {op.note && (
+                                  <p className="mt-1 text-sm text-gray-500 dark:text-[#a3a3a3] text-left">
+                                    {op.note}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
+                              <p
+                                className={`whitespace-nowrap tabular-nums leading-none flex items-baseline ${
+                                  op.type === "expense" ? "text-red-600" : "text-green-600"
                                 }`}
                               >
-                                <MaterialIcon
-                                  name={op.type === "expense" ? "expense" : "income"}
-                                  className="h-3 w-3"
-                                />
-                                {op.type === "expense"
-                                  ? t("operations.typeExpense")
-                                  : t("operations.typeIncome")}
-                              </span>
-                            </div>
-                            {op.note && (
-                              <p className="mt-1 text-sm text-gray-500 dark:text-[#a3a3a3] text-left">
-                                {op.note}
+                                {renderOperationAmount(op.amountMinor, op.type)}
                               </p>
-                            )}
+                              <div className="flex items-center gap-2">
+                                {deleteConfirm !== op.id && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      onEdit(op);
+                                    }}
+                                    className={actionEditIcon}
+                                    aria-label={t("common.edit")}
+                                    title={t("common.edit")}
+                                    disabled={deletingId === op.id}
+                                  >
+                                    <MaterialIcon name="edit" className="h-3.5 w-3.5" />
+                                  </button>
+                                )}
+                                {deleteConfirm === op.id ? (
+                                  <>
+                                    <div className="hidden sm:flex flex-wrap items-center gap-2">
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleDelete(op.id);
+                                        }}
+                                        className={actionConfirm}
+                                        disabled={deletingId === op.id}
+                                      >
+                                        <MaterialIcon name="check" className="h-3.5 w-3.5" />
+                                        {deletingId === op.id
+                                          ? t("common.deleting")
+                                          : t("common.confirm")}
+                                      </button>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setDeleteConfirm(null);
+                                        }}
+                                        className={actionCancel}
+                                        disabled={deletingId === op.id}
+                                      >
+                                        <MaterialIcon name="close" className="h-3.5 w-3.5" />
+                                        {t("common.cancel")}
+                                      </button>
+                                    </div>
+                                    <div className="flex sm:hidden items-center gap-2">
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleDelete(op.id);
+                                        }}
+                                        className={actionConfirmIcon}
+                                        disabled={deletingId === op.id}
+                                        aria-label={t("operations.confirmDelete")}
+                                        title={t("common.confirm")}
+                                      >
+                                        <MaterialIcon name="check" className="h-3.5 w-3.5" />
+                                      </button>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setDeleteConfirm(null);
+                                        }}
+                                        className={actionCancelIcon}
+                                        disabled={deletingId === op.id}
+                                        aria-label={t("operations.cancelDelete")}
+                                        title={t("common.cancel")}
+                                      >
+                                        <MaterialIcon name="close" className="h-3.5 w-3.5" />
+                                      </button>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDeleteConfirm(op.id);
+                                    }}
+                                    className={actionDeleteIcon}
+                                    aria-label={t("common.delete")}
+                                    title={t("common.delete")}
+                                    disabled={deletingId === op.id}
+                                  >
+                                    <MaterialIcon name="delete" className="h-3.5 w-3.5" />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
-                          <p
-                            className={`whitespace-nowrap tabular-nums leading-none ${
-                              op.type === "expense" ? "text-red-600" : "text-green-600"
-                            }`}
-                          >
-                            {renderOperationAmount(op.amountMinor, op.type)}
-                          </p>
-                          <div className="flex items-center gap-2">
-                            {deleteConfirm !== op.id && (
-                              <button
-                                onClick={() => onEdit(op)}
-                                className={actionEditIcon}
-                                aria-label={t("common.edit")}
-                                title={t("common.edit")}
-                                disabled={deletingId === op.id}
-                              >
-                                <MaterialIcon name="edit" className="h-4 w-4" />
-                              </button>
-                            )}
-                            {deleteConfirm === op.id ? (
-                              <>
-                                <div className="hidden sm:flex flex-wrap items-center gap-2">
-                                  <button
-                                    onClick={() => handleDelete(op.id)}
-                                    className={actionConfirm}
-                                    disabled={deletingId === op.id}
-                                  >
-                                    <MaterialIcon name="check" className="h-4 w-4" />
-                                    {deletingId === op.id
-                                      ? t("common.deleting")
-                                      : t("common.confirm")}
-                                  </button>
-                                  <button
-                                    onClick={() => setDeleteConfirm(null)}
-                                    className={actionCancel}
-                                    disabled={deletingId === op.id}
-                                  >
-                                    <MaterialIcon name="close" className="h-4 w-4" />
-                                    {t("common.cancel")}
-                                  </button>
-                                </div>
-                                <div className="flex sm:hidden items-center gap-2">
-                                  <button
-                                    onClick={() => handleDelete(op.id)}
-                                    className={actionConfirmIcon}
-                                    disabled={deletingId === op.id}
-                                    aria-label={t("operations.confirmDelete")}
-                                    title={t("common.confirm")}
-                                  >
-                                    <MaterialIcon name="check" className="h-4 w-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => setDeleteConfirm(null)}
-                                    className={actionCancelIcon}
-                                    disabled={deletingId === op.id}
-                                    aria-label={t("operations.cancelDelete")}
-                                    title={t("common.cancel")}
-                                  >
-                                    <MaterialIcon name="close" className="h-4 w-4" />
-                                  </button>
-                                </div>
-                              </>
-                            ) : (
-                              <button
-                                onClick={() => setDeleteConfirm(op.id)}
-                                className={actionDeleteIcon}
-                                aria-label={t("common.delete")}
-                                title={t("common.delete")}
-                                disabled={deletingId === op.id}
-                              >
-                                <MaterialIcon name="delete" className="h-4 w-4" />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

@@ -7,6 +7,18 @@ Series: 1.0.x
 - If a release includes multiple tasks, increase the patch version by the total count of tasks.
 - Example: 5 tasks in one release => patch version +5.
 
+## 1.0.024
+- Date: 2025-12-25
+- Status: released
+- Changes:
+  1. Add overall income analytics (API + charts + stats) across all years.
+  2. Add total income-by-year line chart to overall analytics.
+  3. Split analytics into Month / Years / Overall tabs.
+  4. Redesign Settings into equal cards with header icons.
+  5. Move category management into Operations and remove Categories from nav.
+  6. Add desktop menu icons matching the mobile tabbar.
+  7. UI polish: category controls spacing, mobile add button alignment, new app background gradient + card shadows.
+
 ## 1.0.017
 - Date: 2025-12-24
 - Status: released

@@ -22,10 +22,149 @@ $userId = requireAuth();
 $month = $_GET['month'] ?? null;
 $year = $_GET['year'] ?? null;
 $years = $_GET['years'] ?? null;
+$overall = $_GET['overall'] ?? null;
 
 try {
     $pdo = Database::getPDO();
     $operationModel = new Operation();
+
+    if ($overall === 'income') {
+        $totalIncomeSql = "
+            SELECT COALESCE(SUM(o.amount_minor), 0) as total
+            FROM operations o
+            WHERE o.user_id = ? 
+                AND o.type = 'income'
+        ";
+
+        $stmt = $pdo->prepare($totalIncomeSql);
+        $stmt->execute([$userId]);
+        $totalIncome = (int)$stmt->fetchColumn();
+
+        $categoryIncomeSql = "
+            SELECT 
+                c.id,
+                c.name,
+                c.color,
+                COALESCE(SUM(o.amount_minor), 0) as total_minor,
+                COUNT(o.id) as transaction_count
+            FROM categories c
+            LEFT JOIN operations o ON c.id = o.category_id 
+                AND o.user_id = ? 
+                AND o.type = 'income'
+            WHERE c.user_id = ? 
+                AND c.type = 'income'
+                AND c.is_archived = FALSE
+            GROUP BY c.id, c.name, c.color
+            HAVING COUNT(o.id) > 0
+            ORDER BY total_minor DESC
+        ";
+
+        $stmt = $pdo->prepare($categoryIncomeSql);
+        $stmt->execute([$userId, $userId]);
+        $categoryIncome = $stmt->fetchAll();
+
+        $categoryIncomeData = array_map(function($row) use ($totalIncome) {
+            $total = (int)$row['total_minor'];
+            $percentage = $totalIncome > 0 ? round(($total / $totalIncome) * 100, 2) : 0;
+
+            return [
+                'categoryId' => $row['id'],
+                'categoryName' => $row['name'],
+                'color' => $row['color'],
+                'totalMinor' => $total,
+                'percentage' => $percentage,
+                'transactionCount' => (int)$row['transaction_count']
+            ];
+        }, $categoryIncome);
+
+        $incomeByCategoryYearSql = "
+            SELECT 
+                YEAR(o.date) as year,
+                c.id,
+                c.name,
+                c.color,
+                COALESCE(SUM(o.amount_minor), 0) as total_minor
+            FROM operations o
+            JOIN categories c ON o.category_id = c.id
+            WHERE o.user_id = ? 
+                AND o.type = 'income'
+                AND c.user_id = ?
+                AND c.type = 'income'
+                AND c.is_archived = FALSE
+            GROUP BY YEAR(o.date), c.id, c.name, c.color
+            ORDER BY year ASC, total_minor DESC
+        ";
+
+        $stmt = $pdo->prepare($incomeByCategoryYearSql);
+        $stmt->execute([$userId, $userId]);
+        $incomeByCategoryYear = $stmt->fetchAll();
+
+        $incomeByCategoryYearData = array_map(function($row) {
+            return [
+                'year' => (string)$row['year'],
+                'categoryId' => $row['id'],
+                'categoryName' => $row['name'],
+                'color' => $row['color'],
+                'totalMinor' => (int)$row['total_minor']
+            ];
+        }, $incomeByCategoryYear);
+
+        $incomeByYearSql = "
+            SELECT 
+                YEAR(o.date) as year,
+                COALESCE(SUM(o.amount_minor), 0) as total_minor
+            FROM operations o
+            WHERE o.user_id = ? 
+                AND o.type = 'income'
+            GROUP BY YEAR(o.date)
+            ORDER BY year ASC
+        ";
+
+        $stmt = $pdo->prepare($incomeByYearSql);
+        $stmt->execute([$userId]);
+        $incomeByYear = $stmt->fetchAll();
+
+        $incomeByYearData = array_map(function($row) {
+            return [
+                'year' => (string)$row['year'],
+                'totalMinor' => (int)$row['total_minor']
+            ];
+        }, $incomeByYear);
+
+        $yearStats = null;
+        if (!empty($incomeByYearData)) {
+            $first = $incomeByYearData[0];
+            $min = $first;
+            $max = $first;
+            $sumMinor = $first['totalMinor'];
+            $count = count($incomeByYearData);
+
+            for ($i = 1; $i < $count; $i++) {
+                $row = $incomeByYearData[$i];
+                $sumMinor += $row['totalMinor'];
+                if ($row['totalMinor'] < $min['totalMinor']) {
+                    $min = $row;
+                }
+                if ($row['totalMinor'] > $max['totalMinor']) {
+                    $max = $row;
+                }
+            }
+
+            $yearStats = [
+                'max' => $max,
+                'min' => $min,
+                'averageMinor' => (int)round($sumMinor / $count)
+            ];
+        }
+
+        sendSuccess([
+            'totalMinor' => $totalIncome,
+            'incomeByCategory' => $categoryIncomeData,
+            'incomeByCategoryYear' => $incomeByCategoryYearData,
+            'incomeByYear' => $incomeByYearData,
+            'yearStats' => $yearStats
+        ]);
+    }
 
     if ($month) {
         if (!validateMonth($month)) {

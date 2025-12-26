@@ -80,7 +80,8 @@ function handleListOperations($operationModel, $userId) {
     }
     
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $pageSize = isset($_GET['pageSize']) ? min((int)$_GET['pageSize'], 100) : 50;
+    // Allow larger pageSize to load all operations for a month (max 10000 for safety)
+    $pageSize = isset($_GET['pageSize']) ? min((int)$_GET['pageSize'], 10000) : 50;
     
     try {
         $result = $operationModel->findAll($userId, $filters, $page, $pageSize);

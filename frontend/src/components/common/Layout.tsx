@@ -22,9 +22,12 @@ export default function Layout({ children }: LayoutProps) {
   const navItems = [
     { path: '/', label: t('nav.home'), icon: 'home' },
     { path: '/operations', label: t('nav.operations'), icon: 'list' },
-    { path: '/categories', label: t('nav.categories'), icon: 'grid' },
     { path: '/analytics', label: t('nav.analytics'), icon: 'chart' },
     { path: '/settings', label: t('nav.settings'), icon: 'settings' },
+  ] as const;
+  const pageTitles = [
+    ...navItems,
+    { path: '/categories', label: t('nav.categories') },
   ] as const;
 
   const handleLogoClick = () => {
@@ -32,7 +35,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   const sectionTitle =
-    navItems.find((item) => item.path === location.pathname)?.label ?? t('common.appName');
+    pageTitles.find((item) => item.path === location.pathname)?.label ?? t('common.appName');
   const displayName = user?.name?.trim();
 
   useEffect(() => {
@@ -98,8 +101,13 @@ export default function Layout({ children }: LayoutProps) {
                       location.pathname === item.path
                         ? 'border-[#d27b30] text-gray-900 dark:text-[#e5e7eb]'
                         : 'border-transparent text-gray-500 dark:text-[#d4d4d8] hover:border-gray-300 hover:text-gray-700 dark:hover:text-[#d4d4d8]'
-                    } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                    } inline-flex items-center gap-2 px-1 pt-1 border-b-2 text-sm font-medium`}
                   >
+                    <MaterialIcon
+                      name={item.icon}
+                      className="h-4 w-4"
+                      variant={location.pathname === item.path ? 'filled' : 'outlined'}
+                    />
                     {item.label}
                   </Link>
                 ))}

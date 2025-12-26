@@ -35,7 +35,7 @@ export default function Dashboard() {
   // Fetch operations
   const { data: operationsData, isLoading: operationsLoading } = useQuery({
     queryKey: ['operations', selectedMonth],
-    queryFn: () => operationsApi.list({ month: selectedMonth, pageSize: 100 }),
+    queryFn: () => operationsApi.list({ month: selectedMonth, pageSize: 10000 }),
   });
 
   const { data: analyticsData, isLoading: analyticsLoading } = useQuery({

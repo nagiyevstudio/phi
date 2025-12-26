@@ -29,15 +29,34 @@
 }
 
 .pf-app-bg {
-  background: linear-gradient(135deg, #fff7ef 0%, #f9f6f2 55%, #f2ece6 100%);
+  background: radial-gradient(
+      900px 520px at 0% 0%,
+      rgba(255, 255, 255, 0.7),
+      transparent 60%
+    ),
+    linear-gradient(135deg, #fffaf6 0%, #f2e9df 55%, #e6dbd1 100%);
 }
 
 .dark .pf-app-bg {
-  background: linear-gradient(135deg, #1b1b1d 0%, #141414 55%, #0e0e0f 100%);
+  background: radial-gradient(
+      900px 520px at 0% 0%,
+      rgba(255, 255, 255, 0.08),
+      transparent 60%
+    ),
+    linear-gradient(135deg, #232327 0%, #18181b 55%, #0f0f12 100%);
 }
 
-.pf-input[type='date'],
-.pf-input[type='datetime-local'] {
+.shadow {
+  box-shadow: 0 10px 24px rgba(17, 12, 6, 0.08);
+}
+
+.dark .shadow {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.pf-input[type="date"],
+.pf-input[type="datetime-local"] {
   max-width: 100%;
 }
 
@@ -65,7 +84,7 @@ body {
 }
 
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Material Symbols Outlined";
   font-weight: 400;
   font-style: normal;
   line-height: 1;
@@ -78,16 +97,16 @@ body {
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  -webkit-font-feature-settings: 'liga';
+  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
 
 .pf-icon-filled {
-  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
 }
 
 .pf-icon-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
 }
 
 #root {
@@ -102,5 +121,3 @@ body {
     background-color: #fffaf6;
   }
 }
-
-
