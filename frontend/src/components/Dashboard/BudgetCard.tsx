@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { formatCurrency } from '../../utils/format';
 import MaterialIcon from '../common/MaterialIcon';
+import HelpModal from '../common/HelpModal';
 import { useI18n } from '../../i18n';
 
 interface BudgetCardProps {
@@ -20,6 +22,8 @@ export default function BudgetCard({
   isLoading,
 }: BudgetCardProps) {
   const { t } = useI18n();
+  const [showHelp, setShowHelp] = useState(false);
+  
   if (isLoading) {
     return (
       <div className="bg-white dark:bg-[#1a1a1a] overflow-hidden shadow rounded-lg">
@@ -56,8 +60,17 @@ export default function BudgetCard({
             </div>
             <div className="ml-5 min-w-0">
               <dl>
-                <dt className="text-sm font-medium text-gray-500 dark:text-[#a3a3a3] truncate">
+                <dt className="text-sm font-medium text-gray-500 dark:text-[#a3a3a3] truncate flex items-center gap-2">
                   {t('budgetCard.title')}
+                  <button
+                    type="button"
+                    onClick={() => setShowHelp(true)}
+                    className="inline-flex h-5 w-5 items-center justify-center rounded-full text-gray-400 hover:text-[#d27b30] hover:bg-[#d27b30]/10 dark:text-[#a3a3a3] dark:hover:text-[#f0b27a] dark:hover:bg-[#d27b30]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+                    aria-label="Помощь"
+                    title="Помощь"
+                  >
+                    <MaterialIcon name="help" className="h-4 w-4" variant="outlined" />
+                  </button>
                 </dt>
                 <dd className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb]">
                   {formatCurrency(planned)}
@@ -65,17 +78,19 @@ export default function BudgetCard({
               </dl>
             </div>
           </div>
-          {onEdit && (
-            <button
-              type="button"
-              onClick={onEdit}
-              className={editButton}
-              aria-label={t('budgetCard.editLabel')}
-              title={t('budgetCard.editLabel')}
-            >
-              <MaterialIcon name="edit" className="h-4 w-4" />
-            </button>
-          )}
+          <div className="flex items-center gap-2">
+            {onEdit && (
+              <button
+                type="button"
+                onClick={onEdit}
+                className={editButton}
+                aria-label={t('budgetCard.editLabel')}
+                title={t('budgetCard.editLabel')}
+              >
+                <MaterialIcon name="edit" className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
         <div className="mt-4">
           <div className="flex justify-between text-sm">
@@ -123,6 +138,7 @@ export default function BudgetCard({
           </div>
         </div>
       </div>
+      <HelpModal helpType="budget" isOpen={showHelp} onClose={() => setShowHelp(false)} />
     </div>
   );
 }

@@ -128,6 +128,7 @@ $routes = [
     'months' => 'api/budget.php',
     'analytics' => 'api/analytics.php',
     'export' => 'api/export.php',
+    'demo-seed' => 'api/demo-seed.php',
 ];
 
 // Handle dynamic routes (e.g., /months/:month/budget, /operations/:id)

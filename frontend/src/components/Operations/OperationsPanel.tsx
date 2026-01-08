@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import MaterialIcon from "../common/MaterialIcon";
+import HelpModal from "../common/HelpModal";
 import OperationsList from "../Dashboard/OperationsList";
 import { Operation } from "../../services/api";
 import { formatCurrency } from "../../utils/format";
@@ -64,6 +65,7 @@ export default function OperationsPanel({
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const activeCategories = useMemo<ActiveCategory[]>(() => {
     const map = new Map<string, ActiveCategory>();
@@ -204,6 +206,15 @@ export default function OperationsPanel({
           >
             <MaterialIcon name="search" className="h-5 w-5" />
           </button>
+          <button
+            type="button"
+            onClick={() => setShowHelp(true)}
+            className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-gray-200 text-gray-400 hover:text-[#d27b30] hover:bg-[#d27b30]/10 dark:border-[#2a2a2a] dark:text-[#a3a3a3] dark:hover:text-[#f0b27a] dark:hover:bg-[#d27b30]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+            aria-label="Помощь"
+            title="Помощь"
+          >
+            <MaterialIcon name="help" className="h-5 w-5" variant="outlined" />
+          </button>
           {onAdd && (
             <button
               onClick={onAdd}
@@ -334,6 +345,7 @@ export default function OperationsPanel({
         onDelete={onDelete}
         isLoading={isLoading}
       />
+      <HelpModal helpType="filters" isOpen={showHelp} onClose={() => setShowHelp(false)} />
     </div>
   );
 }

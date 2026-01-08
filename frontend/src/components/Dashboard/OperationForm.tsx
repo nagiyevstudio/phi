@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Category, CreateOperationRequest } from '../../services/api';
 import MaterialIcon from '../common/MaterialIcon';
+import HelpModal from '../common/HelpModal';
 import { useI18n } from '../../i18n';
 
 // Проверка на iOS Safari
@@ -120,6 +121,7 @@ export default function OperationForm({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isAmountFocused, setIsAmountFocused] = useState(false);
   const [amountInput, setAmountInput] = useState('0');
+  const [showHelp, setShowHelp] = useState(false);
   const previousType = useRef<OperationFormData['type'] | null>(null);
   const actionBase =
     "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
@@ -248,16 +250,26 @@ export default function OperationForm({
   const currentFilteredCategories = categories.filter((cat) => cat.type === selectedType);
   const modalContainerRef = useRef<HTMLDivElement>(null);
 
-  // Исправление для Safari iOS: убираем overflow при фокусе на date input
+  // Исправление для Safari iOS: убираем overflow со всех родителей при фокусе на date input
   const handleDateInputFocus = () => {
-    if (isIOSSafari() && modalContainerRef.current) {
-      modalContainerRef.current.style.overflow = 'visible';
+    if (isIOSSafari()) {
+      // Убираем overflow со всех родительских элементов
+      if (modalContainerRef.current) {
+        modalContainerRef.current.style.overflow = 'visible';
+      }
+      document.body.style.overflow = 'visible';
+      document.documentElement.style.overflow = 'visible';
     }
   };
 
   const handleDateInputBlur = () => {
-    if (isIOSSafari() && modalContainerRef.current) {
-      modalContainerRef.current.style.overflow = 'auto';
+    if (isIOSSafari()) {
+      // Восстанавливаем overflow для всех родителей
+      if (modalContainerRef.current) {
+        modalContainerRef.current.style.overflow = 'auto';
+      }
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
   };
 
@@ -276,9 +288,21 @@ export default function OperationForm({
         >
           <MaterialIcon name="close" className="h-7 w-7" />
         </button>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-[#e5e7eb] mb-6">
-          {operation ? t('operationForm.editTitle') : t('operationForm.addTitle')}
-        </h3>
+        <div className="flex items-center gap-3 mb-6">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-[#e5e7eb]">
+            {operation ? t('operationForm.editTitle') : t('operationForm.addTitle')}
+          </h3>
+          <button
+            type="button"
+            onClick={() => setShowHelp(true)}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:text-[#d27b30] hover:bg-[#d27b30]/10 dark:text-[#a3a3a3] dark:hover:text-[#f0b27a] dark:hover:bg-[#d27b30]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+            aria-label="Помощь"
+            title="Помощь"
+          >
+            <MaterialIcon name="help" className="h-5 w-5" variant="outlined" />
+          </button>
+        </div>
+        <HelpModal helpType="addOperation" isOpen={showHelp} onClose={() => setShowHelp(false)} />
 
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
           <div>

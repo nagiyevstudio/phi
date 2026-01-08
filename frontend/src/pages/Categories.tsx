@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Layout from '../components/common/Layout';
 import MaterialIcon from '../components/common/MaterialIcon';
+import HelpModal from '../components/common/HelpModal';
 import { categoriesApi, Category, CreateCategoryRequest } from '../services/api';
 import { useI18n } from '../i18n';
 
@@ -36,6 +37,7 @@ export default function Categories() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryColor, setNewCategoryColor] = useState('#d27b30');
+  const [showHelp, setShowHelp] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -133,11 +135,22 @@ export default function Categories() {
 
         <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb]">
-              {activeTab === 'expense'
-                ? t('categories.titleExpense')
-                : t('categories.titleIncome')}
-            </h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb]">
+                {activeTab === 'expense'
+                  ? t('categories.titleExpense')
+                  : t('categories.titleIncome')}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowHelp(true)}
+                className="inline-flex h-6 w-6 items-center justify-center rounded-full text-gray-400 hover:text-[#d27b30] hover:bg-[#d27b30]/10 dark:text-[#a3a3a3] dark:hover:text-[#f0b27a] dark:hover:bg-[#d27b30]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+                aria-label="Помощь"
+                title="Помощь"
+              >
+                <MaterialIcon name="help" className="h-4 w-4" variant="outlined" />
+              </button>
+            </div>
             <button
               onClick={() => setShowAddForm(!showAddForm)}
               className={`${showAddForm ? actionNeutral : primaryButton} h-10 w-10 justify-center sm:w-auto sm:px-4`}
@@ -214,6 +227,7 @@ export default function Categories() {
             </div>
           )}
         </div>
+        <HelpModal helpType="categories" isOpen={showHelp} onClose={() => setShowHelp(false)} />
       </div>
     </Layout>
   );

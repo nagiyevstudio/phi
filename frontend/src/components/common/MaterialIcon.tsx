@@ -19,7 +19,9 @@ type MaterialIconName =
   | 'wallet'
   | 'calendar'
   | 'income'
-  | 'expense';
+  | 'expense'
+  | 'help'
+  | 'email';
 
 const ICON_NAME_MAP: Record<MaterialIconName, string> = {
   add: 'add',
@@ -43,6 +45,8 @@ const ICON_NAME_MAP: Record<MaterialIconName, string> = {
   calendar: 'calendar_month',
   income: 'north',
   expense: 'south',
+  help: 'help_outline',
+  email: 'email',
 };
 
 interface MaterialIconProps {

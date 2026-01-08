@@ -21,7 +21,7 @@ const LOCALE_MAP: Record<Language, string> = {
   en: 'en-US',
 };
 
-const translations: Record<Language, Record<string, string>> = {
+const translations: Record<Language, Record<string, string | string[]>> = {
   ru,
   az,
   en,
@@ -64,14 +64,18 @@ const interpolate = (template: string, params?: Record<string, string | number>)
   return template.replace(/\{(\w+)\}/g, (_, key) => String(params[key] ?? ''));
 };
 
-const lookup = (language: Language, key: string) => {
+const lookup = (language: Language, key: string): string => {
   const dict = translations[language];
   if (dict && key in dict) {
-    return dict[key];
+    const value = dict[key];
+    // Если значение - массив, возвращаем ключ (для функции t это ошибка)
+    // Массивы должны обрабатываться отдельно
+    return Array.isArray(value) ? key : String(value);
   }
   const fallback = translations[DEFAULT_LANGUAGE];
   if (fallback && key in fallback) {
-    return fallback[key];
+    const value = fallback[key];
+    return Array.isArray(value) ? key : String(value);
   }
   return key;
 };

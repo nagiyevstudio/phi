@@ -153,9 +153,103 @@
   "settings.sessionTitle": "Sessiya",
   "settings.versionLabel": "Tətbiq versiyası:",
   "settings.versionTitle": "Versiya",
+  "settings.appTagline": "Maliyyə idarəetməsi üçün veb tətbiq",
+  "settings.updateDate": "Yeniləmə tarixi",
   "settings.themeAuto": "Avto",
   "settings.themeDark": "Tünd",
   "settings.themeHint": "Avto - sistemdəki kimi.",
   "settings.themeLight": "Açıq",
-  "settings.themeTitle": "Tema"
+  "settings.themeTitle": "Tema",
+  "help.stepsTitle": "Necə etmək olar:",
+  "help.tipsTitle": "Faydalı məsləhətlər:",
+  "help.addOperation.title": "Əməliyyat necə əlavə etmək olar",
+  "help.addOperation.description": "Əməliyyatların əlavə edilməsi gəlir və xərclərinizi izləməyə imkan verir.",
+  "help.addOperation.steps": [
+    "Əməliyyat növünü seçin: Xərc və ya Gəlir",
+    "Əməliyyat məbləğini daxil edin",
+    "Siyahıdan kateqoriya seçin",
+    "Əməliyyatın tarixini və vaxtını göstərin",
+    "Qeyd əlavə edin (istəyə bağlı)",
+    "\"Yadda saxla\" düyməsini basın"
+  ],
+  "help.addOperation.tips": [
+    "Təklif olunanlardan kateqoriyanı tez seçə bilərsiniz",
+    "Qeydlər məbləğin nəyə xərcləndiyini daha yaxşı başa düşməyə kömək edir",
+    "Əməliyyatlar yaradıldıqdan sonra redaktə edilə və silinə bilər"
+  ],
+  "help.budget.title": "Büdcə ilə necə işləmək olar",
+  "help.budget.description": "Büdcə xərclərinizi nəzarət etməyə və maliyyəni planlaşdırmağa kömək edir.",
+  "help.budget.steps": [
+    "Əsas səhifədə \"Ayın büdcəsi\" kartını tapın",
+    "Redaktə düyməsini (karandaş ikonkası) basın",
+    "Ay üçün büdcə məbləğini daxil edin",
+    "Dəyişiklikləri yadda saxlayın",
+    "Büdcə kartında xərc irəliləyişini izləyin"
+  ],
+  "help.budget.tips": [
+    "Büdcə hər ay üçün ayrıca təyin olunur",
+    "Günlük limit qalan günlərə əsasən avtomatik hesablanır",
+    "Büdcə aşıldıqda kart xəbərdarlıq göstərəcək"
+  ],
+  "help.analytics.title": "Analitikadan necə istifadə etmək olar",
+  "help.analytics.description": "Analitika maliyyə məlumatlarınızı vizuallaşdırmağa və nümunələri tapmağa kömək edir.",
+  "help.analytics.steps": [
+    "\"Analitika\" səhifəsinə keçin",
+    "İstədiyiniz dövrü seçin: Ay, İllər və ya Ümumi",
+    "\"Ay\" nişanında kateqoriyalar və günlər üzrə xərclərə baxın",
+    "\"İllər\" nişanında illər və kateqoriyalar üzrə gəlirləri təhlil edin",
+    "\"Ümumi\" nişanında ümumi gəlir statistikasına baxın",
+    "Məlumatların vizual təhlili üçün qrafiklərdən istifadə edin"
+  ],
+  "help.analytics.tips": [
+    "Daha ətraflı məlumat üçün diaqram elementinə klikləyin",
+    "İllər üzrə gəlir qrafikində konkret kateqoriyaları seçə bilərsiniz",
+    "Analitika ən çox vəsaitin nəyə xərcləndiyini başa düşməyə kömək edir"
+  ],
+  "help.categories.title": "Kateqoriyaları necə idarə etmək olar",
+  "help.categories.description": "Kateqoriyalar əməliyyatlarınızı xərc və gəlir növlərinə görə təşkil etməyə kömək edir.",
+  "help.categories.steps": [
+    "Əməliyyatlar bölməsinə keçin və \"Kateqoriyaları idarə et\" düyməsini basın",
+    "\"Xərclər\" və ya \"Gəlirlər\" nişanını seçin",
+    "Yeni yaratmaq üçün \"Kateqoriya əlavə et\" düyməsini basın",
+    "Kateqoriya adını daxil edin və rəng seçin",
+    "Kateqoriyanı yadda saxlayın",
+    "Redaktə üçün kateqoriyanın yanındakı redaktə ikonkasını basın",
+    "Arxivləşdirmək üçün arxiv ikonkasını basın"
+  ],
+  "help.categories.tips": [
+    "Kateqoriyalar xərclər və gəlirlərə bölünür",
+    "Arxivləşdirilmiş kateqoriyalar silinmir, lakin siyahıdan gizlədilir",
+    "İstifadə olunan kateqoriyaları silmək olmaz, yalnız arxivləşdirmək olar"
+  ],
+  "help.export.title": "Məlumatları necə ixrac etmək olar",
+  "help.export.description": "Məlumatların ixracı maliyyə qeydlərinizi xarici istifadə üçün yadda saxlatmağa imkan verir.",
+  "help.export.steps": [
+    "\"Parametrlər\" bölməsinə keçin",
+    "\"Məlumatların ixracı\" blokunu tapın",
+    "Dövrü seçin: konkret ay və ya \"Bütün məlumatlar\"",
+    "JSON formatında ixrac üçün \"JSON ixracı\" düyməsini basın",
+    "Və ya cədvəl formatında ixrac üçün \"CSV ixracı\" düyməsini basın",
+    "Fayl avtomatik olaraq cihazınıza yüklənəcək"
+  ],
+  "help.export.tips": [
+    "JSON formatı kateqoriyalar və büdcələr daxil olmaqla tam məlumat strukturunu saxlayır",
+    "CSV formatı Excel və ya Google Sheets-də işləmək üçün əlverişlidir",
+    "İxrac məlumatların ehtiyat nüsxəsini yaratmaq üçün istifadə edilə bilər"
+  ],
+  "help.filters.title": "Əməliyyatları necə filtrləmək olar",
+  "help.filters.description": "Filtrlər böyük siyahıdan lazımi əməliyyatları tez tapmağa kömək edir.",
+  "help.filters.steps": [
+    "Əməliyyatlar səhifəsində axtarış/filtr ikonkasını basın",
+    "\"Axtarış\" sahəsinə qeydlər və ya kateqoriya adları üzrə axtarış üçün mətn daxil edin",
+    "Dövrün başlanğıc tarixini göstərmək üçün \"Tarixdən\" istifadə edin",
+    "Dövrün son tarixini göstərmək üçün \"Tarixədək\" istifadə edin",
+    "Tipə görə filtrləmə üçün \"Xərclər\" və \"Gəlirlər\" düymələrindən istifadə edin",
+    "Kateqoriyalara görə filtrləmə üçün siyahıdan kateqoriyaları seçin"
+  ],
+  "help.filters.tips": [
+    "Bütün filtrləri daha dəqiq axtarış üçün birləşdirə bilərsiniz",
+    "Axtarış qeydlər və kateqoriya adları üzrə işləyir",
+    "Axtarış sahələrini təmizləmək və kateqoriya seçimini ləğv etməklə filtrləri sıfırlaya bilərsiniz"
+  ]
 }

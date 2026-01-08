@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHI Demo Account Seeder</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .checkbox-group input {
+            width: auto;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PHI Demo Account Seeder</h1>
+        
+        <div class="info">
+            <strong>Внимание:</strong> Этот скрипт создаст демо-аккаунт с тестовыми данными. 
+            Убедитесь, что вы установили секретный ключ в переменной окружения <code>DEMO_SEED_SECRET</code>.
+        </div>
+        
+        <form id="seedForm">
+            <div class="form-group">
+                <label for="secret">Секретный ключ:</label>
+                <input type="password" id="secret" name="secret" required 
+                       placeholder="Введите секретный ключ">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="demo@phi.local" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" value="demo123456" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Имя:</label>
+                <input type="text" id="name" name="name" value="Demo User">
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="force" name="force">
+                    <label for="force">Пересоздать существующий аккаунт (force)</label>
+                </div>
+            </div>
+            
+            <button type="submit" id="submitBtn">Создать демо-аккаунт</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+    </div>
+    
+    <script>
+        document.getElementById('seedForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const resultDiv = document.getElementById('result');
+            const formData = new FormData(e.target);
+            
+            const data = {
+                secret: formData.get('secret'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                name: formData.get('name'),
+                force: formData.get('force') === 'on'
+            };
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Создание...';
+            resultDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/demo-seed', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                resultDiv.style.display = 'block';
+                
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>Успешно!</strong> Демо-аккаунт создан.
+                        <div class="output">${result.data.output || ''}</div>
+                        <div style="margin-top: 10px;">
+                            <strong>Статистика:</strong><br>
+                            Email: ${result.data.statistics.email}<br>
+                            Пароль: ${result.data.statistics.password}<br>
+                            Категории расходов: ${result.data.statistics.expenseCategories}<br>
+                            Категории доходов: ${result.data.statistics.incomeCategories}<br>
+                            Операции доходов: ${result.data.statistics.incomeOperations}<br>
+                            Операции расходов: ${result.data.statistics.expenseOperations}<br>
+                            Месячные бюджеты: ${result.data.statistics.monthlyBudgets}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `<strong>Ошибка:</strong> ${result.message || 'Неизвестная ошибка'}`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `<strong>Ошибка:</strong> ${error.message}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Создать демо-аккаунт';
+            }
+        });
+    </script>
+</body>
+</html>
+

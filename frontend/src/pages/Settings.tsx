@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import Layout from '../components/common/Layout';
 import MaterialIcon from '../components/common/MaterialIcon';
+import HelpModal from '../components/common/HelpModal';
 import { useAuth } from '../store/auth';
 import { authApi, exportApi } from '../services/api';
 import { getCurrentMonth } from '../utils/format';
 import { applyTheme, getStoredTheme, setStoredTheme, type ThemePreference } from '../utils/theme';
 import { useI18n } from '../i18n';
+import logoUrl from '../assets/logo.png';
 
 // Проверка на iOS Safari
 const isIOSSafari = () => {
@@ -22,6 +24,7 @@ export default function Settings() {
   const [isExporting, setIsExporting] = useState(false);
   const [exportAll, setExportAll] = useState(false);
   const [themePreference, setThemePreference] = useState<ThemePreference>(getStoredTheme());
+  const [showExportHelp, setShowExportHelp] = useState(false);
   const appVersion = __APP_VERSION__ || '-';
 
   useEffect(() => {
@@ -84,16 +87,20 @@ export default function Settings() {
     }
   };
 
-  // Исправление для Safari iOS: убираем overflow с body при фокусе на date input
+  // Исправление для Safari iOS: убираем overflow со всех родителей при фокусе на date input
   const handleMonthInputFocus = () => {
     if (isIOSSafari()) {
+      // Убираем overflow со всех родительских элементов
       document.body.style.overflow = 'visible';
+      document.documentElement.style.overflow = 'visible';
     }
   };
 
   const handleMonthInputBlur = () => {
     if (isIOSSafari()) {
+      // Восстанавливаем overflow для всех родителей
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
   };
 
@@ -142,7 +149,17 @@ export default function Settings() {
                 <MaterialIcon name="archive" className="h-4 w-4" />
               </span>
               <h2 className={cardTitle}>{t('settings.exportTitle')}</h2>
+              <button
+                type="button"
+                onClick={() => setShowExportHelp(true)}
+                className="inline-flex h-6 w-6 items-center justify-center rounded-full text-gray-400 hover:text-[#d27b30] hover:bg-[#d27b30]/10 dark:text-[#a3a3a3] dark:hover:text-[#f0b27a] dark:hover:bg-[#d27b30]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+                aria-label="Помощь"
+                title="Помощь"
+              >
+                <MaterialIcon name="help" className="h-4 w-4" variant="outlined" />
+              </button>
             </div>
+            <HelpModal helpType="export" isOpen={showExportHelp} onClose={() => setShowExportHelp(false)} />
             <div className="space-y-4">
               <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-[#d4d4d8]">
                 <input
@@ -291,15 +308,30 @@ export default function Settings() {
 
           <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
             <div className="flex items-center gap-2 mb-4">
-              <span className={cardIcon}>
-                <MaterialIcon name="check" className="h-4 w-4" />
-              </span>
-              <h2 className={cardTitle}>{t('settings.versionTitle')}</h2>
+              <img src={logoUrl} alt={t('common.appName')} className="h-8 w-auto" />
+              <h2 className={cardTitle}>{t('common.appName')}</h2>
             </div>
-            <p className="text-sm text-gray-600 dark:text-[#a3a3a3]">
-              {t('settings.versionLabel')}{' '}
-              <span className="font-medium">{appVersion}</span>
-            </p>
+            <div className="space-y-3">
+              <div className="text-xs text-gray-500 dark:text-[#a3a3a3]">
+                {t('settings.appTagline')}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-[#a3a3a3]">
+                {t('settings.versionLabel')}{' '}
+                <span className="font-medium">{appVersion}</span>
+              </div>
+              <div className="text-xs text-gray-500 dark:text-[#a3a3a3]">
+                {t('settings.updateDate')}: 2025-12-27
+              </div>
+              <div className="pt-2">
+                <a
+                  href="mailto:faik@nagiyev.com"
+                  className="inline-flex items-center gap-2 text-sm text-[#d27b30] hover:text-[#b56726] dark:text-[#f0b27a] dark:hover:text-[#d27b30] transition-colors"
+                >
+                  <MaterialIcon name="email" className="h-4 w-4" />
+                  <span>faik@nagiyev.com</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

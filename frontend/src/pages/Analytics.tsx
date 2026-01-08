@@ -19,6 +19,7 @@ import {
 } from "recharts";
 import Layout from "../components/common/Layout";
 import MaterialIcon from "../components/common/MaterialIcon";
+import HelpModal from "../components/common/HelpModal";
 import MonthSelector from "../components/Dashboard/MonthSelector";
 import AnalyticsTotals from "../components/Analytics/AnalyticsTotals";
 import { analyticsApi, budgetApi } from "../services/api";
@@ -88,6 +89,7 @@ export default function Analytics() {
   const [activeTab, setActiveTab] = useState<"month" | "year" | "overall">(
     "month"
   );
+  const [showHelp, setShowHelp] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
   const [selectedYear, setSelectedYear] = useState(
     () => selectedMonth.split("-")[0]
@@ -390,7 +392,7 @@ export default function Analytics() {
   return (
     <Layout>
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-wrap gap-2">
+        <div className="mb-6 flex flex-wrap items-center gap-2">
           {tabOptions.map((tab) => {
             const isActive = tab.value === activeTab;
             return (
@@ -410,7 +412,17 @@ export default function Analytics() {
               </button>
             );
           })}
+          <button
+            type="button"
+            onClick={() => setShowHelp(true)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:text-[#d27b30] hover:bg-[#d27b30]/10 dark:border-[#2a2a2a] dark:text-[#a3a3a3] dark:hover:text-[#f0b27a] dark:hover:bg-[#d27b30]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
+            aria-label="Помощь"
+            title="Помощь"
+          >
+            <MaterialIcon name="help" className="h-5 w-5" variant="outlined" />
+          </button>
         </div>
+        <HelpModal helpType="analytics" isOpen={showHelp} onClose={() => setShowHelp(false)} />
 
         {isMonthTab && (
           <>

@@ -153,9 +153,103 @@
   "settings.sessionTitle": "Session",
   "settings.versionLabel": "App version:",
   "settings.versionTitle": "Version",
+  "settings.appTagline": "Web application for financial management",
+  "settings.updateDate": "Update date",
   "settings.themeAuto": "Auto",
   "settings.themeDark": "Dark",
   "settings.themeHint": "Auto - follow system.",
   "settings.themeLight": "Light",
-  "settings.themeTitle": "Theme"
+  "settings.themeTitle": "Theme",
+  "help.stepsTitle": "How to do it:",
+  "help.tipsTitle": "Tips:",
+  "help.addOperation.title": "How to add an operation",
+  "help.addOperation.description": "Adding operations allows you to track your income and expenses.",
+  "help.addOperation.steps": [
+    "Select the operation type: Expense or Income",
+    "Enter the operation amount",
+    "Select a category from the list",
+    "Specify the date and time of the operation",
+    "Add a note (optional)",
+    "Click the \"Save\" button"
+  ],
+  "help.addOperation.tips": [
+    "You can quickly select a category from suggestions",
+    "Notes help better understand what the amount was spent on",
+    "Operations can be edited and deleted after creation"
+  ],
+  "help.budget.title": "How to work with budget",
+  "help.budget.description": "Budget helps control your expenses and plan finances.",
+  "help.budget.steps": [
+    "On the home page, find the \"Monthly Budget\" card",
+    "Click the edit button (pencil icon)",
+    "Enter the monthly budget amount",
+    "Save changes",
+    "Track expense progress in the budget card"
+  ],
+  "help.budget.tips": [
+    "Budget is set separately for each month",
+    "Daily limit is calculated automatically based on remaining days",
+    "When budget is exceeded, the card will show a warning"
+  ],
+  "help.analytics.title": "How to use analytics",
+  "help.analytics.description": "Analytics helps visualize your financial data and find patterns.",
+  "help.analytics.steps": [
+    "Go to the \"Analytics\" page",
+    "Select the desired period: Month, Years, or Overall",
+    "On the \"Month\" tab, view expenses by category and by day",
+    "On the \"Years\" tab, analyze income by years and categories",
+    "On the \"Overall\" tab, view overall income statistics",
+    "Use charts for visual data analysis"
+  ],
+  "help.analytics.tips": [
+    "Click on a chart element for more detailed information",
+    "On the income by years chart, you can select specific categories",
+    "Analytics helps understand where most money is spent"
+  ],
+  "help.categories.title": "How to manage categories",
+  "help.categories.description": "Categories help organize your operations by types of expenses and income.",
+  "help.categories.steps": [
+    "Go to operations section and click \"Manage categories\"",
+    "Select \"Expenses\" or \"Income\" tab",
+    "Click \"Add category\" to create a new one",
+    "Enter category name and select color",
+    "Save the category",
+    "To edit, click the edit icon next to the category",
+    "To archive, click the archive icon"
+  ],
+  "help.categories.tips": [
+    "Categories are divided into expenses and income",
+    "Archived categories are not deleted but hidden from the list",
+    "Categories in use cannot be deleted, only archived"
+  ],
+  "help.export.title": "How to export data",
+  "help.export.description": "Data export allows you to save your financial records for external use.",
+  "help.export.steps": [
+    "Go to \"Settings\" section",
+    "Find the \"Data export\" block",
+    "Select period: specific month or \"All data\"",
+    "Click \"Export JSON\" to export in JSON format",
+    "Or click \"Export CSV\" to export in table format",
+    "The file will automatically download to your device"
+  ],
+  "help.export.tips": [
+    "JSON format preserves the full data structure, including categories and budgets",
+    "CSV format is convenient for working in Excel or Google Sheets",
+    "Export can be used for data backup"
+  ],
+  "help.filters.title": "How to filter operations",
+  "help.filters.description": "Filters help quickly find needed operations from a large list.",
+  "help.filters.steps": [
+    "On the operations page, click the search/filters icon",
+    "In the \"Search\" field, enter text to search by notes or category names",
+    "Use \"From date\" to specify the start date of the period",
+    "Use \"To date\" to specify the end date of the period",
+    "Use \"Expenses\" and \"Income\" buttons to filter by type",
+    "Select categories from the list to filter by categories"
+  ],
+  "help.filters.tips": [
+    "All filters can be combined for more precise search",
+    "Search works on notes and category names",
+    "Filters can be reset by clearing search fields and deselecting categories"
+  ]
 }
