@@ -56,6 +56,20 @@ try {
 
   const ftpDeploy = new FtpDeploy();
   
+  const baseExclude = [
+    '.git/**',
+    '.gitignore',
+    '.DS_Store',
+    'node_modules/**',
+    'vendor/**',
+    '.env',
+    'deploy.js',
+    'ftp-config.example.json',
+    'config-example.txt',
+    'error.log',
+    'test-connection.php',
+  ];
+
   const deployConfig = {
     user: config.user,
     password: config.password,
@@ -64,7 +78,7 @@ try {
     localRoot: path.resolve(__dirname, config.localRoot || '.'),
     remoteRoot: config.remoteRoot || '/',
     include: config.include || ['*', '**/*'],
-    exclude: config.exclude || ['.git/**', '.gitignore', '.DS_Store', 'node_modules/**'],
+    exclude: Array.from(new Set([...baseExclude, ...(config.exclude || [])])),
     deleteRemote: config.deleteRemote || false,
     forcePasv: config.forcePasv !== false,
     sftp: config.sftp || false,
@@ -96,4 +110,3 @@ try {
   console.error('❌ Error reading FTP config:', error);
   process.exit(1);
 }
-

@@ -167,6 +167,7 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
+  name?: string | null;
   email: string;
   password: string;
   confirmPassword: string;

@@ -185,6 +185,9 @@ npm run deploy:backend
 - `.DS_Store`
 - `node_modules/**`
 - `vendor/**`
+- `.env`
+- `deploy.js`
+- `ftp-config.example.json`
 - `error.log`
 - `test-connection.php`
 - `config-example.txt`
