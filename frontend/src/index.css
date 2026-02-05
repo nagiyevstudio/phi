@@ -63,6 +63,15 @@
 
 /* Исправление для Safari iOS: date picker выходит за границы модалки */
 /* Решение реализовано через JavaScript в компонентах OperationForm и Settings */
+/* Дополнительно: фикс для iOS Safari, чтобы не было авто-зума и выхода за рамки */
+@supports (-webkit-touch-callout: none) {
+  .pf-input[type="date"],
+  .pf-input[type="datetime-local"],
+  .pf-input[type="month"] {
+    font-size: 16px;
+    line-height: 1.25;
+  }
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
