@@ -7,6 +7,9 @@ import { vitePluginFtp } from './vite-plugin-ftp'
 // Читаем версию из package.json
 const packageJson = JSON.parse(readFileSync(path.resolve(__dirname, 'package.json'), 'utf-8'))
 const appVersion = packageJson.version || '1.0.0'
+const buildsContent = readFileSync(path.resolve(__dirname, '../BUILDS.txt'), 'utf-8')
+const releaseDateMatch = buildsContent.match(/^- Date:\s*(.+)$/m)
+const appReleaseDate = releaseDateMatch?.[1]?.trim() || 'unknown'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +20,7 @@ export default defineConfig({
   ],
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
+    __APP_RELEASE_DATE__: JSON.stringify(appReleaseDate),
   },
   resolve: {
     alias: {
@@ -50,4 +54,3 @@ export default defineConfig({
     },
   },
 })
-

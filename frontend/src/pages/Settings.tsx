@@ -27,6 +27,7 @@ export default function Settings() {
   const [themePreference, setThemePreference] = useState<ThemePreference>(getStoredTheme());
   const [showExportHelp, setShowExportHelp] = useState(false);
   const appVersion = __APP_VERSION__ || '-';
+  const appReleaseDate = __APP_RELEASE_DATE__ || '-';
 
   useEffect(() => {
     setStoredTheme(themePreference);
@@ -321,7 +322,7 @@ export default function Settings() {
                 <span className="font-medium">{appVersion}</span>
               </div>
               <div className="text-xs text-gray-500 dark:text-[#a3a3a3]">
-                {t('settings.updateDate')}: 2025-12-27
+                {t('settings.updateDate')}: {appReleaseDate}
               </div>
               <div className="pt-2">
                 <a
@@ -339,5 +340,4 @@ export default function Settings() {
     </Layout>
   );
 }
-
 

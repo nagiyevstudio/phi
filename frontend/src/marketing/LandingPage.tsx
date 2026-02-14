@@ -129,7 +129,7 @@ export default function LandingPage() {
 
           <div className="pf-landing-card p-4 sm:p-6">
             <img
-              src="/assets/landing/hero-dashboard-placeholder.svg"
+              src="/assets/landing/hero-dashboard-placeholder.jpg"
               alt={`${t('landing.screenshots.placeholderPrefix')} ${t('landing.shot.dashboard.title')}`}
               className="pf-landing-shot w-full"
               loading="lazy"
@@ -139,8 +139,7 @@ export default function LandingPage() {
                 {t('landing.hero.placeholder.ready')}
               </p>
               <p className="mt-2 text-sm text-[#4f392b] dark:text-[#d6c9bf]">
-                {t('landing.hero.placeholder.replacement')}{' '}
-                <code>frontend/public/assets/landing/hero-dashboard-placeholder.svg</code>
+                {t('landing.hero.placeholder.replacement')}
               </p>
             </div>
           </div>
@@ -200,8 +199,8 @@ export default function LandingPage() {
                 <p className="mt-2 text-sm leading-relaxed text-[#4f392b] dark:text-[#d6c9bf]">
                   {shot.description}
                 </p>
-                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#9a673d] dark:text-[#d9b08b]">
-                  {t('landing.screenshots.replaceWith')} {shot.replacementFile}
+                <p className="mt-3 text-xs font-semibold text-[#9a673d] dark:text-[#d9b08b]">
+                  {shot.subtitle}
                 </p>
               </article>
             ))}

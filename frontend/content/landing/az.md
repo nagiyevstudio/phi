@@ -18,8 +18,8 @@
 | landing.hero.stats.access.value | Moderasiya olunan qeydiyyat |
 | landing.hero.stats.next.label | Növbəti mərhələ |
 | landing.hero.stats.next.value | Abunəlik və rollar |
-| landing.hero.placeholder.ready | Placeholder hazırdır |
-| landing.hero.placeholder.replacement | Əvəzləmə faylı: |
+| landing.hero.placeholder.ready | Panel önizləməsi |
+| landing.hero.placeholder.replacement | Büdcə statusu, gündəlik limit və aylıq dinamikanın bir ekranda icmalı. |
 | landing.features.kicker | Əsas dəyər |
 | landing.features.title | Əsas imkanlar |
 | landing.workflow.kicker | Necə işləyir |
@@ -56,16 +56,21 @@
 | landing.workflow.step2.description | Sistem büdcə statusunu, gündəlik limiti və ayın gözlənilən nəticəsini daxili olaraq yeniləyir. |
 | landing.workflow.step3.title | 3. Gündəlik nəzərdən keçirmə |
 | landing.workflow.step3.description | Nəticələri panel və analitika bölməsində izləyin, aylıq planınızı tənzimləyin. |
-| landing.shot.dashboard.title | Aylıq panel |
-| landing.shot.dashboard.description | Büdcə statusu, gündəlik limit və gəlir/xərc cəmi olan əsas ekran. |
-| landing.shot.analytics.title | Xərclərin analitikası |
-| landing.shot.analytics.description | Kateqoriya bölgüsü və gündəlik xərc dinamikası. |
-| landing.shot.operations.title | Əməliyyat siyahısı |
-| landing.shot.operations.description | Sürətli əlavə etmə, redaktə və filtrləmə ilə tranzaksiyaların siyahısı. |
-| landing.shot.mobile.title | Mobil görünüş |
-| landing.shot.mobile.description | Gündəlik istifadə üçün uyğunlaşdırılmış mobil interfeys. |
-| landing.shot.access.title | Giriş müraciəti |
-| landing.shot.access.description | Moderasiya və manual təsdiq üçün müraciət forması ekranı. |
+| landing.shot.dashboard.title | Büdcə nəzarət paneli |
+| landing.shot.dashboard.description | Aylıq büdcə statusu, gündəlik limit və əsas yekunları göstərən ümumi panel. |
+| landing.shot.dashboard.subtitle | Hər gün üçün vahid nəzarət nöqtəsi. |
+| landing.shot.analytics.title | Xərc trendləri və kateqoriyalar |
+| landing.shot.analytics.description | Günlər üzrə dinamika, kateqoriya bölgüsü və dövrlərin müqayisəsi bir ekranda. |
+| landing.shot.analytics.subtitle | Artıq xərcləməni erkən görün. |
+| landing.shot.operations.title | Əməliyyat axını |
+| landing.shot.operations.description | Sürətli əlavə, redaktə və filtrləmə ilə gəlir/xərc əməliyyatlarının strukturlaşdırılmış lenti. |
+| landing.shot.operations.subtitle | Cədvəl xaosu olmadan gündəlik uçot. |
+| landing.shot.mobile.title | Mobil gündəlik baxış |
+| landing.shot.mobile.description | Yolda olarkən nəzarət üçün əsas kartlar və son aktivliklə kompakt mobil görünüş. |
+| landing.shot.mobile.subtitle | Limitləri və aktivliyi bir dəqiqəyə yoxlayın. |
+| landing.shot.access.title | Giriş müraciəti prosesi |
+| landing.shot.access.description | Konteksti toplayan və manual təsdiqi dəstəkləyən moderasiya forması. |
+| landing.shot.access.subtitle | Açıq qeydiyyat əvəzinə idarə olunan giriş. |
 | access.meta.title | Giriş Müraciəti · PHI |
 | access.brand | PHI |
 | access.kicker | Moderasiya olunan qeydiyyat |

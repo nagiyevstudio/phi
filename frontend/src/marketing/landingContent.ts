@@ -12,7 +12,7 @@ export interface ScreenshotPlaceholder {
   title: string;
   description: string;
   image: string;
-  replacementFile: string;
+  subtitle: string;
 }
 
 type Translate = (key: string, params?: Record<string, string | number>) => string;
@@ -51,31 +51,31 @@ export const getScreenshotPlaceholders = (t: Translate): ScreenshotPlaceholder[]
   {
     title: t('landing.shot.dashboard.title'),
     description: t('landing.shot.dashboard.description'),
-    image: '/assets/landing/hero-dashboard-placeholder.svg',
-    replacementFile: 'hero-dashboard.png',
+    image: '/assets/landing/hero-dashboard-placeholder.jpg',
+    subtitle: t('landing.shot.dashboard.subtitle'),
   },
   {
     title: t('landing.shot.analytics.title'),
     description: t('landing.shot.analytics.description'),
-    image: '/assets/landing/expenses-analytics-placeholder.svg',
-    replacementFile: 'expenses-analytics.png',
+    image: '/assets/landing/expenses-analytics-placeholder.jpg',
+    subtitle: t('landing.shot.analytics.subtitle'),
   },
   {
     title: t('landing.shot.operations.title'),
     description: t('landing.shot.operations.description'),
-    image: '/assets/landing/operations-flow-placeholder.svg',
-    replacementFile: 'operations-flow.png',
+    image: '/assets/landing/operations-flow-placeholder.jpg',
+    subtitle: t('landing.shot.operations.subtitle'),
   },
   {
     title: t('landing.shot.mobile.title'),
     description: t('landing.shot.mobile.description'),
-    image: '/assets/landing/mobile-view-placeholder.svg',
-    replacementFile: 'mobile-view.png',
+    image: '/assets/landing/mobile-view-placeholder.jpg',
+    subtitle: t('landing.shot.mobile.subtitle'),
   },
   {
     title: t('landing.shot.access.title'),
     description: t('landing.shot.access.description'),
-    image: '/assets/landing/access-request-placeholder.svg',
-    replacementFile: 'access-request.png',
+    image: '/assets/landing/access-request-placeholder.jpg',
+    subtitle: t('landing.shot.access.subtitle'),
   },
 ];

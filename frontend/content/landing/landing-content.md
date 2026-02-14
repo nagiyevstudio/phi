@@ -54,18 +54,18 @@ Core goals:
 
 ## 4. Image placeholders and replacement map
 All placeholders are already created and connected on the landing:
-- `frontend/public/assets/landing/hero-dashboard-placeholder.svg`
-- `frontend/public/assets/landing/expenses-analytics-placeholder.svg`
-- `frontend/public/assets/landing/operations-flow-placeholder.svg`
-- `frontend/public/assets/landing/mobile-view-placeholder.svg`
-- `frontend/public/assets/landing/access-request-placeholder.svg`
+- `frontend/public/assets/landing/hero-dashboard-placeholder.jpg`
+- `frontend/public/assets/landing/expenses-analytics-placeholder.jpg`
+- `frontend/public/assets/landing/operations-flow-placeholder.jpg`
+- `frontend/public/assets/landing/mobile-view-placeholder.jpg`
+- `frontend/public/assets/landing/access-request-placeholder.jpg`
 
 Recommended final filenames:
-- `hero-dashboard.png`
-- `expenses-analytics.png`
-- `operations-flow.png`
-- `mobile-view.png`
-- `access-request.png`
+- `hero-dashboard.jpg`
+- `expenses-analytics.jpg`
+- `operations-flow.jpg`
+- `mobile-view.jpg`
+- `access-request.jpg`
 
 ## 5. Detailed image briefs (for generation/shooting)
 

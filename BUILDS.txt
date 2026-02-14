@@ -7,6 +7,15 @@ Series: 1.0.x
 - If a release includes multiple tasks, increase the patch version by the total count of tasks.
 - Example: 5 tasks in one release => patch version +5.
 
+## 1.0.040
+- Date: 2026-02-14
+- Status: released
+- Changes:
+  1. feat: add HelpModal component and integrate it into Analytics, Categories, and Settings pages
+  2. feat: remove demo account seeder and related files
+  3. Fix iOS date input sizing
+  4. feat: Implement access request feature and update routing
+  5. feat: localize landing in 3 languages and enable manual deploy workflow
 ## 1.0.035
 - Date: 2025-12-27
 - Status: released

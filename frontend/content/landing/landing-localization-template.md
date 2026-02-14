@@ -33,8 +33,8 @@ Fill `ru` and `az` columns (you can also adjust `en`), then send the file back.
 | landing.hero.stats.access.value | Moderated onboarding |  |  |
 | landing.hero.stats.next.label | Next step |  |  |
 | landing.hero.stats.next.value | Subscription & roles |  |  |
-| landing.hero.placeholder.ready | Placeholder ready |  |  |
-| landing.hero.placeholder.replacement | Replacement file: |  |  |
+| landing.hero.placeholder.ready | Dashboard preview |  |  |
+| landing.hero.placeholder.replacement | Overview with budget status, daily limit, and monthly trajectory at a glance. |  |  |
 | landing.features.kicker | Core value |  |  |
 | landing.features.title | Core capabilities |  |  |
 | landing.workflow.kicker | How it works |  |  |
@@ -86,16 +86,21 @@ Fill `ru` and `az` columns (you can also adjust `en`), then send the file back.
 
 | key | en | ru | az |
 |---|---|---|---|
-| landing.shot.dashboard.title | Monthly dashboard |  |  |
-| landing.shot.dashboard.description | Main screen with budget status, daily limit, and income/expense totals. |  |  |
-| landing.shot.analytics.title | Expense analytics |  |  |
-| landing.shot.analytics.description | Category breakdown and day-by-day spending dynamics. |  |  |
-| landing.shot.operations.title | Operations feed |  |  |
-| landing.shot.operations.description | Transaction list with fast add, edit, and filtering. |  |  |
-| landing.shot.mobile.title | Mobile view |  |  |
-| landing.shot.mobile.description | Responsive mobile interface for daily use on the go. |  |  |
-| landing.shot.access.title | Access request |  |  |
-| landing.shot.access.description | Request form screen for moderated onboarding and manual approval. |  |  |
+| landing.shot.dashboard.title | Budget control cockpit |  |  |
+| landing.shot.dashboard.description | High-level dashboard with monthly budget status, daily spend allowance, and key totals. |  |  |
+| landing.shot.dashboard.subtitle | Start each day from a single control view. |  |  |
+| landing.shot.analytics.title | Spending trends and categories |  |  |
+| landing.shot.analytics.description | See where money goes with daily trends, category split, and period comparison. |  |  |
+| landing.shot.analytics.subtitle | Spot overspending early and adjust faster. |  |  |
+| landing.shot.operations.title | Transaction operations flow |  |  |
+| landing.shot.operations.description | Structured feed of expenses and income with quick add, edit, and filtering tools. |  |  |
+| landing.shot.operations.subtitle | Daily bookkeeping without spreadsheet friction. |  |  |
+| landing.shot.mobile.title | Mobile daily check-in |  |  |
+| landing.shot.mobile.description | Compact mobile layout with key cards and latest activity for on-the-go control. |  |  |
+| landing.shot.mobile.subtitle | Review limits and activity in under a minute. |  |  |
+| landing.shot.access.title | Access request workflow |  |  |
+| landing.shot.access.description | Moderated onboarding form that captures context and supports manual approval. |  |  |
+| landing.shot.access.subtitle | Controlled access instead of open signup. |  |  |
 
 ---
 
@@ -121,4 +126,3 @@ Fill `ru` and `az` columns (you can also adjust `en`), then send the file back.
 | access.form.submit | Submit request |  |  |
 | access.form.hasAccess | I already have access |  |  |
 | access.footer.note | MVP mode: requests are currently saved in browser storage. Next step: move to server-side queue with `pending / approved / rejected` statuses. |  |  |
-
