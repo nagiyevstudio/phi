@@ -14,7 +14,7 @@ interface I18nContextValue {
 }
 
 const STORAGE_KEY = 'pf-language';
-const DEFAULT_LANGUAGE: Language = 'ru';
+const DEFAULT_LANGUAGE: Language = 'en';
 const LOCALE_MAP: Record<Language, string> = {
   ru: 'ru-RU',
   az: 'az-AZ',

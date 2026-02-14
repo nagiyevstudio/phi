@@ -1,66 +1,66 @@
-# Perfinance Landing Blueprint
+# PHI Landing Blueprint
 
 ## 1. Goal
-Публичная главная страница теперь работает как презентация проекта для портфолио.
-Главные задачи:
-- Показать ценность продукта через понятные блоки и визуалы.
-- Убрать открытую регистрацию с первого экрана.
-- Перенести рабочее приложение под путь `/app`.
-- Оставить вход через `Login` и добавить страницу заявки на доступ.
+The public home page now acts as a portfolio-style product presentation.
+Core goals:
+- Show product value through clear sections and visuals.
+- Remove open signup from the primary flow.
+- Move the working app to `/app`.
+- Keep `Login` for approved users and add an access request flow.
 
 ## 2. Routing plan
-- `/` - лендинг.
-- `/app` - дашборд приложения (приватный доступ).
-- `/app/operations`, `/app/categories`, `/app/analytics`, `/app/settings` - внутренние страницы.
-- `/login` - вход для одобренных пользователей.
-- `/access-request` - форма заявки на доступ.
-- `/register` - legacy-редирект на `/access-request`.
+- `/` - landing page.
+- `/app` - app dashboard (private access).
+- `/app/operations`, `/app/categories`, `/app/analytics`, `/app/settings` - internal app pages.
+- `/login` - login for approved users.
+- `/access-request` - access request form.
+- `/register` - legacy redirect to `/access-request`.
 
 ## 3. Landing copy (ready)
 
 ### Hero
 - Kicker: `Portfolio landing / Product showcase`
-- H1: `Финансовый центр управления для дисциплины, а не для отчётности ради отчётности`
-- Paragraph: `Perfinance помогает контролировать бюджет в ежедневном режиме: лимиты, операции, аналитика и прогнозы в одном интерфейсе.`
-- CTA 1: `Оставить заявку`
-- CTA 2: `Открыть приложение`
+- H1: `Financial control center built for discipline, not reporting for the sake of reporting`
+- Paragraph: `PHI helps you control budget execution day by day: limits, transactions, analytics, and forecasts in one interface.`
+- CTA 1: `Submit request`
+- CTA 2: `Open app`
 
 ### Value cards
-1. `Операции без хаоса`
-2. `Реальный контроль бюджета`
-3. `Аналитика для решений`
+1. `Operations without chaos`
+2. `Real budget control`
+3. `Analytics for decisions`
 
 ### Workflow
-1. `Фиксация операций`
-2. `Автопересчёт лимитов`
-3. `Ежедневный разбор`
+1. `Capture transactions`
+2. `Auto-recalculate limits`
+3. `Daily review`
 
 ### Access roadmap
-- MVP сейчас:
-  - `Только Login для уже одобренных пользователей`
-  - `Отдельная форма Запросить доступ`
-  - `Ручная модерация заявок`
-- Следующая итерация:
-  - `Статусы pending/approved/rejected`
-  - `Подписка и тарифы`
-  - `Ролевая модель и self-service onboarding`
+- MVP now:
+  - `Login only for approved users`
+  - `Dedicated Request access form`
+  - `Manual moderation and provisioning`
+- Next iteration:
+  - `Statuses: pending / approved / rejected`
+  - `Subscription plans and limits`
+  - `Role model and self-service onboarding`
 
 ### Final CTA
-- Title: `Хочешь протестировать проект или посмотреть демо под твою задачу?`
-- Text: `Оставь заявку, опиши контекст использования и ожидаемый результат. После модерации открою доступ и помогу с настройкой.`
+- Title: `Want to test the product or see a demo for your workflow?`
+- Text: `Submit a request with your context and expected outcome. After review, access can be approved and configured manually.`
 - Buttons:
-  - `Отправить заявку`
-  - `Перейти к логину`
+  - `Submit request`
+  - `Go to login`
 
 ## 4. Image placeholders and replacement map
-Все плейсхолдеры уже созданы и подключены на лендинге:
+All placeholders are already created and connected on the landing:
 - `frontend/public/assets/landing/hero-dashboard-placeholder.svg`
 - `frontend/public/assets/landing/expenses-analytics-placeholder.svg`
 - `frontend/public/assets/landing/operations-flow-placeholder.svg`
 - `frontend/public/assets/landing/mobile-view-placeholder.svg`
 - `frontend/public/assets/landing/access-request-placeholder.svg`
 
-Рекомендованные финальные имена файлов:
+Recommended final filenames:
 - `hero-dashboard.png`
 - `expenses-analytics.png`
 - `operations-flow.png`
@@ -70,40 +70,40 @@
 ## 5. Detailed image briefs (for generation/shooting)
 
 ### Image 1 - Hero dashboard
-- Purpose: главный визуал в первом экране.
-- Format: 16:10, desktop web app screenshot.
-- Scene: overview dashboard с тремя KPI-карточками (budget, daily limit, monthly totals), блок с краткой аналитикой, список последних операций.
+- Purpose: key visual in the first fold.
+- Format: 16:10 desktop screenshot.
+- Scene: dashboard overview with three KPI cards (budget, daily limit, monthly totals), summary analytics, and recent transactions list.
 - Mood: clean, premium, calm, warm-neutral.
 - Palette: ivory background, sand accents, copper CTA, dark text.
-- Composition: центральный фокус на KPI-карточках; интерфейс без лишних декоративных элементов.
+- Composition: central focus on KPI cards with minimal visual noise.
 
-### Image 2 - Expenses analytics
-- Purpose: показать аналитическую глубину.
+### Image 2 - Expense analytics
+- Purpose: show analytical depth.
 - Format: 16:10.
-- Scene: график трат по дням + breakdown по категориям (bar/pie/table) + фильтр периода.
-- Key message: пользователь быстро видит тренд перерасхода и долю категорий.
-- Notes: цифры реалистичные, не fake huge numbers.
+- Scene: spending trend by day + category breakdown (bar/pie/table) + period filter.
+- Key message: user quickly sees overspending trend and category share.
+- Notes: keep numbers realistic.
 
 ### Image 3 - Operations flow
-- Purpose: показать ежедневный workflow.
+- Purpose: show everyday workflow.
 - Format: 16:10.
-- Scene: список операций с цветными маркерами типов, категориями, датой, суммой; рядом кнопка добавления операции.
-- Key message: фиксировать транзакции быстро и без хаоса.
-- Notes: сделать 5-8 строк операций, разные категории, аккуратная типографика.
+- Scene: transaction feed with typed markers, categories, date, amount; visible quick-add action.
+- Key message: transaction tracking is fast and structured.
+- Notes: use 5-8 realistic transaction rows.
 
 ### Image 4 - Mobile view
-- Purpose: показать адаптивность.
-- Format: 9:16 (или two-device composition в 16:10).
-- Scene: mobile layout с bottom navigation, карточками и списком последних действий.
-- Key message: продукт удобно использовать каждый день с телефона.
-- Notes: читабельные отступы, крупные touch-targets.
+- Purpose: show responsive usability.
+- Format: 9:16 (or two-device composition in 16:10).
+- Scene: mobile layout with bottom navigation, summary cards, and latest activity list.
+- Key message: product is practical for daily mobile usage.
+- Notes: keep spacing touch-friendly.
 
 ### Image 5 - Access request
-- Purpose: подчеркнуть модель модерируемого доступа.
+- Purpose: emphasize moderated onboarding.
 - Format: 16:10.
-- Scene: форма заявки (name, email, company, use case) + статусный алерт «request submitted».
-- Key message: вход контролируемый, не массовая свободная регистрация.
-- Notes: показать доверие и аккуратную подачу, без sales overload.
+- Scene: request form (name, email, company, use case) + success state.
+- Key message: access is controlled, not open mass signup.
+- Notes: trust-focused, clean visual language.
 
 ## 6. Prompt templates for AI image generation
 
@@ -123,11 +123,11 @@
 `Access request form screen for a finance web application, moderated onboarding flow, fields for name email company and use case, success state alert, trustworthy and minimal design, warm neutral color palette, high fidelity screenshot style, no watermark.`
 
 ## 7. Implementation status
-- [x] Лендинг добавлен на `/`.
-- [x] Приложение перенесено на `/app`.
-- [x] Login вынесен в меню лендинга.
-- [x] Добавлена форма заявки на доступ (`/access-request`).
-- [x] Подключены и отображаются плейсхолдеры изображений.
-- [ ] Подключить серверный storage заявок.
-- [ ] Добавить админ-модерацию заявок.
-- [ ] Подготовить платную подписку (billing + plan limits).
+- [x] Landing page on `/`.
+- [x] App moved to `/app`.
+- [x] Login placed in landing navigation.
+- [x] Access request page added (`/access-request`).
+- [x] Image placeholders connected and ready for replacement.
+- [ ] Move requests to server storage.
+- [ ] Add admin moderation flow.
+- [ ] Implement paid subscription layer (billing + plan limits).

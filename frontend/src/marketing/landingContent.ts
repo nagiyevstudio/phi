@@ -15,67 +15,66 @@ export interface ScreenshotPlaceholder {
   replacementFile: string;
 }
 
-export const featureCards: FeatureCard[] = [
+type Translate = (key: string, params?: Record<string, string | number>) => string;
+
+export const getFeatureCards = (t: Translate): FeatureCard[] => [
   {
-    title: 'Операции без хаоса',
-    description:
-      'Расходы, доходы и категории собираются в одном потоке без дублирования таблиц и ручных сводок.',
+    title: t('landing.feature.operations.title'),
+    description: t('landing.feature.operations.description'),
   },
   {
-    title: 'Реальный контроль бюджета',
-    description:
-      'Дневной лимит, остаток до конца месяца и фактическая динамика помогают вовремя реагировать на перерасход.',
+    title: t('landing.feature.budget.title'),
+    description: t('landing.feature.budget.description'),
   },
   {
-    title: 'Аналитика для решений',
-    description:
-      'Структура трат и тренды видны сразу: какие категории растут, что стабильно и где есть резерв.',
+    title: t('landing.feature.analytics.title'),
+    description: t('landing.feature.analytics.description'),
   },
 ];
 
-export const workflowSteps: WorkflowStep[] = [
+export const getWorkflowSteps = (t: Translate): WorkflowStep[] => [
   {
-    title: '1. Фиксация операций',
-    description: 'Добавляете расход или доход за несколько секунд: сумма, дата, категория и комментарий.',
+    title: t('landing.workflow.step1.title'),
+    description: t('landing.workflow.step1.description'),
   },
   {
-    title: '2. Автопересчёт лимитов',
-    description: 'Система моментально обновляет бюджет, дневной лимит и прогноз по оставшимся дням.',
+    title: t('landing.workflow.step2.title'),
+    description: t('landing.workflow.step2.description'),
   },
   {
-    title: '3. Ежедневный разбор',
-    description: 'Видите результат в карточках и аналитике, а затем корректируете план на месяц.',
+    title: t('landing.workflow.step3.title'),
+    description: t('landing.workflow.step3.description'),
   },
 ];
 
-export const screenshotPlaceholders: ScreenshotPlaceholder[] = [
+export const getScreenshotPlaceholders = (t: Translate): ScreenshotPlaceholder[] => [
   {
-    title: 'Дашборд месяца',
-    description: 'Главный экран с бюджетом, дневным лимитом и итогами по доходам/расходам.',
+    title: t('landing.shot.dashboard.title'),
+    description: t('landing.shot.dashboard.description'),
     image: '/assets/landing/hero-dashboard-placeholder.svg',
     replacementFile: 'hero-dashboard.png',
   },
   {
-    title: 'Аналитика расходов',
-    description: 'Визуализация структуры расходов по категориям и динамики по дням.',
+    title: t('landing.shot.analytics.title'),
+    description: t('landing.shot.analytics.description'),
     image: '/assets/landing/expenses-analytics-placeholder.svg',
     replacementFile: 'expenses-analytics.png',
   },
   {
-    title: 'Поток операций',
-    description: 'Список операций с быстрым добавлением, редактированием и фильтрацией.',
+    title: t('landing.shot.operations.title'),
+    description: t('landing.shot.operations.description'),
     image: '/assets/landing/operations-flow-placeholder.svg',
     replacementFile: 'operations-flow.png',
   },
   {
-    title: 'Мобильный вид',
-    description: 'Пример адаптивного интерфейса для ежедневного использования с телефона.',
+    title: t('landing.shot.mobile.title'),
+    description: t('landing.shot.mobile.description'),
     image: '/assets/landing/mobile-view-placeholder.svg',
     replacementFile: 'mobile-view.png',
   },
   {
-    title: 'Запрос доступа',
-    description: 'Экран формы заявки для модерируемой регистрации и ручного одобрения.',
+    title: t('landing.shot.access.title'),
+    description: t('landing.shot.access.description'),
     image: '/assets/landing/access-request-placeholder.svg',
     replacementFile: 'access-request.png',
   },

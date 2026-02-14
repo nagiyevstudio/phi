@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logoUrl from '../assets/logo.png';
 import { routes } from '../constants/routes';
+import { useI18n } from '../i18n';
 
 interface AccessRequest {
   name: string;
@@ -11,7 +12,7 @@ interface AccessRequest {
   submittedAt: string;
 }
 
-const STORAGE_KEY = 'pf_access_requests';
+const STORAGE_KEY = 'phi_access_requests';
 
 const readRequests = (): AccessRequest[] => {
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -37,6 +38,12 @@ const readRequests = (): AccessRequest[] => {
 };
 
 export default function AccessRequestPage() {
+  const { t, language, setLanguage } = useI18n();
+  const languageOptions: { value: 'ru' | 'az' | 'en'; label: string }[] = [
+    { value: 'ru', label: t('settings.languageRu') },
+    { value: 'az', label: t('settings.languageAz') },
+    { value: 'en', label: t('settings.languageEn') },
+  ];
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
@@ -45,15 +52,15 @@ export default function AccessRequestPage() {
   const [submittedAt, setSubmittedAt] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = 'Запрос доступа · Perfinance';
-  }, []);
+    document.title = t('access.meta.title');
+  }, [t]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
 
     if (!email.trim() || !useCase.trim()) {
-      setError('Укажи email и цель использования проекта.');
+      setError(t('access.error.required'));
       return;
     }
 
@@ -78,21 +85,42 @@ export default function AccessRequestPage() {
   return (
     <div className="pf-landing min-h-screen px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-3xl">
-        <Link to={routes.landing} className="inline-flex items-center gap-3">
-          <img src={logoUrl} alt="Perfinance" className="h-10 w-auto rounded-md" />
-          <span className="pf-landing-logo text-base font-semibold sm:text-lg">Perfinance</span>
-        </Link>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link to={routes.landing} className="inline-flex items-center gap-3">
+            <img src={logoUrl} alt={t('access.brand')} className="h-10 w-auto rounded-md" />
+            <span className="pf-landing-logo text-base font-semibold sm:text-lg">{t('access.brand')}</span>
+          </Link>
+          <div className="inline-flex items-center gap-1 rounded-full border border-[#d5b295] bg-[#fff8f1] p-1 dark:border-[#4f3b2d] dark:bg-[#211912]">
+            {languageOptions.map((option) => {
+              const isActive = language === option.value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setLanguage(option.value)}
+                  className={`rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
+                    isActive
+                      ? 'bg-[#c96f29] text-white'
+                      : 'text-[#7f4c28] hover:bg-[#f4e1d0] dark:text-[#e7c6ab] dark:hover:bg-[#33271f]'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         <div className="pf-landing-card mt-8 p-6 text-left sm:p-8">
-          <p className="pf-landing-kicker">Moderated onboarding</p>
-          <h1 className="pf-landing-title mt-3 text-3xl sm:text-4xl">Запрос доступа к приложению</h1>
+          <p className="pf-landing-kicker">{t('access.kicker')}</p>
+          <h1 className="pf-landing-title mt-3 text-3xl sm:text-4xl">{t('access.title')}</h1>
           <p className="mt-4 text-sm text-[#4f392b] dark:text-[#d6c9bf] sm:text-base">
-            Открытая регистрация отключена. Оставь заявку, и после проверки я подключу доступ вручную.
+            {t('access.description')}
           </p>
 
           {submittedAt ? (
             <div className="mt-6 rounded-2xl border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-900 dark:border-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">
-              Заявка отправлена {new Date(submittedAt).toLocaleString()}. Я свяжусь с тобой после проверки.
+              {t('access.success', { datetime: new Date(submittedAt).toLocaleString() })}
             </div>
           ) : null}
 
@@ -105,7 +133,7 @@ export default function AccessRequestPage() {
           <form className="mt-6 space-y-4" onSubmit={onSubmit}>
             <div>
               <label htmlFor="request-name" className="mb-1 block text-sm font-medium">
-                Имя
+                {t('access.form.name.label')}
               </label>
               <input
                 id="request-name"
@@ -113,13 +141,13 @@ export default function AccessRequestPage() {
                 className="pf-input"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="Например: Фаиг Нагиев"
+                placeholder={t('access.form.name.placeholder')}
               />
             </div>
 
             <div>
               <label htmlFor="request-email" className="mb-1 block text-sm font-medium">
-                Email *
+                {t('access.form.email.label')}
               </label>
               <input
                 id="request-email"
@@ -127,14 +155,14 @@ export default function AccessRequestPage() {
                 className="pf-input"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="name@company.com"
+                placeholder={t('access.form.email.placeholder')}
                 required
               />
             </div>
 
             <div>
               <label htmlFor="request-company" className="mb-1 block text-sm font-medium">
-                Компания / проект
+                {t('access.form.company.label')}
               </label>
               <input
                 id="request-company"
@@ -142,20 +170,20 @@ export default function AccessRequestPage() {
                 className="pf-input"
                 value={company}
                 onChange={(event) => setCompany(event.target.value)}
-                placeholder="Например: Personal budgeting"
+                placeholder={t('access.form.company.placeholder')}
               />
             </div>
 
             <div>
               <label htmlFor="request-usecase" className="mb-1 block text-sm font-medium">
-                Зачем тебе доступ? *
+                {t('access.form.useCase.label')}
               </label>
               <textarea
                 id="request-usecase"
                 className="pf-textarea"
                 value={useCase}
                 onChange={(event) => setUseCase(event.target.value)}
-                placeholder="Кратко опиши задачу и формат использования..."
+                placeholder={t('access.form.useCase.placeholder')}
                 required
               />
             </div>
@@ -165,20 +193,19 @@ export default function AccessRequestPage() {
                 type="submit"
                 className="rounded-full bg-[#c96f29] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#a85a1f]"
               >
-                Отправить заявку
+                {t('access.form.submit')}
               </button>
               <Link
                 to={routes.login}
                 className="rounded-full border border-[#d0ad8b] px-6 py-3 text-sm font-semibold text-[#8a4714] transition-colors hover:bg-[#f6dfcc] dark:border-[#5a4332] dark:text-[#f8d3b1] dark:hover:bg-[#2b221c]"
               >
-                У меня уже есть доступ
+                {t('access.form.hasAccess')}
               </Link>
             </div>
           </form>
 
           <p className="mt-6 text-xs text-[#6a5342] dark:text-[#c9b9ab]">
-            MVP-режим: заявки сохраняются локально в браузере. Следующий шаг - подключение серверной
-            очереди заявок и статусов `pending / approved / rejected`.
+            {t('access.footer.note')}
           </p>
         </div>
       </div>
