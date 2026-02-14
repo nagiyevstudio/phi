@@ -1,0 +1,21 @@
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="920" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDF3EA"/>
+      <stop offset="1" stop-color="#F5D9C2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="920" rx="36" fill="url(#bg)"/>
+  <rect x="70" y="70" width="1260" height="780" rx="24" fill="#FFFAF5" stroke="#DCA87D" stroke-width="3" stroke-dasharray="10 10"/>
+  <rect x="140" y="150" width="1120" height="90" rx="14" fill="#F2DFCE"/>
+  <rect x="140" y="280" width="1120" height="110" rx="16" fill="#FFFFFF" stroke="#E5C6AA" stroke-width="2"/>
+  <rect x="140" y="420" width="1120" height="110" rx="16" fill="#FFFFFF" stroke="#E5C6AA" stroke-width="2"/>
+  <rect x="140" y="560" width="1120" height="110" rx="16" fill="#FFFFFF" stroke="#E5C6AA" stroke-width="2"/>
+  <circle cx="220" cy="335" r="30" fill="#E39B62"/>
+  <circle cx="220" cy="475" r="30" fill="#E39B62"/>
+  <circle cx="220" cy="615" r="30" fill="#E39B62"/>
+  <rect x="1110" y="300" width="120" height="50" rx="24" fill="#FCE5D2"/>
+  <rect x="1110" y="440" width="120" height="50" rx="24" fill="#FCE5D2"/>
+  <rect x="1110" y="580" width="120" height="50" rx="24" fill="#FCE5D2"/>
+  <text x="700" y="770" text-anchor="middle" font-size="48" fill="#945827" font-family="Arial, sans-serif" font-weight="700">Operations List Placeholder</text>
+</svg>

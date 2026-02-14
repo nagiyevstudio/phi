@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { useAuth } from '../store/auth';
 import { authApi } from '../services/api';
 import { useI18n } from '../i18n';
+import { routes } from '../constants/routes';
 
 type LoginFormData = {
   email: string;
@@ -29,6 +30,20 @@ export default function Login() {
   const languageButtonInactive =
     'border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]';
   const languageButtonActive = 'bg-[#d27b30] text-white border-[#d27b30] shadow-sm';
+  const accessCopy = {
+    ru: {
+      text: 'Нужен доступ к проекту?',
+      action: 'Оставить заявку',
+    },
+    az: {
+      text: 'Layihəyə giriş lazımdır?',
+      action: 'Müraciət göndər',
+    },
+    en: {
+      text: 'Need access to the project?',
+      action: 'Request access',
+    },
+  } as const;
 
   useEffect(() => {
     document.title = `${t('login.title')} · ${t('common.appName')}`;
@@ -58,7 +73,7 @@ export default function Login() {
       const response = await authApi.login(data);
       login(response.token, response.user);
       await new Promise(resolve => setTimeout(resolve, 100));
-      navigate('/');
+      navigate(routes.app.root);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : t('login.error'));
       setIsLoading(false);
@@ -98,9 +113,9 @@ export default function Login() {
             {t('login.title')}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-[#a3a3a3]">
-            {t('login.noAccount')}{' '}
-            <Link to="/register" className="text-[#d27b30] hover:text-[#b56726]">
-              {t('login.createAccount')}
+            {accessCopy[language].text}{' '}
+            <Link to={routes.accessRequest} className="text-[#d27b30] hover:text-[#b56726]">
+              {accessCopy[language].action}
             </Link>
           </p>
         </div>
@@ -157,5 +172,4 @@ export default function Login() {
     </div>
   );
 }
-
 

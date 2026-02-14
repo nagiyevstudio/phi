@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -61,6 +63,82 @@
   max-width: 100%;
 }
 
+.pf-landing {
+  background: radial-gradient(
+      1100px 680px at 5% -2%,
+      rgba(251, 211, 174, 0.56),
+      rgba(251, 211, 174, 0.04) 50%,
+      transparent 65%
+    ),
+    linear-gradient(125deg, #fcf4eb 0%, #f6e7d9 52%, #eedac6 100%);
+}
+
+.dark .pf-landing {
+  background: radial-gradient(
+      1100px 680px at 5% -2%,
+      rgba(222, 149, 94, 0.28),
+      rgba(222, 149, 94, 0.02) 45%,
+      transparent 65%
+    ),
+    linear-gradient(125deg, #1f1814 0%, #17120e 54%, #100d0b 100%);
+}
+
+.pf-landing-glow {
+  position: absolute;
+  top: -260px;
+  right: -200px;
+  width: 640px;
+  height: 640px;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(226, 146, 73, 0.22), rgba(226, 146, 73, 0));
+  filter: blur(2px);
+}
+
+.pf-landing-card {
+  border: 1px solid rgba(176, 124, 86, 0.28);
+  border-radius: 1.5rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 252, 246, 0.72));
+  box-shadow: 0 12px 30px rgba(69, 41, 19, 0.08);
+}
+
+.dark .pf-landing-card {
+  border: 1px solid rgba(130, 96, 70, 0.48);
+  background: linear-gradient(160deg, rgba(47, 35, 27, 0.88), rgba(30, 24, 20, 0.88));
+  box-shadow: none;
+}
+
+.pf-landing-logo,
+.pf-landing-title {
+  font-family: 'Space Grotesk', 'Manrope', 'Avenir Next', 'Segoe UI', sans-serif;
+}
+
+.pf-landing-kicker {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(163, 105, 58, 0.4);
+  background: rgba(252, 237, 223, 0.9);
+  padding: 0.34rem 0.8rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8f5328;
+}
+
+.dark .pf-landing-kicker {
+  border-color: rgba(191, 134, 95, 0.42);
+  background: rgba(58, 40, 27, 0.86);
+  color: #efc59f;
+}
+
+.pf-landing-shot {
+  border-radius: 1.1rem;
+  border: 1px solid rgba(188, 135, 95, 0.35);
+  background: #fff9f2;
+}
+
 /* Исправление для Safari iOS: date picker выходит за границы модалки */
 /* Решение реализовано через JavaScript в компонентах OperationForm и Settings */
 /* Дополнительно: фикс для iOS Safari, чтобы не было авто-зума и выхода за рамки */
@@ -70,11 +148,38 @@
   .pf-input[type="month"] {
     font-size: 16px;
     line-height: 1.25;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pf-input[type="date"]::-webkit-date-and-time-value,
+  .pf-input[type="datetime-local"]::-webkit-date-and-time-value,
+  .pf-input[type="month"]::-webkit-date-and-time-value {
+    width: 100%;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .pf-input[type="date"]::-webkit-datetime-edit,
+  .pf-input[type="datetime-local"]::-webkit-datetime-edit,
+  .pf-input[type="month"]::-webkit-datetime-edit {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pf-input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+  .pf-input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
+  .pf-input[type="month"]::-webkit-datetime-edit-fields-wrapper {
+    min-width: 0;
   }
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Manrope', 'Avenir Next', 'Segoe UI', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -90,10 +195,12 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .material-symbols-outlined {
@@ -125,7 +232,7 @@ body {
 #root {
   width: 100%;
   margin: 0 auto;
-  text-align: center;
+  text-align: initial;
 }
 
 @media (prefers-color-scheme: light) {

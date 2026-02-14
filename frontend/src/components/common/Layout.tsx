@@ -4,6 +4,7 @@ import { useAuth } from '../../store/auth';
 import MaterialIcon from './MaterialIcon';
 import logoUrl from '../../assets/logo.png';
 import { useI18n } from '../../i18n';
+import { routes } from '../../constants/routes';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,18 +21,18 @@ export default function Layout({ children }: LayoutProps) {
   const refreshThreshold = 70;
 
   const navItems = [
-    { path: '/', label: t('nav.home'), icon: 'home' },
-    { path: '/operations', label: t('nav.operations'), icon: 'list' },
-    { path: '/analytics', label: t('nav.analytics'), icon: 'chart' },
-    { path: '/settings', label: t('nav.settings'), icon: 'settings' },
+    { path: routes.app.root, label: t('nav.home'), icon: 'home' },
+    { path: routes.app.operations, label: t('nav.operations'), icon: 'list' },
+    { path: routes.app.analytics, label: t('nav.analytics'), icon: 'chart' },
+    { path: routes.app.settings, label: t('nav.settings'), icon: 'settings' },
   ] as const;
   const pageTitles = [
     ...navItems,
-    { path: '/categories', label: t('nav.categories') },
+    { path: routes.app.categories, label: t('nav.categories') },
   ] as const;
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate(routes.app.root);
   };
 
   const sectionTitle =
@@ -174,5 +175,4 @@ export default function Layout({ children }: LayoutProps) {
     </div>
   );
 }
-
 

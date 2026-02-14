@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useAuth } from "../store/auth";
 import { authApi } from "../services/api";
 import { useI18n } from "../i18n";
+import { routes } from "../constants/routes";
 
 type RegisterFormData = {
   name?: string;
@@ -78,7 +79,7 @@ export default function Register() {
       });
       login(response.token, response.user);
       await new Promise((resolve) => setTimeout(resolve, 100));
-      navigate("/");
+      navigate(routes.app.root);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : t("register.error"));
       setIsLoading(false);
@@ -210,7 +211,7 @@ export default function Register() {
         </form>
         <p className="text-center text-sm text-gray-600 dark:text-[#a3a3a3]">
           {t("register.goToLogin")}{" "}
-          <Link to="/login" className="text-[#d27b30] hover:text-[#b56726]">
+          <Link to={routes.login} className="text-[#d27b30] hover:text-[#b56726]">
             {t("login.title")}
           </Link>
         </p>

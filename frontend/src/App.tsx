@@ -2,12 +2,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './store/auth';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Operations from './pages/Operations';
 import Categories from './pages/Categories';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
+import LandingPage from './marketing/LandingPage';
+import AccessRequestPage from './marketing/AccessRequestPage';
+import { routes } from './constants/routes';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +26,7 @@ function PrivateRoute({ children }: { children: React.ReactElement }) {
   const tokenInStorage = localStorage.getItem('auth_token');
   const userInStorage = localStorage.getItem('user');
   const isReallyAuthenticated = isAuthenticated || (!!tokenInStorage && !!userInStorage);
-  return isReallyAuthenticated ? children : <Navigate to="/login" replace />;
+  return isReallyAuthenticated ? children : <Navigate to={routes.login} replace />;
 }
 
 function PublicRoute({ children }: { children: React.ReactElement }) {
@@ -33,14 +35,15 @@ function PublicRoute({ children }: { children: React.ReactElement }) {
   const tokenInStorage = localStorage.getItem('auth_token');
   const userInStorage = localStorage.getItem('user');
   const isReallyAuthenticated = isAuthenticated || (!!tokenInStorage && !!userInStorage);
-  return !isReallyAuthenticated ? children : <Navigate to="/" replace />;
+  return !isReallyAuthenticated ? children : <Navigate to={routes.app.root} replace />;
 }
 
 function AppRoutes() {
   return (
     <Routes>
+      <Route path={routes.landing} element={<LandingPage />} />
       <Route
-        path="/login"
+        path={routes.login}
         element={
           <PublicRoute>
             <Login />
@@ -48,15 +51,16 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/register"
+        path={routes.accessRequest}
         element={
           <PublicRoute>
-            <Register />
+            <AccessRequestPage />
           </PublicRoute>
         }
       />
+      <Route path={routes.legacyRegister} element={<Navigate to={routes.accessRequest} replace />} />
       <Route
-        path="/"
+        path={routes.app.root}
         element={
           <PrivateRoute>
             <Dashboard />
@@ -64,7 +68,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/operations"
+        path={routes.app.operations}
         element={
           <PrivateRoute>
             <Operations />
@@ -72,7 +76,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/categories"
+        path={routes.app.categories}
         element={
           <PrivateRoute>
             <Categories />
@@ -80,7 +84,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/analytics"
+        path={routes.app.analytics}
         element={
           <PrivateRoute>
             <Analytics />
@@ -88,13 +92,14 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/settings"
+        path={routes.app.settings}
         element={
           <PrivateRoute>
             <Settings />
           </PrivateRoute>
         }
       />
+      <Route path="*" element={<Navigate to={routes.landing} replace />} />
     </Routes>
   );
 }
@@ -112,4 +117,3 @@ function App() {
 }
 
 export default App;
-

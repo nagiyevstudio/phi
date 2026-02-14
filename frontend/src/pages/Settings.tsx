@@ -8,6 +8,7 @@ import { getCurrentMonth } from '../utils/format';
 import { applyTheme, getStoredTheme, setStoredTheme, type ThemePreference } from '../utils/theme';
 import { useI18n } from '../i18n';
 import logoUrl from '../assets/logo.png';
+import { routes } from '../constants/routes';
 
 // Проверка на iOS Safari
 const isIOSSafari = () => {
@@ -60,7 +61,7 @@ export default function Settings() {
       console.error('Logout error:', error);
     }
     logout();
-    window.location.href = '/login';
+    window.location.href = routes.login;
   };
 
   const handleExportJSON = async () => {
@@ -338,6 +339,5 @@ export default function Settings() {
     </Layout>
   );
 }
-
 
 

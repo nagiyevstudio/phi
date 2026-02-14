@@ -1,0 +1,18 @@
+<svg width="1600" height="960" viewBox="0 0 1600 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="960" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDF2E8"/>
+      <stop offset="1" stop-color="#F8D8BE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="960" rx="40" fill="url(#bg)"/>
+  <rect x="70" y="90" width="1460" height="780" rx="24" fill="#FFF8F1" stroke="#DFAE83" stroke-width="3" stroke-dasharray="12 10"/>
+  <rect x="120" y="140" width="430" height="95" rx="14" fill="#F5E3D4"/>
+  <rect x="580" y="140" width="430" height="95" rx="14" fill="#F5E3D4"/>
+  <rect x="1040" y="140" width="430" height="95" rx="14" fill="#F5E3D4"/>
+  <rect x="120" y="275" width="700" height="540" rx="18" fill="#FFFFFF" stroke="#E8C9AC" stroke-width="2"/>
+  <rect x="860" y="275" width="610" height="256" rx="18" fill="#FFFFFF" stroke="#E8C9AC" stroke-width="2"/>
+  <rect x="860" y="559" width="610" height="256" rx="18" fill="#FFFFFF" stroke="#E8C9AC" stroke-width="2"/>
+  <text x="800" y="450" text-anchor="middle" font-size="54" fill="#9E663A" font-family="Arial, sans-serif" font-weight="700">Dashboard Screenshot Placeholder</text>
+  <text x="800" y="525" text-anchor="middle" font-size="30" fill="#B47A4D" font-family="Arial, sans-serif">Replace this file with your final image</text>
+</svg>

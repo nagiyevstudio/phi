@@ -1,0 +1,18 @@
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="920" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDEEDB"/>
+      <stop offset="1" stop-color="#F5CFAE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="920" rx="36" fill="url(#bg)"/>
+  <rect x="70" y="70" width="1260" height="780" rx="24" fill="#FFFAF4" stroke="#DBA173" stroke-width="3" stroke-dasharray="10 10"/>
+  <path d="M180 650 L360 510 L520 580 L700 430 L880 470 L1060 330 L1220 390" stroke="#C36E2B" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="360" cy="510" r="20" fill="#F4A261"/>
+  <circle cx="700" cy="430" r="20" fill="#F4A261"/>
+  <circle cx="1060" cy="330" r="20" fill="#F4A261"/>
+  <rect x="180" y="220" width="360" height="110" rx="14" fill="#F4E2D2"/>
+  <rect x="580" y="220" width="360" height="110" rx="14" fill="#F4E2D2"/>
+  <rect x="980" y="220" width="240" height="110" rx="14" fill="#F4E2D2"/>
+  <text x="700" y="760" text-anchor="middle" font-size="48" fill="#97592A" font-family="Arial, sans-serif" font-weight="700">Analytics Placeholder</text>
+</svg>
