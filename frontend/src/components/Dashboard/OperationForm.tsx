@@ -7,14 +7,6 @@ import MaterialIcon from '../common/MaterialIcon';
 import HelpModal from '../common/HelpModal';
 import { useI18n } from '../../i18n';
 
-// Проверка на iOS Safari
-const isIOSSafari = () => {
-  const ua = window.navigator.userAgent;
-  const iOS = /iPad|iPhone|iPod/.test(ua);
-  const webkit = /WebKit/.test(ua);
-  return iOS && webkit && !/CriOS|FxiOS|OPiOS/.test(ua);
-};
-
 type OperationFormData = {
   type: 'expense' | 'income';
   amountMinor: number;
@@ -62,6 +54,45 @@ const normalizeDateTimeValue = (value?: string | null) => {
   }
 
   return normalized;
+};
+
+const splitDateTimeValue = (value?: string | null) => {
+  const normalized = normalizeDateTimeValue(value);
+  const [datePart = '', timePart = '00:00'] = normalized.split('T');
+  return {
+    datePart,
+    timePart: timePart.slice(0, 5),
+  };
+};
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
+
+const getDaysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
+
+const getDateTimeParts = (value?: string | null) => {
+  const now = new Date();
+  const { datePart, timePart } = splitDateTimeValue(value);
+  const [rawYear = '', rawMonth = '', rawDay = ''] = datePart.split('-');
+  const [rawHour = '', rawMinute = ''] = timePart.split(':');
+
+  const yearValue = Number.isFinite(Number(rawYear)) ? Number(rawYear) : now.getFullYear();
+  const monthValue = clamp(Number(rawMonth) || now.getMonth() + 1, 1, 12);
+  const dayValue = clamp(
+    Number(rawDay) || now.getDate(),
+    1,
+    getDaysInMonth(yearValue, monthValue)
+  );
+  const hourValue = clamp(Number(rawHour) || now.getHours(), 0, 23);
+  const minuteValue = clamp(Number(rawMinute) || now.getMinutes(), 0, 59);
+
+  return {
+    yearPart: String(yearValue).padStart(4, '0'),
+    monthPart: padTimeValue(monthValue),
+    dayPart: padTimeValue(dayValue),
+    hourPart: padTimeValue(hourValue),
+    minutePart: padTimeValue(minuteValue),
+  };
 };
 
 const NOTE_TEMPLATES_KEY = 'pf.note-templates.v1';
@@ -116,7 +147,7 @@ export default function OperationForm({
   onCancel,
   onDelete,
 }: OperationFormProps) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isAmountFocused, setIsAmountFocused] = useState(false);
@@ -184,7 +215,46 @@ export default function OperationForm({
 
   const selectedType = watch('type');
   const selectedCategoryId = watch('categoryId');
+  const watchedDate = watch('date');
   const noteValue = watch('note') ?? '';
+  const dateTimeParts = useMemo(() => getDateTimeParts(watchedDate), [watchedDate]);
+  const locale = useMemo(() => {
+    if (language === 'ru') return 'ru-RU';
+    if (language === 'az') return 'az-AZ';
+    return 'en-US';
+  }, [language]);
+  const monthOptions = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat(locale, { month: 'short' });
+    return Array.from({ length: 12 }, (_, index) => {
+      const value = padTimeValue(index + 1);
+      return {
+        value,
+        label: `${value} · ${formatter.format(new Date(2024, index, 1))}`,
+      };
+    });
+  }, [locale]);
+  const hourOptions = useMemo(
+    () => Array.from({ length: 24 }, (_, index) => padTimeValue(index)),
+    []
+  );
+  const minuteOptions = useMemo(
+    () => Array.from({ length: 60 }, (_, index) => padTimeValue(index)),
+    []
+  );
+  const selectedYearNumber = Number(dateTimeParts.yearPart);
+  const selectedMonthNumber = Number(dateTimeParts.monthPart);
+  const yearOptions = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const startYear = Math.min(currentYear - 10, selectedYearNumber - 5);
+    const endYear = Math.max(currentYear + 5, selectedYearNumber + 5);
+    return Array.from({ length: endYear - startYear + 1 }, (_, index) =>
+      String(startYear + index)
+    );
+  }, [selectedYearNumber]);
+  const dayOptions = useMemo(() => {
+    const daysCount = getDaysInMonth(selectedYearNumber, selectedMonthNumber);
+    return Array.from({ length: daysCount }, (_, index) => padTimeValue(index + 1));
+  }, [selectedYearNumber, selectedMonthNumber]);
   const noteSuggestions = useMemo(() => {
     if (!selectedCategoryId) {
       return [];
@@ -248,36 +318,31 @@ export default function OperationForm({
   };
 
   const currentFilteredCategories = categories.filter((cat) => cat.type === selectedType);
-  const modalContainerRef = useRef<HTMLDivElement>(null);
+  const updateDateField = (
+    nextParts: Partial<{
+      yearPart: string;
+      monthPart: string;
+      dayPart: string;
+      hourPart: string;
+      minutePart: string;
+    }>
+  ) => {
+    const merged = { ...dateTimeParts, ...nextParts };
+    const year = clamp(Number(merged.yearPart) || new Date().getFullYear(), 1970, 2100);
+    const month = clamp(Number(merged.monthPart) || 1, 1, 12);
+    const day = clamp(Number(merged.dayPart) || 1, 1, getDaysInMonth(year, month));
+    const hour = clamp(Number(merged.hourPart) || 0, 0, 23);
+    const minute = clamp(Number(merged.minutePart) || 0, 0, 59);
 
-  // Исправление для Safari iOS: убираем overflow со всех родителей при фокусе на date input
-  const handleDateInputFocus = () => {
-    if (isIOSSafari()) {
-      // Убираем overflow со всех родительских элементов
-      if (modalContainerRef.current) {
-        modalContainerRef.current.style.overflow = 'visible';
-      }
-      document.body.style.overflow = 'visible';
-      document.documentElement.style.overflow = 'visible';
-    }
-  };
-
-  const handleDateInputBlur = () => {
-    if (isIOSSafari()) {
-      // Восстанавливаем overflow для всех родителей
-      if (modalContainerRef.current) {
-        modalContainerRef.current.style.overflow = 'auto';
-      }
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    }
+    const normalized = `${String(year).padStart(4, '0')}-${padTimeValue(month)}-${padTimeValue(day)}T${padTimeValue(hour)}:${padTimeValue(minute)}`;
+    setValue('date', normalized, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   };
 
   return (
-    <div 
-      ref={modalContainerRef}
-      className="fixed inset-0 bg-[#120c08]/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50"
-    >
+    <div className="fixed inset-0 bg-[#120c08]/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50">
       <div className="relative top-10 mx-auto w-[92vw] max-w-lg p-6 sm:p-7 border shadow-xl rounded-3xl bg-white dark:bg-[#1a1a1a]">
         <button
           type="button"
@@ -414,13 +479,71 @@ export default function OperationForm({
             <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8]">
               {t('operationForm.dateTime')}
             </label>
-            <input
-              type="datetime-local"
-              {...register('date')}
-              className="pf-input mt-1"
-              onFocus={handleDateInputFocus}
-              onBlur={handleDateInputBlur}
-            />
+            <input type="hidden" {...register('date')} />
+            <div className="mt-1 grid grid-cols-3 gap-2">
+              <select
+                value={dateTimeParts.yearPart}
+                onChange={(event) => updateDateField({ yearPart: event.target.value })}
+                className="pf-select"
+                aria-label="Year"
+              >
+                {yearOptions.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={dateTimeParts.monthPart}
+                onChange={(event) => updateDateField({ monthPart: event.target.value })}
+                className="pf-select"
+                aria-label="Month"
+              >
+                {monthOptions.map((month) => (
+                  <option key={month.value} value={month.value}>
+                    {month.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={dateTimeParts.dayPart}
+                onChange={(event) => updateDateField({ dayPart: event.target.value })}
+                className="pf-select"
+                aria-label="Day"
+              >
+                {dayOptions.map((day) => (
+                  <option key={day} value={day}>
+                    {day}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <select
+                value={dateTimeParts.hourPart}
+                onChange={(event) => updateDateField({ hourPart: event.target.value })}
+                className="pf-select"
+                aria-label="Hour"
+              >
+                {hourOptions.map((hour) => (
+                  <option key={hour} value={hour}>
+                    {hour}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={dateTimeParts.minutePart}
+                onChange={(event) => updateDateField({ minutePart: event.target.value })}
+                className="pf-select"
+                aria-label="Minute"
+              >
+                {minuteOptions.map((minute) => (
+                  <option key={minute} value={minute}>
+                    {minute}
+                  </option>
+                ))}
+              </select>
+            </div>
             {errors.date && <p className="mt-1 text-sm text-red-600">{errors.date.message}</p>}
           </div>
 
@@ -522,6 +645,3 @@ export default function OperationForm({
     </div>
   );
 }
-
-
-

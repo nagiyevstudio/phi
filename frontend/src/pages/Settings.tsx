@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Layout from '../components/common/Layout';
 import MaterialIcon from '../components/common/MaterialIcon';
 import HelpModal from '../components/common/HelpModal';
@@ -9,14 +9,6 @@ import { applyTheme, getStoredTheme, setStoredTheme, type ThemePreference } from
 import { useI18n } from '../i18n';
 import logoUrl from '../assets/logo.png';
 import { routes } from '../constants/routes';
-
-// Проверка на iOS Safari
-const isIOSSafari = () => {
-  const ua = window.navigator.userAgent;
-  const iOS = /iPad|iPhone|iPod/.test(ua);
-  const webkit = /WebKit/.test(ua);
-  return iOS && webkit && !/CriOS|FxiOS|OPiOS/.test(ua);
-};
 
 export default function Settings() {
   const { user, logout } = useAuth();
@@ -54,6 +46,32 @@ export default function Settings() {
     { value: 'az', label: t('settings.languageAz') },
     { value: 'en', label: t('settings.languageEn') },
   ];
+  const locale = useMemo(() => {
+    if (language === 'ru') return 'ru-RU';
+    if (language === 'az') return 'az-AZ';
+    return 'en-US';
+  }, [language]);
+  const currentYear = new Date().getFullYear();
+  const exportMonthValue = /^\d{4}-\d{2}$/.test(exportMonth) ? exportMonth : getCurrentMonth();
+  const [selectedExportYear, selectedExportMonth] = exportMonthValue.split('-');
+  const exportYearOptions = useMemo(() => {
+    const selectedYear = Number(selectedExportYear) || currentYear;
+    const startYear = Math.min(2020, selectedYear);
+    const endYear = Math.max(currentYear + 1, selectedYear);
+    return Array.from({ length: endYear - startYear + 1 }, (_, index) =>
+      String(startYear + index)
+    );
+  }, [currentYear, selectedExportYear]);
+  const exportMonthOptions = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat(locale, { month: 'long' });
+    return Array.from({ length: 12 }, (_, index) => {
+      const value = String(index + 1).padStart(2, '0');
+      return {
+        value,
+        label: `${value} · ${formatter.format(new Date(2024, index, 1))}`,
+      };
+    });
+  }, [locale]);
 
   const handleLogout = async () => {
     try {
@@ -86,23 +104,6 @@ export default function Settings() {
       alert(t('settings.exportError'));
     } finally {
       setIsExporting(false);
-    }
-  };
-
-  // Исправление для Safari iOS: убираем overflow со всех родителей при фокусе на date input
-  const handleMonthInputFocus = () => {
-    if (isIOSSafari()) {
-      // Убираем overflow со всех родительских элементов
-      document.body.style.overflow = 'visible';
-      document.documentElement.style.overflow = 'visible';
-    }
-  };
-
-  const handleMonthInputBlur = () => {
-    if (isIOSSafari()) {
-      // Восстанавливаем overflow для всех родителей
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
     }
   };
 
@@ -178,14 +179,36 @@ export default function Settings() {
                   <label className="block text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3] mb-2">
                     {t('settings.exportMonth')}
                   </label>
-                  <input
-                    type="month"
-                    value={exportMonth}
-                    onChange={(e) => setExportMonth(e.target.value)}
-                    className="pf-input w-full sm:w-auto max-w-xs"
-                    onFocus={handleMonthInputFocus}
-                    onBlur={handleMonthInputBlur}
-                  />
+                  <div className="grid max-w-xs grid-cols-2 gap-2">
+                    <select
+                      value={selectedExportYear}
+                      onChange={(event) =>
+                        setExportMonth(`${event.target.value}-${selectedExportMonth}`)
+                      }
+                      className="pf-select"
+                      aria-label={t('monthSelector.year')}
+                    >
+                      {exportYearOptions.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      value={selectedExportMonth}
+                      onChange={(event) =>
+                        setExportMonth(`${selectedExportYear}-${event.target.value}`)
+                      }
+                      className="pf-select"
+                      aria-label={t('monthSelector.month')}
+                    >
+                      {exportMonthOptions.map((month) => (
+                        <option key={month.value} value={month.value}>
+                          {month.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               )}
 
@@ -340,4 +363,3 @@ export default function Settings() {
     </Layout>
   );
 }
-

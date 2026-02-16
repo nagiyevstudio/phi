@@ -60,6 +60,9 @@
 .pf-input[type="date"],
 .pf-input[type="datetime-local"],
 .pf-input[type="month"] {
+  width: 100%;
+  min-width: 0;
+  display: block;
   max-width: 100%;
 }
 
@@ -139,9 +142,7 @@
   background: #fff9f2;
 }
 
-/* Исправление для Safari iOS: date picker выходит за границы модалки */
-/* Решение реализовано через JavaScript в компонентах OperationForm и Settings */
-/* Дополнительно: фикс для iOS Safari, чтобы не было авто-зума и выхода за рамки */
+/* Дополнительные ограничения для нативных date/time полей в iOS WebKit */
 @supports (-webkit-touch-callout: none) {
   .pf-input[type="date"],
   .pf-input[type="datetime-local"],
