@@ -1,19 +1,13 @@
-# React Router - все запросы перенаправляем на index.html
-# кроме API запросов и существующих файлов
-
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
+  RewriteEngine On
+  RewriteBase /
 
-    # Не обрабатывать запросы к API (они должны идти на api.nagiyev.com)
-    RewriteCond %{REQUEST_URI} ^/api/
-    RewriteRule ^(.*)$ - [R=404,L]
+  # Serve existing files/directories directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
 
-    # Если файл или директория существует - отдавать как есть
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-
-    # Все остальное перенаправляем на index.html (для React Router)
-    RewriteRule ^ index.html [L]
+  # SPA fallback: route everything else to index.html
+  RewriteRule ^ index.html [L]
 </IfModule>
 

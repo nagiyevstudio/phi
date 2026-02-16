@@ -48,7 +48,7 @@ jobs:
               "port": ${BACKEND_FTP_PORT:-21},
               "localRoot": ".",
               "remoteRoot": "$BACKEND_FTP_REMOTE_ROOT",
-              "include": ["*", "**/*"],
+              "include": [".htaccess", "**/.htaccess", "*", "**/*"],
               "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**", "vendor/**", "error.log", "test-connection.php", "config-example.txt"],
               "deleteRemote": false,
               "forcePasv": true,

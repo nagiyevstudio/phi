@@ -5,7 +5,7 @@
   "port": 21,
   "localRoot": ".",
   "remoteRoot": "/api.phi.nagiyev.com",
-  "include": ["*", "**/*"],
+  "include": [".htaccess", "**/.htaccess", "*", "**/*"],
   "exclude": [
     ".git/**",
     ".gitignore",
@@ -26,4 +26,3 @@
     "rejectUnauthorized": false
   }
 }
-

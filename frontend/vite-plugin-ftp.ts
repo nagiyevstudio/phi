@@ -67,7 +67,7 @@ export function vitePluginFtp(configPath: string = './ftp-config.json'): Plugin 
             port: config.port || 21,
             localRoot: config.localRoot || './dist',
             remoteRoot: config.remoteRoot || '/',
-            include: config.include || ['*', '**/*'],
+            include: config.include || ['.htaccess', '**/.htaccess', '*', '**/*'],
             exclude: config.exclude || ['.git/**', '.gitignore', '.DS_Store', 'node_modules/**'],
             deleteRemote: config.deleteRemote || false,
             forcePasv: config.forcePasv !== false,
@@ -99,4 +99,3 @@ export function vitePluginFtp(configPath: string = './ftp-config.json'): Plugin 
     },
   };
 }
-

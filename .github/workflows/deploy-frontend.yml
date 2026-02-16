@@ -49,7 +49,7 @@ jobs:
               "port": ${FRONTEND_FTP_PORT:-21},
               "localRoot": "./dist",
               "remoteRoot": "$FRONTEND_FTP_REMOTE_ROOT",
-              "include": ["*", "**/*"],
+              "include": [".htaccess", "**/.htaccess", "*", "**/*"],
               "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**"],
               "deleteRemote": false,
               "forcePasv": true,

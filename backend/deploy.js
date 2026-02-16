@@ -77,7 +77,7 @@ try {
     port: config.port || 21,
     localRoot: path.resolve(__dirname, config.localRoot || '.'),
     remoteRoot: config.remoteRoot || '/',
-    include: config.include || ['*', '**/*'],
+    include: config.include || ['.htaccess', '**/.htaccess', '*', '**/*'],
     exclude: Array.from(new Set([...baseExclude, ...(config.exclude || [])])),
     deleteRemote: config.deleteRemote || false,
     forcePasv: config.forcePasv !== false,
