@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.phi.nagiyev.com/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.phi.nagiyev.com/index.php';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -378,4 +378,3 @@ export const exportApi = {
   json: (month?: string) => api.download('/export/json', `export_${month || 'all'}_${new Date().toISOString().split('T')[0]}.json`, { month }),
   csv: (month?: string) => api.download('/export/csv', `export_${month || 'all'}_${new Date().toISOString().split('T')[0]}.csv`, { month }),
 };
-
