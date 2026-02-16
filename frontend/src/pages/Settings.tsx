@@ -10,6 +10,15 @@ import { useI18n } from '../i18n';
 import logoUrl from '../assets/logo.png';
 import { routes } from '../constants/routes';
 
+const isIOSSafari = () => {
+  const ua = window.navigator.userAgent;
+  const iOS =
+    /iPad|iPhone|iPod/.test(ua) ||
+    (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
+  const webkit = /WebKit/.test(ua);
+  return iOS && webkit;
+};
+
 export default function Settings() {
   const { user, logout } = useAuth();
   const { language, setLanguage, t } = useI18n();
@@ -46,6 +55,7 @@ export default function Settings() {
     { value: 'az', label: t('settings.languageAz') },
     { value: 'en', label: t('settings.languageEn') },
   ];
+  const isIOSNativePickerFallback = useMemo(() => isIOSSafari(), []);
   const locale = useMemo(() => {
     if (language === 'ru') return 'ru-RU';
     if (language === 'az') return 'az-AZ';
@@ -179,36 +189,45 @@ export default function Settings() {
                   <label className="block text-xs uppercase tracking-wide text-gray-500 dark:text-[#a3a3a3] mb-2">
                     {t('settings.exportMonth')}
                   </label>
-                  <div className="grid max-w-xs grid-cols-2 gap-2">
-                    <select
-                      value={selectedExportYear}
-                      onChange={(event) =>
-                        setExportMonth(`${event.target.value}-${selectedExportMonth}`)
-                      }
-                      className="pf-select"
-                      aria-label={t('monthSelector.year')}
-                    >
-                      {exportYearOptions.map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      value={selectedExportMonth}
-                      onChange={(event) =>
-                        setExportMonth(`${selectedExportYear}-${event.target.value}`)
-                      }
-                      className="pf-select"
-                      aria-label={t('monthSelector.month')}
-                    >
-                      {exportMonthOptions.map((month) => (
-                        <option key={month.value} value={month.value}>
-                          {month.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  {isIOSNativePickerFallback ? (
+                    <div className="grid max-w-xs grid-cols-2 gap-2">
+                      <select
+                        value={selectedExportYear}
+                        onChange={(event) =>
+                          setExportMonth(`${event.target.value}-${selectedExportMonth}`)
+                        }
+                        className="pf-select"
+                        aria-label={t('monthSelector.year')}
+                      >
+                        {exportYearOptions.map((year) => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        value={selectedExportMonth}
+                        onChange={(event) =>
+                          setExportMonth(`${selectedExportYear}-${event.target.value}`)
+                        }
+                        className="pf-select"
+                        aria-label={t('monthSelector.month')}
+                      >
+                        {exportMonthOptions.map((month) => (
+                          <option key={month.value} value={month.value}>
+                            {month.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : (
+                    <input
+                      type="month"
+                      value={exportMonth}
+                      onChange={(event) => setExportMonth(event.target.value)}
+                      className="pf-input w-full sm:w-auto max-w-xs"
+                    />
+                  )}
                 </div>
               )}
 

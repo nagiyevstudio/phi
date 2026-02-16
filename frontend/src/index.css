@@ -58,11 +58,11 @@
 }
 
 .pf-input[type="date"],
+.pf-input[type="time"],
 .pf-input[type="datetime-local"],
 .pf-input[type="month"] {
   width: 100%;
   min-width: 0;
-  display: block;
   max-width: 100%;
 }
 
@@ -145,17 +145,20 @@
 /* Дополнительные ограничения для нативных date/time полей в iOS WebKit */
 @supports (-webkit-touch-callout: none) {
   .pf-input[type="date"],
+  .pf-input[type="time"],
   .pf-input[type="datetime-local"],
   .pf-input[type="month"] {
     font-size: 16px;
     line-height: 1.25;
     text-align: left;
+    padding-inline: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .pf-input[type="date"]::-webkit-date-and-time-value,
+  .pf-input[type="time"]::-webkit-date-and-time-value,
   .pf-input[type="datetime-local"]::-webkit-date-and-time-value,
   .pf-input[type="month"]::-webkit-date-and-time-value {
     width: 100%;
@@ -164,15 +167,17 @@
   }
 
   .pf-input[type="date"]::-webkit-datetime-edit,
+  .pf-input[type="time"]::-webkit-datetime-edit,
   .pf-input[type="datetime-local"]::-webkit-datetime-edit,
   .pf-input[type="month"]::-webkit-datetime-edit {
-    display: block;
+    padding-inline: 0.75rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .pf-input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+  .pf-input[type="time"]::-webkit-datetime-edit-fields-wrapper,
   .pf-input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
   .pf-input[type="month"]::-webkit-datetime-edit-fields-wrapper {
     min-width: 0;

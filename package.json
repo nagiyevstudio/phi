@@ -1,6 +1,6 @@
 {
   "name": "phi",
-  "version": "1.0.041",
+  "version": "1.0.042",
   "private": true,
   "scripts": {
     "build": "cd frontend && npm run build",

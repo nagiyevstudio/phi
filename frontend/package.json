@@ -1,7 +1,7 @@
 {
   "name": "phi-frontend",
   "private": true,
-  "version": "1.0.041",
+  "version": "1.0.042",
   "type": "module",
   "scripts": {
     "dev": "vite",
