@@ -1,0 +1,61 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy-backend.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Write FTP config
+        shell: bash
+        env:
+          BACKEND_FTP_HOST: ${{ secrets.BACKEND_FTP_HOST }}
+          BACKEND_FTP_USER: ${{ secrets.BACKEND_FTP_USER }}
+          BACKEND_FTP_PASS: ${{ secrets.BACKEND_FTP_PASS }}
+          BACKEND_FTP_PORT: ${{ secrets.BACKEND_FTP_PORT }}
+          BACKEND_FTP_REMOTE_ROOT: ${{ secrets.BACKEND_FTP_REMOTE_ROOT }}
+        run: |
+          if [ -z "$BACKEND_FTP_HOST" ] || [ -z "$BACKEND_FTP_USER" ] || [ -z "$BACKEND_FTP_PASS" ] || [ -z "$BACKEND_FTP_REMOTE_ROOT" ]; then
+            echo "Missing one or more FTP secrets."
+            exit 1
+          fi
+          mkdir -p secrets
+          cat > secrets/ftp.json <<EOF2
+          {
+            "backend": {
+              "host": "$BACKEND_FTP_HOST",
+              "user": "$BACKEND_FTP_USER",
+              "password": "$BACKEND_FTP_PASS",
+              "port": ${BACKEND_FTP_PORT:-21},
+              "localRoot": ".",
+              "remoteRoot": "$BACKEND_FTP_REMOTE_ROOT",
+              "include": ["*", "**/*"],
+              "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**", "vendor/**", "error.log", "test-connection.php", "config-example.txt"],
+              "deleteRemote": false,
+              "forcePasv": true,
+              "secure": true
+            }
+          }
+          EOF2
+
+      - name: Deploy backend via FTP
+        run: npm run deploy:backend

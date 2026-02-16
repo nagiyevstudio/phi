@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.nagiyev.com/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.phi.nagiyev.com/api';
 
 interface ApiResponse<T> {
   success: boolean;

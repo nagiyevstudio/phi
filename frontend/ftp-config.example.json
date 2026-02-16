@@ -4,7 +4,7 @@
   "password": "your-password",
   "port": 21,
   "localRoot": "./dist",
-  "remoteRoot": "/",
+  "remoteRoot": "/phi.nagiyev.com",
   "include": ["*", "**/*"],
   "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**"],
   "deleteRemote": false,
@@ -14,4 +14,3 @@
     "rejectUnauthorized": false
   }
 }
-

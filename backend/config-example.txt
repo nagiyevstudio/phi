@@ -14,5 +14,5 @@ ALLOW_REGISTRATION=false
 
 # Application Settings
 APP_ENV=production
-APP_URL=https://api.nagiyev.com
+APP_URL=https://api.phi.nagiyev.com
 

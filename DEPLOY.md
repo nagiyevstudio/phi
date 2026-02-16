@@ -4,8 +4,8 @@
 
 ## Структура деплоя
 
-- **Frontend**: `frontend/dist/` → `/finance.nagiyev.com` на FTP
-- **Backend**: `backend/` → `/api.nagiyev.com` на FTP
+- **Frontend**: `frontend/dist/` → `/phi.nagiyev.com` на FTP
+- **Backend**: `backend/` → `/api.phi.nagiyev.com` на FTP
 
 ## Команды для деплоя
 
@@ -159,7 +159,7 @@ npm run deploy:backend
     "password": "your-password",
     "port": 21,
     "localRoot": "./dist",
-    "remoteRoot": "/finance.nagiyev.com",
+    "remoteRoot": "/phi.nagiyev.com",
     "secure": true
   }
 }
@@ -177,11 +177,27 @@ npm run deploy:backend
     "password": "your-password",
     "port": 21,
     "localRoot": ".",
-    "remoteRoot": "/api.nagiyev.com",
+    "remoteRoot": "/api.phi.nagiyev.com",
     "secure": true
   }
 }
 ```
+
+### GitHub Actions (секреты для git deploy)
+
+`/.github/workflows/deploy-frontend.yml`:
+- `FRONTEND_FTP_HOST`
+- `FRONTEND_FTP_USER`
+- `FRONTEND_FTP_PASS`
+- `FRONTEND_FTP_PORT` (опционально, обычно `21`)
+- `FRONTEND_FTP_REMOTE_ROOT` (для прода: `/phi.nagiyev.com`)
+
+`/.github/workflows/deploy-backend.yml`:
+- `BACKEND_FTP_HOST`
+- `BACKEND_FTP_USER`
+- `BACKEND_FTP_PASS`
+- `BACKEND_FTP_PORT` (опционально, обычно `21`)
+- `BACKEND_FTP_REMOTE_ROOT` (для прода: `/api.phi.nagiyev.com`)
 
 ## Исключаемые файлы
 

@@ -263,11 +263,11 @@ dailyLimit = max(0, remaining) / max(1, daysLeft)
 
 1. **Frontend** (автоматически при билде):
    - Конфигурация: `secrets/ftp.json` (секция `frontend`)
-   - Загружает `frontend/dist/` → `/finance.nagiyev.com` на FTP
+   - Загружает `frontend/dist/` → `/phi.nagiyev.com` на FTP
 
 2. **Backend** (через скрипт):
    - Конфигурация: `secrets/ftp.json` (секция `backend`)
-   - Загружает `backend/` → `/api.nagiyev.com` на FTP
+   - Загружает `backend/` → `/api.phi.nagiyev.com` на FTP
 
 **Команды для деплоя:**
 
@@ -288,6 +288,15 @@ npm run deploy:all
 
 Создайте `secrets/ftp.json` на основе `secrets/ftp.example.json` и заполните ваши данные.
 
+**GitHub Actions (если деплой через push):**
+
+- Frontend workflow `/.github/workflows/deploy-frontend.yml`:
+  `FRONTEND_FTP_HOST`, `FRONTEND_FTP_USER`, `FRONTEND_FTP_PASS`, `FRONTEND_FTP_PORT`, `FRONTEND_FTP_REMOTE_ROOT`
+- Backend workflow `/.github/workflows/deploy-backend.yml`:
+  `BACKEND_FTP_HOST`, `BACKEND_FTP_USER`, `BACKEND_FTP_PASS`, `BACKEND_FTP_PORT`, `BACKEND_FTP_REMOTE_ROOT`
+- Прод-значения `remote root`:
+  `/phi.nagiyev.com` для frontend и `/api.phi.nagiyev.com` для backend
+
 Подробная инструкция: [frontend/FTP_SETUP.md](frontend/FTP_SETUP.md)
 
 ⚠️ **Важно:** Файл `secrets/ftp.json` содержит чувствительные данные и не должен коммититься в репозиторий.
@@ -307,4 +316,3 @@ MIT
 ## Автор
 
 Разработано согласно ТЗ от 21.12.2025
-

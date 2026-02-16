@@ -6,7 +6,7 @@ date_default_timezone_set($defaultTimezone);
 // Устанавливаем заголовки CORS в самом начале, до любых операций
 // Разрешаем запросы с production домена и localhost для разработки
 $allowedOrigins = [
-    'https://finance.nagiyev.com',
+    'https://phi.nagiyev.com',
     'http://localhost:3000',
     'http://localhost:5173', // Vite default port
     'http://127.0.0.1:3000',
@@ -17,7 +17,7 @@ $allowedOrigins = [
 $origin = $_SERVER['HTTP_ORIGIN'] ?? $_SERVER['ORIGIN'] ?? '';
 
 // Определяем разрешенный Origin
-$allowedOrigin = 'https://finance.nagiyev.com'; // По умолчанию production домен
+$allowedOrigin = 'https://phi.nagiyev.com'; // По умолчанию production домен
 if (!empty($origin) && in_array($origin, $allowedOrigins)) {
     $allowedOrigin = $origin;
 }

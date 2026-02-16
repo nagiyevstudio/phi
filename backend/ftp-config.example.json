@@ -4,7 +4,7 @@
   "password": "your-password",
   "port": 21,
   "localRoot": ".",
-  "remoteRoot": "/api.nagiyev.com",
+  "remoteRoot": "/api.phi.nagiyev.com",
   "include": ["*", "**/*"],
   "exclude": [
     ".git/**",

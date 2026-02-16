@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logoUrl from '../assets/logo.png';
 import { routes } from '../constants/routes';
@@ -7,6 +7,7 @@ import { getFeatureCards, getScreenshotPlaceholders, getWorkflowSteps } from './
 
 export default function LandingPage() {
   const { t, language, setLanguage } = useI18n();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const featureCards = getFeatureCards(t);
   const workflowSteps = getWorkflowSteps(t);
   const screenshotPlaceholders = getScreenshotPlaceholders(t);
@@ -20,30 +21,32 @@ export default function LandingPage() {
     document.title = t('landing.meta.title');
   }, [t]);
 
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return (
     <div className="pf-landing relative min-h-screen overflow-x-hidden text-[#1f130c] dark:text-[#f3ece5]">
       <div className="pf-landing-glow" aria-hidden="true" />
 
       <header className="sticky top-0 z-40 border-b border-[#d6c1aa]/60 bg-[#f8ecdf]/85 backdrop-blur dark:border-[#3a3028] dark:bg-[#171210]/85">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link to={routes.landing} className="inline-flex items-center gap-3">
+          <Link to={routes.landing} className="inline-flex items-center gap-3" onClick={closeMobileMenu}>
             <img src={logoUrl} alt={t('landing.brand')} className="h-10 w-auto rounded-md" />
-            <span className="pf-landing-logo text-base font-semibold sm:text-lg">{t('landing.brand')}</span>
+            <span className="pf-landing-logo hidden text-base font-semibold sm:inline sm:text-lg">{t('landing.brand')}</span>
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm font-semibold md:flex">
-            <a href="#features" className="hover:text-[#a95b1d] transition-colors">
+            <a href="#features" className="transition-colors hover:text-[#a95b1d]">
               {t('landing.nav.features')}
             </a>
-            <a href="#screenshots" className="hover:text-[#a95b1d] transition-colors">
+            <a href="#screenshots" className="transition-colors hover:text-[#a95b1d]">
               {t('landing.nav.screenshots')}
             </a>
-            <a href="#roadmap" className="hover:text-[#a95b1d] transition-colors">
+            <a href="#roadmap" className="transition-colors hover:text-[#a95b1d]">
               {t('landing.nav.roadmap')}
             </a>
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 md:flex">
             <div className="inline-flex items-center gap-1 rounded-full border border-[#d5b295] bg-[#fff8f1] p-1 dark:border-[#4f3b2d] dark:bg-[#211912]">
               {languageOptions.map((option) => {
                 const isActive = language === option.value;
@@ -69,37 +72,104 @@ export default function LandingPage() {
             >
               {t('landing.nav.login')}
             </Link>
+          </div>
+
+          <div className="flex items-center gap-2 md:hidden">
             <Link
-              to={routes.accessRequest}
-              className="rounded-full bg-[#c96f29] px-4 py-2 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(166,82,19,0.35)] transition-colors hover:bg-[#a85a1f]"
+              to={routes.login}
+              className="rounded-full border border-[#cba37f] px-3 py-1.5 text-xs font-semibold text-[#8a4714] transition-colors hover:bg-[#f5ddc8] dark:border-[#4f3b2d] dark:text-[#f8d3b1] dark:hover:bg-[#2b211a]"
+              onClick={closeMobileMenu}
             >
-              {t('landing.nav.requestAccess')}
+              {t('landing.nav.login')}
             </Link>
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#cba37f] bg-[#fff8f1] text-[#8a4714] dark:border-[#4f3b2d] dark:bg-[#211912] dark:text-[#f8d3b1]"
+              aria-label="Open menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="landing-mobile-menu"
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            >
+              <span className="sr-only">Open menu</span>
+              <span className="flex flex-col gap-1">
+                <span className="h-0.5 w-4 rounded-full bg-current" />
+                <span className="h-0.5 w-4 rounded-full bg-current" />
+                <span className="h-0.5 w-4 rounded-full bg-current" />
+              </span>
+            </button>
           </div>
         </div>
+
+        {isMobileMenuOpen && (
+          <div
+            id="landing-mobile-menu"
+            className="border-t border-[#d6c1aa]/70 bg-[#f8ecdf]/95 px-4 py-3 dark:border-[#3a3028] dark:bg-[#171210]/95 md:hidden"
+          >
+            <nav className="flex flex-col gap-2 text-sm font-semibold">
+              <a href="#features" className="rounded-xl px-3 py-2 hover:bg-[#f2e0d1] dark:hover:bg-[#2a211a]" onClick={closeMobileMenu}>
+                {t('landing.nav.features')}
+              </a>
+              <a href="#screenshots" className="rounded-xl px-3 py-2 hover:bg-[#f2e0d1] dark:hover:bg-[#2a211a]" onClick={closeMobileMenu}>
+                {t('landing.nav.screenshots')}
+              </a>
+              <a href="#roadmap" className="rounded-xl px-3 py-2 hover:bg-[#f2e0d1] dark:hover:bg-[#2a211a]" onClick={closeMobileMenu}>
+                {t('landing.nav.roadmap')}
+              </a>
+            </nav>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-1 rounded-full border border-[#d5b295] bg-[#fff8f1] p-1 dark:border-[#4f3b2d] dark:bg-[#211912]">
+                {languageOptions.map((option) => {
+                  const isActive = language === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => setLanguage(option.value)}
+                      className={`rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
+                        isActive
+                          ? 'bg-[#c96f29] text-white'
+                          : 'text-[#7f4c28] hover:bg-[#f4e1d0] dark:text-[#e7c6ab] dark:hover:bg-[#33271f]'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <Link
+                to={routes.accessRequest}
+                className="rounded-full bg-[#c96f29] px-4 py-2 text-xs font-semibold text-white"
+                onClick={closeMobileMenu}
+              >
+                {t('landing.nav.requestAccess')}
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
-      <main className="mx-auto w-full max-w-6xl px-4 pb-20 pt-12 sm:px-6 lg:px-8">
-        <section className="grid items-center gap-10 pb-16 lg:grid-cols-[1.05fr_0.95fr]">
+      <main className="mx-auto w-full max-w-6xl px-4 pb-20 pt-8 sm:px-6 sm:pt-12 lg:px-8">
+        <section className="grid items-center gap-8 pb-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-16">
           <div>
             <p className="pf-landing-kicker">{t('landing.hero.kicker')}</p>
-            <h1 className="pf-landing-title mt-4 text-4xl leading-tight sm:text-5xl lg:text-6xl">
+            <h1 className="pf-landing-title mt-4 text-3xl leading-tight sm:text-5xl lg:text-6xl">
               {t('landing.hero.title')}
             </h1>
             <p className="mt-5 max-w-xl text-base text-[#4b3a2f] dark:text-[#d6c9bf] sm:text-lg">
               {t('landing.hero.description')}
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <Link
                 to={routes.accessRequest}
-                className="rounded-full bg-[#c96f29] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(172,84,20,0.35)] transition-transform hover:-translate-y-0.5 hover:bg-[#a85a1f]"
+                className="inline-flex w-full items-center justify-center rounded-full bg-[#c96f29] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(172,84,20,0.35)] transition-transform hover:-translate-y-0.5 hover:bg-[#a85a1f] sm:w-auto"
               >
                 {t('landing.hero.cta.request')}
               </Link>
               <Link
                 to={routes.app.root}
-                className="rounded-full border border-[#d0ad8b] px-6 py-3 text-sm font-semibold text-[#8a4714] transition-colors hover:bg-[#f6dfcc] dark:border-[#5a4332] dark:text-[#f8d3b1] dark:hover:bg-[#2b221c]"
+                className="inline-flex w-full items-center justify-center rounded-full border border-[#d0ad8b] px-6 py-3 text-sm font-semibold text-[#8a4714] transition-colors hover:bg-[#f6dfcc] dark:border-[#5a4332] dark:text-[#f8d3b1] dark:hover:bg-[#2b221c] sm:w-auto"
               >
                 {t('landing.hero.cta.openApp')}
               </Link>
@@ -238,16 +308,16 @@ export default function LandingPage() {
           <p className="mt-4 max-w-3xl text-sm text-[#4f392b] dark:text-[#d6c9bf] sm:text-base">
             {t('landing.cta.description')}
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
               to={routes.accessRequest}
-              className="rounded-full bg-[#c96f29] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#a85a1f]"
+              className="inline-flex w-full items-center justify-center rounded-full bg-[#c96f29] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#a85a1f] sm:w-auto"
             >
               {t('landing.cta.submitRequest')}
             </Link>
             <Link
               to={routes.login}
-              className="rounded-full border border-[#d0ad8b] px-6 py-3 text-sm font-semibold text-[#8a4714] transition-colors hover:bg-[#f6dfcc] dark:border-[#5a4332] dark:text-[#f8d3b1] dark:hover:bg-[#2b221c]"
+              className="inline-flex w-full items-center justify-center rounded-full border border-[#d0ad8b] px-6 py-3 text-sm font-semibold text-[#8a4714] transition-colors hover:bg-[#f6dfcc] dark:border-[#5a4332] dark:text-[#f8d3b1] dark:hover:bg-[#2b221c] sm:w-auto"
             >
               {t('landing.cta.goToLogin')}
             </Link>

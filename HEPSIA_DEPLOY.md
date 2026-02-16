@@ -39,9 +39,9 @@
 
 Обычно на Hepsia это одна из следующих структур:
 
-- `public_html/api/` - если API будет доступен по адресу `api.nagiyev.com/api/`
-- `public_html/backend/` - если API будет доступен по адресу `api.nagiyev.com/backend/`
-- Или отдельный поддомен `api.nagiyev.com` → тогда в корне этого поддомена
+- `public_html/api/` - если API будет доступен по адресу `api.phi.nagiyev.com/api/`
+- `public_html/backend/` - если API будет доступен по адресу `api.phi.nagiyev.com/backend/`
+- Или отдельный поддомен `api.phi.nagiyev.com` → тогда в корне этого поддомена
 
 **Уточните у хостинга или в документации Hepsia, какой путь использовать для API.**
 
@@ -98,7 +98,7 @@ DB_PASSWORD=ваш_пароль_бд
 
 JWT_SECRET=сгенерируйте_случайную_длинную_строку_минимум_32_символа
 APP_ENV=production
-APP_URL=https://api.nagiyev.com/api
+APP_URL=https://api.phi.nagiyev.com/api
 ```
 
 **Как создать `.env` файл:**
@@ -132,7 +132,7 @@ openssl rand -base64 32
 Откройте в браузере:
 
 ```
-https://api.nagiyev.com/api/
+https://api.phi.nagiyev.com/api/
 ```
 
 Должна вернуться ошибка 404 или JSON с сообщением об ошибке (это нормально, значит API работает).
@@ -167,13 +167,13 @@ try {
 Если frontend будет на другом домене, откройте файл `backend/index.php` и измените строку 3:
 
 ```php
-header("Access-Control-Allow-Origin: https://finance.nagiyev.com");
+header("Access-Control-Allow-Origin: https://phi.nagiyev.com");
 ```
 
 Замените на ваш домен frontend:
 
 ```php
-header("Access-Control-Allow-Origin: https://finance.nagiyev.com");
+header("Access-Control-Allow-Origin: https://phi.nagiyev.com");
 ```
 
 ## Шаг 7: Загрузка Frontend (если нужно)
@@ -240,10 +240,10 @@ header("Access-Control-Allow-Origin: https://finance.nagiyev.com");
 **После выполнения всех шагов ваш API должен быть доступен по адресу:**
 
 ```
-https://api.nagiyev.com/api/
+https://api.phi.nagiyev.com/api/
 ```
 
 **Примеры запросов:**
 
-- Регистрация: `POST https://api.nagiyev.com/api/auth/register`
-- Вход: `POST https://api.nagiyev.com/api/auth/login`
+- Регистрация: `POST https://api.phi.nagiyev.com/api/auth/register`
+- Вход: `POST https://api.phi.nagiyev.com/api/auth/login`

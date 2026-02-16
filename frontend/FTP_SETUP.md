@@ -18,7 +18,7 @@
     "password": "your-password",
     "port": 21,
     "localRoot": "./dist",
-    "remoteRoot": "/finance.nagiyev.com",
+    "remoteRoot": "/phi.nagiyev.com",
     "include": ["*", "**/*"],
     "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**"],
     "deleteRemote": false,
@@ -47,7 +47,7 @@
 - **password** - пароль (обязательно)
 - **port** - порт FTP (по умолчанию: 21)
 - **localRoot** - локальная папка для загрузки (по умолчанию: `./dist`)
-- **remoteRoot** - удаленная папка на сервере (по умолчанию: `/`)
+- **remoteRoot** - удаленная папка на сервере (для этого проекта: `/phi.nagiyev.com`)
 - **include** - маски файлов для включения (по умолчанию: `["*", "**/*"]`)
 - **exclude** - маски файлов для исключения
 - **deleteRemote** - удалять ли файлы на сервере, которых нет локально (по умолчанию: `false`)
@@ -98,4 +98,3 @@
 - Убедитесь, что файл `secrets/ftp.json` существует в корне проекта
 - Проверьте синтаксис JSON в конфигурационном файле
 - Посмотрите логи в консоли при выполнении `npm run build`
-
