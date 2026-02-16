@@ -7,6 +7,7 @@ import { Operation } from "../../services/api";
 import { formatCurrency } from "../../utils/format";
 import { getCategoryStyle } from "../../utils/categoryStyle";
 import { useI18n } from "../../i18n";
+import { routes } from "../../constants/routes";
 
 const typeButtonBase =
   "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
@@ -26,11 +27,11 @@ const chipAllInactive =
   "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
 const chipAllActive = "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
 const categoryActionBase =
-  "inline-flex items-center justify-center h-8 w-8 rounded-full border text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
+  "inline-flex items-center gap-2 h-10 px-3 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
 const categoryActionSecondary =
-  "border-gray-200 text-gray-600 bg-white/70 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/60 dark:hover:bg-[#212121]";
+  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
 const categoryActionPrimary =
-  "border-[#d27b30]/40 text-[#b56726] bg-[#d27b30]/10 hover:bg-[#d27b30]/20";
+  "border-[#d27b30] bg-[#d27b30] text-white hover:bg-[#b56726] hover:border-[#b56726]";
 
 interface ActiveCategory {
   id: string;
@@ -96,8 +97,8 @@ export default function OperationsPanel({
     return activeCategories.filter((cat) => cat.type === typeFilter);
   }, [activeCategories, typeFilter]);
   const categoryTypeParam = typeFilter === "all" ? "" : `&type=${typeFilter}`;
-  const addCategoryHref = `/categories?action=add${categoryTypeParam}`;
-  const editCategoryHref = `/categories${
+  const addCategoryHref = `${routes.app.categories}?action=add${categoryTypeParam}`;
+  const editCategoryHref = `${routes.app.categories}${
     typeFilter === "all" ? "" : `?type=${typeFilter}`
   }`;
 
@@ -251,7 +252,8 @@ export default function OperationsPanel({
                   aria-label={t("categories.editAction")}
                   title={t("categories.editAction")}
                 >
-                  <MaterialIcon name="edit" className="h-3.5 w-3.5" />
+                  <MaterialIcon name="edit" className="h-4 w-4" />
+                  <span>{t("categories.editAction")}</span>
                 </Link>
                 <Link
                   to={addCategoryHref}
@@ -259,7 +261,8 @@ export default function OperationsPanel({
                   aria-label={t("categories.addCategory")}
                   title={t("categories.addCategory")}
                 >
-                  <MaterialIcon name="add" className="h-3.5 w-3.5" />
+                  <MaterialIcon name="add" className="h-4 w-4" />
+                  <span>{t("categories.addCategory")}</span>
                 </Link>
               </div>
             </div>
