@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -31,7 +31,8 @@
 }
 
 .pf-app-bg {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       900px 520px at 0% 0%,
       rgba(255, 255, 255, 0.7),
       transparent 60%
@@ -40,7 +41,8 @@
 }
 
 .dark .pf-app-bg {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       900px 520px at 0% 0%,
       rgba(255, 255, 255, 0.08),
       transparent 60%
@@ -53,7 +55,8 @@
 }
 
 .dark .shadow {
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.06),
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.06),
     0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
@@ -67,7 +70,8 @@
 }
 
 .pf-landing {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       1100px 680px at 5% -2%,
       rgba(251, 211, 174, 0.56),
       rgba(251, 211, 174, 0.04) 50%,
@@ -77,7 +81,8 @@
 }
 
 .dark .pf-landing {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       1100px 680px at 5% -2%,
       rgba(222, 149, 94, 0.28),
       rgba(222, 149, 94, 0.02) 45%,
@@ -94,50 +99,63 @@
   height: 640px;
   border-radius: 9999px;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(226, 146, 73, 0.22), rgba(226, 146, 73, 0));
+  background: radial-gradient(
+    circle,
+    rgba(226, 146, 73, 0.22),
+    rgba(226, 146, 73, 0)
+  );
   filter: blur(2px);
 }
 
 .pf-landing-card {
   border: 1px solid rgba(176, 124, 86, 0.28);
-  border-radius: 1.5rem;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 252, 246, 0.72));
-  box-shadow: 0 12px 30px rgba(69, 41, 19, 0.08);
+  border-radius: 1rem;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 252, 246, 0.72)
+  );
+  box-shadow: 0 8px 24px rgba(69, 41, 19, 0.07);
 }
 
 .dark .pf-landing-card {
   border: 1px solid rgba(130, 96, 70, 0.48);
-  background: linear-gradient(160deg, rgba(47, 35, 27, 0.88), rgba(30, 24, 20, 0.88));
+  background: linear-gradient(
+    160deg,
+    rgba(47, 35, 27, 0.88),
+    rgba(30, 24, 20, 0.88)
+  );
   box-shadow: none;
 }
 
 .pf-landing-logo,
 .pf-landing-title {
-  font-family: 'Space Grotesk', 'Manrope', 'Avenir Next', 'Segoe UI', sans-serif;
+  font-family:
+    "Space Grotesk", "Manrope", "Avenir Next", "Segoe UI", sans-serif;
 }
 
 .pf-landing-kicker {
   display: inline-flex;
   align-items: center;
-  border-radius: 9999px;
+  border-radius: 0.375rem;
   border: 1px solid rgba(163, 105, 58, 0.4);
   background: rgba(252, 237, 223, 0.9);
-  padding: 0.34rem 0.8rem;
-  font-size: 0.68rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #8f5328;
 }
 
 .dark .pf-landing-kicker {
   border-color: rgba(191, 134, 95, 0.42);
-  background: rgba(58, 40, 27, 0.86);
+  background: rgba(44, 31, 20, 0.9);
   color: #efc59f;
 }
 
 .pf-landing-shot {
-  border-radius: 1.1rem;
+  border-radius: 0.625rem;
   border: 1px solid rgba(188, 135, 95, 0.35);
   background: #fff9f2;
 }
@@ -185,7 +203,8 @@
 }
 
 :root {
-  font-family: 'Manrope', 'Avenir Next', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-family:
+    "Manrope", "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -228,11 +247,19 @@ html {
 }
 
 .pf-icon-filled {
-  font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 .pf-icon-outlined {
-  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 #root {
