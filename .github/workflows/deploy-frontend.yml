@@ -26,39 +26,20 @@ jobs:
         run: npm ci
         working-directory: frontend
 
-      - name: Write FTP config
-        shell: bash
-        env:
-          FRONTEND_FTP_HOST: ${{ secrets.FRONTEND_FTP_HOST }}
-          FRONTEND_FTP_USER: ${{ secrets.FRONTEND_FTP_USER }}
-          FRONTEND_FTP_PASS: ${{ secrets.FRONTEND_FTP_PASS }}
-          FRONTEND_FTP_PORT: ${{ secrets.FRONTEND_FTP_PORT }}
-          FRONTEND_FTP_REMOTE_ROOT: ${{ secrets.FRONTEND_FTP_REMOTE_ROOT }}
-        run: |
-          if [ -z "$FRONTEND_FTP_HOST" ] || [ -z "$FRONTEND_FTP_USER" ] || [ -z "$FRONTEND_FTP_PASS" ] || [ -z "$FRONTEND_FTP_REMOTE_ROOT" ]; then
-            echo "Missing one or more FTP secrets."
-            exit 1
-          fi
-          mkdir -p ../secrets
-          cat > ../secrets/ftp.json <<EOF
-          {
-            "frontend": {
-              "host": "$FRONTEND_FTP_HOST",
-              "user": "$FRONTEND_FTP_USER",
-              "password": "$FRONTEND_FTP_PASS",
-              "port": ${FRONTEND_FTP_PORT:-21},
-              "localRoot": "./dist",
-              "remoteRoot": "$FRONTEND_FTP_REMOTE_ROOT",
-              "include": [".htaccess", "**/.htaccess", "*", "**/*"],
-              "exclude": [".git/**", ".gitignore", ".DS_Store", "node_modules/**"],
-              "deleteRemote": false,
-              "forcePasv": true,
-              "secure": true
-            }
-          }
-          EOF
-        working-directory: frontend
-
-      - name: Build (FTP upload via Vite)
+      - name: Build frontend
         run: npm run build
         working-directory: frontend
+
+      - name: Deploy frontend
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FRONTEND_FTP_HOST }}
+          username: ${{ secrets.FRONTEND_FTP_USER }}
+          password: ${{ secrets.FRONTEND_FTP_PASS }}
+          protocol: ftps
+          local-dir: frontend/dist/
+          server-dir: ${{ secrets.FRONTEND_FTP_REMOTE_ROOT }}/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**

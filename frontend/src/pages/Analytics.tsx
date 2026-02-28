@@ -1169,38 +1169,6 @@ export default function Analytics() {
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
-                    <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
-                      {t("analytics.incomeByMonthBar")}
-                    </h2>
-                    {hasMonthlyIncome ? (
-                      <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={monthlyIncomeData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="month" />
-                          <YAxis />
-                          <Tooltip
-                            formatter={(value: number) =>
-                              formatCurrency(value * 100)
-                            }
-                          />
-                          <Legend />
-                          <Bar
-                            dataKey="amount"
-                            fill="#10b981"
-                            name={t("analytics.amount")}
-                            radius={[4, 4, 0, 0]}
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    ) : (
-                      <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">
-                        {t("analytics.noIncomeData")}
-                      </div>
-                    )}
-                  </div>
-                </div>
               </>
             ) : (
               <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">

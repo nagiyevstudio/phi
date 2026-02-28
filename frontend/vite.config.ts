@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { readFileSync } from 'fs'
-import { vitePluginFtp } from './vite-plugin-ftp'
 
 // Читаем версию из package.json
 const packageJson = JSON.parse(readFileSync(path.resolve(__dirname, 'package.json'), 'utf-8'))
@@ -13,11 +12,7 @@ const appReleaseDate = releaseDateMatch?.[1]?.trim() || 'unknown'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    // Автоматическая загрузка на FTP после билда
-    vitePluginFtp('../secrets/ftp.json'),
-  ],
+  plugins: [react()],
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
     __APP_RELEASE_DATE__: JSON.stringify(appReleaseDate),

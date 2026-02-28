@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "build": "cd frontend && npm run build",
-    "deploy:backend": "cd backend && node deploy.js",
     "version:status": "node scripts/release-tools.js status",
     "devlog:sync": "node scripts/release-tools.js sync-devlog",
     "release:prepare": "node scripts/release-tools.js prepare-release"

@@ -255,51 +255,10 @@ dailyLimit = max(0, remaining) / max(1, daysLeft)
 3. Настройте proxy для `/api` запросов на backend сервер
 4. Или настройте переменную окружения `VITE_API_BASE_URL` на полный URL backend
 
-#### Автоматическая загрузка на FTP
+### Автодеплой
 
-Проект настроен для автоматической загрузки на FTP-сервер при каждом билде.
-
-**Настройка:**
-
-1. **Frontend** (автоматически при билде):
-   - Конфигурация: `secrets/ftp.json` (секция `frontend`)
-   - Загружает `frontend/dist/` → `/phi.nagiyev.com` на FTP
-
-2. **Backend** (через скрипт):
-   - Конфигурация: `secrets/ftp.json` (секция `backend`)
-   - Загружает `backend/` → `/api.phi.nagiyev.com` на FTP
-
-**Команды для деплоя:**
-
-```bash
-# Деплой только фронтенда (автоматически при билде)
-npm run deploy:frontend
-# или просто
-npm run build
-
-# Деплой только бэкенда
-npm run deploy:backend
-
-# Деплой всего проекта (фронтенд + бэкенд)
-npm run deploy:all
-```
-
-**Первоначальная настройка:**
-
-Создайте `secrets/ftp.json` на основе `secrets/ftp.example.json` и заполните ваши данные.
-
-**GitHub Actions (если деплой через push):**
-
-- Frontend workflow `/.github/workflows/deploy-frontend.yml`:
-  `FRONTEND_FTP_HOST`, `FRONTEND_FTP_USER`, `FRONTEND_FTP_PASS`, `FRONTEND_FTP_PORT`, `FRONTEND_FTP_REMOTE_ROOT`
-- Backend workflow `/.github/workflows/deploy-backend.yml`:
-  `BACKEND_FTP_HOST`, `BACKEND_FTP_USER`, `BACKEND_FTP_PASS`, `BACKEND_FTP_PORT`, `BACKEND_FTP_REMOTE_ROOT`
-- Прод-значения `remote root`:
-  `/phi.nagiyev.com` для frontend и `/api.phi.nagiyev.com` для backend
-
-Подробная инструкция: [frontend/FTP_SETUP.md](frontend/FTP_SETUP.md)
-
-⚠️ **Важно:** Файл `secrets/ftp.json` содержит чувствительные данные и не должен коммититься в репозиторий.
+Деплой выполняется автоматически при `git push` в ветку `master` через GitHub Actions.
+Подробности и релизный поток: `DEPLOY.md`.
 
 ## Безопасность
 

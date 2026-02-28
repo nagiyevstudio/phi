@@ -6,11 +6,7 @@ vendor/
 .env
 .env.local
 .env.*.local
-
-# FTP configuration (contains sensitive data)
-frontend/ftp-config.json
-backend/ftp-config.json
-secrets/ftp.json
+secrets/
 
 # Build outputs
 frontend/dist/
