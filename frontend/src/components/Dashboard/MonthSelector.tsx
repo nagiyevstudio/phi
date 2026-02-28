@@ -1,7 +1,11 @@
-import type { ChangeEvent } from 'react';
-import MaterialIcon from '../common/MaterialIcon';
-import { getCurrentMonth, getPreviousMonth, getNextMonth } from '../../utils/format';
-import { getLocale, useI18n } from '../../i18n';
+import type { ChangeEvent } from "react";
+import MaterialIcon from "../common/MaterialIcon";
+import {
+  getCurrentMonth,
+  getPreviousMonth,
+  getNextMonth,
+} from "../../utils/format";
+import { useI18n } from "../../i18n";
 
 interface MonthSelectorProps {
   selectedMonth: string;
@@ -16,21 +20,17 @@ export default function MonthSelector({
 }: MonthSelectorProps) {
   const { t } = useI18n();
   const currentMonth = getCurrentMonth();
-  const [selectedYear, selectedMonthPart] = selectedMonth.split('-');
+  const [selectedYear, selectedMonthPart] = selectedMonth.split("-");
   const currentYear = new Date().getFullYear();
   const selectedYearNumber = Number(selectedYear);
   const rangeStart = Math.min(currentYear - 5, selectedYearNumber);
   const rangeEnd = Math.max(currentYear + 1, selectedYearNumber);
   const years = Array.from({ length: rangeEnd - rangeStart + 1 }, (_, index) =>
-    String(rangeStart + index)
+    String(rangeStart + index),
   ).reverse();
-  const locale = getLocale();
   const months = Array.from({ length: 12 }, (_, index) => {
-    const label = new Date(2000, index, 1).toLocaleDateString(locale, { month: 'long' });
-    return {
-      value: String(index + 1).padStart(2, '0'),
-      label: label.charAt(0).toUpperCase() + label.slice(1),
-    };
+    const value = String(index + 1).padStart(2, "0");
+    return { value, label: t(`months.${value}`) };
   });
 
   const handlePrevious = () => {
@@ -59,20 +59,20 @@ export default function MonthSelector({
         {showNavigation && (
           <div className="flex items-center justify-center gap-2 sm:justify-start">
             <button
-            onClick={handlePrevious}
-            className="inline-flex h-10 w-10 items-center justify-center text-gray-700 dark:text-[#d4d4d8] bg-white dark:bg-[#1f1f1f] border border-gray-300 dark:border-[#3a3a3a] rounded-md hover:bg-gray-50 dark:hover:bg-[#252525]"
-            aria-label={t('monthSelector.prev')}
-          >
-            <MaterialIcon name="chevron-left" className="h-5 w-5" />
-          </button>
-          <button
-            onClick={handleNext}
-            className="inline-flex h-10 w-10 items-center justify-center text-gray-700 dark:text-[#d4d4d8] bg-white dark:bg-[#1f1f1f] border border-gray-300 dark:border-[#3a3a3a] rounded-md hover:bg-gray-50 dark:hover:bg-[#252525]"
-            aria-label={t('monthSelector.next')}
-          >
-            <MaterialIcon name="chevron-right" className="h-5 w-5" />
-          </button>
-        </div>
+              onClick={handlePrevious}
+              className="inline-flex h-10 w-10 items-center justify-center text-gray-700 dark:text-[#d4d4d8] bg-white dark:bg-[#1f1f1f] border border-gray-300 dark:border-[#3a3a3a] rounded-md hover:bg-gray-50 dark:hover:bg-[#252525]"
+              aria-label={t("monthSelector.prev")}
+            >
+              <MaterialIcon name="chevron-left" className="h-5 w-5" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="inline-flex h-10 w-10 items-center justify-center text-gray-700 dark:text-[#d4d4d8] bg-white dark:bg-[#1f1f1f] border border-gray-300 dark:border-[#3a3a3a] rounded-md hover:bg-gray-50 dark:hover:bg-[#252525]"
+              aria-label={t("monthSelector.next")}
+            >
+              <MaterialIcon name="chevron-right" className="h-5 w-5" />
+            </button>
+          </div>
         )}
 
         <div className="flex flex-wrap items-center justify-center gap-2">
@@ -80,7 +80,7 @@ export default function MonthSelector({
             className="pf-select w-40 max-w-full"
             value={selectedMonthPart}
             onChange={handleMonthChange}
-            aria-label={t('monthSelector.month')}
+            aria-label={t("monthSelector.month")}
           >
             {months.map((month) => (
               <option key={month.value} value={month.value}>
@@ -92,7 +92,7 @@ export default function MonthSelector({
             className="pf-select w-28 max-w-full"
             value={selectedYear}
             onChange={handleYearChange}
-            aria-label={t('monthSelector.year')}
+            aria-label={t("monthSelector.year")}
           >
             {years.map((year) => (
               <option key={year} value={year}>
@@ -105,7 +105,7 @@ export default function MonthSelector({
               onClick={handleCurrent}
               className="px-3 py-1 text-xs font-medium text-[#d27b30] dark:text-[#f0b27a] hover:text-[#b56726]"
             >
-              {t('monthSelector.current')}
+              {t("monthSelector.current")}
             </button>
           )}
         </div>
@@ -113,5 +113,3 @@ export default function MonthSelector({
     </div>
   );
 }
-
-

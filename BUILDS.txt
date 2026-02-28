@@ -6,6 +6,30 @@ Series: 1.0.x
 - Each completed task increments the patch version by 1.
 - If a release includes multiple tasks, increase the patch version by the total count of tasks.
 - Example: 5 tasks in one release => patch version +5.
+- **Single source of truth: `frontend/package.json`** — версия всегда берётся отсюда.
+- При каждом бампе версии обязательно обновлять `BUILDS.txt` (через `npm run release:prepare` или вручную по формату ниже).
+- Нельзя бампить `package.json` без одновременного обновления `BUILDS.txt`.
+
+## 1.0.046
+- Date: 2026-02-28
+- Status: unreleased
+- Changes:
+  1. feat: redesign OperationsList — double-tap/kebab menu, hide edit/delete buttons, compact row layout
+  2. feat: add income by category pie chart to monthly analytics tab (backend query + API type + frontend)
+  3. fix: Azerbaijani month names M01/M02 bug in MonthSelector — replace Intl with i18n keys
+  4. feat: add monthly income bar chart to yearly analytics tab
+
+## 1.0.042
+- Date: 2026-02-14
+- Status: released
+- Changes:
+  1. fix: use compact iOS date inputs and fix layout overflow on mobile
+
+## 1.0.041
+- Date: 2026-02-14
+- Status: released
+- Changes:
+  1. fix: category links broken under /app route
 
 ## 1.0.040
 - Date: 2026-02-14

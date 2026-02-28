@@ -819,6 +819,12 @@ export default function Analytics() {
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
+                <div className="mb-6">
+                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                    <div className="pf-skeleton h-5 w-52 rounded-full mb-4" />
+                    <div className="pf-skeleton h-72 w-full rounded-2xl" />
+                  </div>
+                </div>
               </>
             ) : yearlyIncome ? (
               <>
@@ -1025,6 +1031,39 @@ export default function Analytics() {
                           </div>
                         )}
                       </>
+                    ) : (
+                      <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">
+                        {t("analytics.noIncomeData")}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
+                      {t("analytics.incomeByMonthBar")}
+                    </h2>
+                    {hasMonthlyIncome ? (
+                      <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={monthlyIncomeData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="month" />
+                          <YAxis />
+                          <Tooltip
+                            formatter={(value: number) =>
+                              formatCurrency(value * 100)
+                            }
+                          />
+                          <Legend />
+                          <Bar
+                            dataKey="amount"
+                            fill="#10b981"
+                            name={t("analytics.amount")}
+                            radius={[4, 4, 0, 0]}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
                     ) : (
                       <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">
                         {t("analytics.noIncomeData")}
