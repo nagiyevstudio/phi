@@ -13,7 +13,7 @@
   "analytics.incomeByCategoryAll": "Доходы по категориям за все время",
   "analytics.incomeByCategoryYear": "Доходы по категориям по годам",
   "analytics.incomeByMonth": "Доходы по месяцам",
-  "analytics.incomeByMonthBar": "Доходы по месяцам (диаграмма)"
+  "analytics.incomeByMonthBar": "Доходы по месяцам (диаграмма)",
   "analytics.incomeForYear": "Доходы за {year}",
   "analytics.maxDay": "Максимум за день",
   "analytics.maxMonth": "Максимум за месяц",
