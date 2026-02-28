@@ -10,6 +10,11 @@ Series: 1.0.x
 - При каждом бампе версии обязательно обновлять `BUILDS.txt` (через `npm run release:prepare` или вручную по формату ниже).
 - Нельзя бампить `package.json` без одновременного обновления `BUILDS.txt`.
 
+## 1.0.047
+- Date: 2026-02-28
+- Status: released
+- Changes:
+  1. fix: missing comma in ru.json (build error)
 ## 1.0.046
 - Date: 2026-02-28
 - Status: unreleased

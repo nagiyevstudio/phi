@@ -409,11 +409,38 @@ try {
         ];
     }, $monthlyIncome);
 
+    $monthlyExpenseSql = "
+        SELECT 
+            DATE_FORMAT(o.date, '%Y-%m') as month,
+            COALESCE(SUM(o.amount_minor), 0) as total_minor,
+            COUNT(o.id) as transaction_count
+        FROM operations o
+        WHERE o.user_id = ? 
+            AND o.type = 'expense'
+            AND o.date >= ?
+            AND o.date < ?
+        GROUP BY DATE_FORMAT(o.date, '%Y-%m')
+        ORDER BY month ASC
+    ";
+
+    $stmt = $pdo->prepare($monthlyExpenseSql);
+    $stmt->execute([$userId, $startDate, $endDate]);
+    $monthlyExpense = $stmt->fetchAll();
+
+    $monthlyExpenseData = array_map(function($row) {
+        return [
+            'month' => $row['month'],
+            'totalMinor' => (int)$row['total_minor'],
+            'transactionCount' => (int)$row['transaction_count']
+        ];
+    }, $monthlyExpense);
+
     sendSuccess([
         'year' => $year,
         'totalMinor' => $totalIncome,
         'incomeByCategory' => $categoryIncomeData,
-        'incomeByMonth' => $monthlyIncomeData
+        'incomeByMonth' => $monthlyIncomeData,
+        'expensesByMonth' => $monthlyExpenseData
     ]);
     
 } catch (Exception $e) {

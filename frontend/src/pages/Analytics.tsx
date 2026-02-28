@@ -290,6 +290,57 @@ export default function Analytics() {
       })()
     : [];
   const hasMonthlyIncome = monthlyIncomeData.some((item) => item.amount > 0);
+
+  const monthlyExpenseMap = yearlyIncome
+    ? new Map(
+        yearlyIncome.expensesByMonth.map((item) => [
+          item.month,
+          item.totalMinor,
+        ]),
+      )
+    : null;
+  const monthlyExpenseData = yearlyIncome
+    ? Array.from({ length: 12 }, (_, index) => {
+        const monthIndex = index + 1;
+        const monthKey = `${selectedYear}-${String(monthIndex).padStart(2, "0")}`;
+        const amountMinor = monthlyExpenseMap?.get(monthKey) || 0;
+        return {
+          month: new Date(Number(selectedYear), index, 1).toLocaleDateString(
+            locale,
+            { month: "short" },
+          ),
+          amount: amountMinor / 100,
+        };
+      })
+    : [];
+  const hasMonthlyExpense = monthlyExpenseData.some((item) => item.amount > 0);
+  const monthlyExpenseStats =
+    yearlyIncome && monthlyExpenseMap
+      ? (() => {
+          const data = Array.from({ length: 12 }, (_, index) => {
+            const monthIndex = index + 1;
+            const monthKey = `${selectedYear}-${String(monthIndex).padStart(2, "0")}`;
+            return {
+              month: new Date(
+                Number(selectedYear),
+                index,
+                1,
+              ).toLocaleDateString(locale, { month: "short" }),
+              amountMinor: monthlyExpenseMap.get(monthKey) || 0,
+            };
+          });
+          const [first, ...rest] = data;
+          let min = first;
+          let max = first;
+          let sumMinor = first.amountMinor;
+          for (const item of rest) {
+            sumMinor += item.amountMinor;
+            if (item.amountMinor < min.amountMinor) min = item;
+            if (item.amountMinor > max.amountMinor) max = item;
+          }
+          return { min, max, averageMinor: Math.round(sumMinor / data.length) };
+        })()
+      : null;
   const monthlyIncomeStats =
     yearlyIncome && monthlyIncomeMap
       ? (() => {
@@ -821,6 +872,12 @@ export default function Analytics() {
                 </div>
                 <div className="mb-6">
                   <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                    <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
+                    <div className="pf-skeleton h-72 w-full rounded-2xl" />
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
                     <div className="pf-skeleton h-5 w-52 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
@@ -1034,6 +1091,79 @@ export default function Analytics() {
                     ) : (
                       <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">
                         {t("analytics.noIncomeData")}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
+                      {t("analytics.expensesByMonth")}
+                    </h2>
+                    {hasMonthlyExpense ? (
+                      <>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <LineChart data={monthlyExpenseData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis />
+                            <Tooltip
+                              formatter={(value: number) =>
+                                formatCurrency(value * 100)
+                              }
+                            />
+                            <Legend />
+                            <Line
+                              type="monotone"
+                              dataKey="amount"
+                              stroke="#d27b30"
+                              strokeWidth={2}
+                              name={t("analytics.amount")}
+                              dot={{ r: 3 }}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                        {monthlyExpenseStats && (
+                          <div className="mt-4 space-y-2 text-sm">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-gray-500 dark:text-[#a3a3a3]">
+                                {t("analytics.maxMonth")}
+                              </span>
+                              <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
+                                {monthlyExpenseStats.max.month} —{" "}
+                                {formatCurrency(
+                                  monthlyExpenseStats.max.amountMinor,
+                                )}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-gray-500 dark:text-[#a3a3a3]">
+                                {t("analytics.minMonth")}
+                              </span>
+                              <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
+                                {monthlyExpenseStats.min.month} —{" "}
+                                {formatCurrency(
+                                  monthlyExpenseStats.min.amountMinor,
+                                )}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-gray-500 dark:text-[#a3a3a3]">
+                                {t("analytics.averageMonth")}
+                              </span>
+                              <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
+                                {formatCurrency(
+                                  monthlyExpenseStats.averageMinor,
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">
+                        {t("analytics.noExpenseData")}
                       </div>
                     )}
                   </div>

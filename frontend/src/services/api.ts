@@ -358,6 +358,11 @@ export interface YearlyIncomeAnalyticsData {
     totalMinor: number;
     transactionCount: number;
   }>;
+  expensesByMonth: Array<{
+    month: string;
+    totalMinor: number;
+    transactionCount: number;
+  }>;
 }
 
 export interface IncomeYearsData {

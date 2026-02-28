@@ -9,6 +9,7 @@
   "analytics.expectedRemaining": "Expected expense",
   "analytics.expensesByCategory": "Expenses by category",
   "analytics.expensesByDay": "Expenses by day",
+  "analytics.expensesByMonth": "Expenses by month",
   "analytics.incomeByCategory": "Income by category",
   "analytics.incomeByCategoryAll": "All-time income by category",
   "analytics.incomeByCategoryYear": "Income by category over years",

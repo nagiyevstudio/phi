@@ -2,10 +2,23 @@
 
 Автогенерируемый журнал изменений из `git log`.
 
-Обновлено: 2026-02-14
+Обновлено: 2026-02-28
 
 | Date | Commit | Message |
 |---|---|---|
+| 2026-02-28 | `431d48c` | fix: missing comma in ru.json (build error) |
+| 2026-02-28 | `3b47381` | 1.0.046: redesign OperationsList, monthly income pie chart, month names fix, yearly income bar chart, sync BUILDS.txt |
+| 2026-02-28 | `1c2136f` | Add income by category analytics and improve tooltip formatting |
+| 2026-02-28 | `139d1b6` | list change |
+| 2026-02-28 | `ff0cba7` | fz |
+| 2026-02-16 | `2756d7b` | Use compact iOS date inputs and bump version to 1.0.042 |
+| 2026-02-16 | `cd4799c` | Fix category links under /app and bump app version to 1.0.041 |
+| 2026-02-16 | `10d5ce3` | Replace mobile date pickers with stable select-based controls |
+| 2026-02-16 | `11d0cb8` | fix: add SPA htaccess and ensure dotfiles are uploaded via FTP deploy |
+| 2026-02-16 | `f03167b` | fix: use api.phi domain in production env and default api base |
+| 2026-02-16 | `079c920` | fix: backend deploy workflow install ftp deps from frontend |
+| 2026-02-16 | `95ad03b` | chore: migrate domains and enable separate frontend/backend git deploy |
+| 2026-02-14 | `0802851` | Версия 1.0.040: релиз, локализация лендинга и авто-версионирование |
 | 2026-02-14 | `46766d5` | feat: localize landing in 3 languages and enable manual deploy workflow |
 | 2026-02-14 | `8f1282e` | feat: Implement access request feature and update routing |
 | 2026-02-05 | `472e1ca` | Fix iOS date input sizing |
