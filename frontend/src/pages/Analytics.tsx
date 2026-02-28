@@ -51,7 +51,9 @@ const CustomTooltip = ({ active, payload, formatter }: any) => {
     <div
       className="rounded-lg border p-3 shadow-lg"
       style={{
-        backgroundColor: isDark ? "rgba(26, 26, 26, 0.95)" : "rgba(255, 255, 255, 0.95)",
+        backgroundColor: isDark
+          ? "rgba(26, 26, 26, 0.95)"
+          : "rgba(255, 255, 255, 0.95)",
         borderColor: isDark ? "#2a2a2a" : "#e5e7eb",
         color: isDark ? "#e5e7eb" : "#111827",
       }}
@@ -87,12 +89,12 @@ const CustomTooltip = ({ active, payload, formatter }: any) => {
 export default function Analytics() {
   const { t } = useI18n();
   const [activeTab, setActiveTab] = useState<"month" | "year" | "overall">(
-    "month"
+    "month",
   );
   const [showHelp, setShowHelp] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
   const [selectedYear, setSelectedYear] = useState(
-    () => selectedMonth.split("-")[0]
+    () => selectedMonth.split("-")[0],
   );
   const [selectedMonthYear, selectedMonthPart] = selectedMonth.split("-");
   const selectedMonthIndex = Number(selectedMonthPart) - 1;
@@ -168,8 +170,22 @@ export default function Analytics() {
         color: item.color || FALLBACK_COLORS[index % FALLBACK_COLORS.length],
       }))
     : [];
-  
+
   const totalExpenses = categoryData.reduce((sum, item) => sum + item.value, 0);
+
+  const incomeCategoryData = analytics
+    ? analytics.incomesByCategory.map((item, index) => ({
+        name: item.categoryName,
+        value: item.totalMinor / 100,
+        percentage: item.percentage,
+        color: item.color || FALLBACK_COLORS[index % FALLBACK_COLORS.length],
+      }))
+    : [];
+
+  const totalMonthlyIncome = incomeCategoryData.reduce(
+    (sum, item) => sum + item.value,
+    0,
+  );
 
   const dailyData = analytics
     ? analytics.expensesByDay.map((item) => ({
@@ -213,7 +229,7 @@ export default function Analytics() {
     const daysInMonth = new Date(
       Number(selectedMonthYear),
       selectedMonthIndex + 1,
-      0
+      0,
     ).getDate();
     if (
       now.getFullYear() === Number(selectedMonthYear) &&
@@ -224,7 +240,7 @@ export default function Analytics() {
     const selectedMonthStart = new Date(
       Number(selectedMonthYear),
       selectedMonthIndex,
-      1
+      1,
     );
     if (now < selectedMonthStart) {
       return daysInMonth;
@@ -243,12 +259,15 @@ export default function Analytics() {
         color: item.color || FALLBACK_COLORS[index % FALLBACK_COLORS.length],
       }))
     : [];
-  
-  const totalYearlyIncome = yearlyIncomeCategoryData.reduce((sum, item) => sum + item.value, 0);
+
+  const totalYearlyIncome = yearlyIncomeCategoryData.reduce(
+    (sum, item) => sum + item.value,
+    0,
+  );
 
   const monthlyIncomeMap = yearlyIncome
     ? new Map(
-        yearlyIncome.incomeByMonth.map((item) => [item.month, item.totalMinor])
+        yearlyIncome.incomeByMonth.map((item) => [item.month, item.totalMinor]),
       )
     : null;
   const monthlyIncomeData = yearlyIncome
@@ -257,19 +276,18 @@ export default function Analytics() {
           const monthIndex = index + 1;
           const monthKey = `${selectedYear}-${String(monthIndex).padStart(
             2,
-            "0"
+            "0",
           )}`;
           const amountMinor = monthlyIncomeMap?.get(monthKey) || 0;
-            return {
-              month: new Date(
-                Number(selectedYear),
-                index,
-                1
-              ).toLocaleDateString(locale, { month: "short" }),
-              amount: amountMinor / 100,
-            };
-          });
-        })()
+          return {
+            month: new Date(Number(selectedYear), index, 1).toLocaleDateString(
+              locale,
+              { month: "short" },
+            ),
+            amount: amountMinor / 100,
+          };
+        });
+      })()
     : [];
   const hasMonthlyIncome = monthlyIncomeData.some((item) => item.amount > 0);
   const monthlyIncomeStats =
@@ -279,13 +297,13 @@ export default function Analytics() {
             const monthIndex = index + 1;
             const monthKey = `${selectedYear}-${String(monthIndex).padStart(
               2,
-              "0"
+              "0",
             )}`;
             return {
               month: new Date(
                 Number(selectedYear),
                 index,
-                1
+                1,
               ).toLocaleDateString(locale, { month: "short" }),
               amountMinor: monthlyIncomeMap.get(monthKey) || 0,
             };
@@ -326,18 +344,25 @@ export default function Analytics() {
     percentage: item.percentage,
     color: item.color,
   }));
-  
-  const totalOverallIncome = overallCategoryData.reduce((sum, item) => sum + item.value, 0);
+
+  const totalOverallIncome = overallCategoryData.reduce(
+    (sum, item) => sum + item.value,
+    0,
+  );
 
   // Состояние для выбранных категорий в line chart
-  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(() => {
-    return new Set(overallCategoryMeta.map((cat) => cat.categoryId));
-  });
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
+    () => {
+      return new Set(overallCategoryMeta.map((cat) => cat.categoryId));
+    },
+  );
 
   // Обновляем выбранные категории при изменении данных
   useEffect(() => {
     if (overallCategoryMeta.length > 0) {
-      setSelectedCategories(new Set(overallCategoryMeta.map((cat) => cat.categoryId)));
+      setSelectedCategories(
+        new Set(overallCategoryMeta.map((cat) => cat.categoryId)),
+      );
     }
   }, [overallCategoryMeta.length]);
 
@@ -354,7 +379,7 @@ export default function Analytics() {
   };
 
   const visibleCategories = overallCategoryMeta.filter((cat) =>
-    selectedCategories.has(cat.categoryId)
+    selectedCategories.has(cat.categoryId),
   );
 
   const overallLineData = overallIncome
@@ -371,7 +396,8 @@ export default function Analytics() {
           const row: Record<string, number | string> = { year: item.year };
           const categoryMap = yearMap.get(item.year);
           overallCategoryMeta.forEach((category) => {
-            row[category.categoryId] = (categoryMap?.get(category.categoryId) || 0) / 100;
+            row[category.categoryId] =
+              (categoryMap?.get(category.categoryId) || 0) / 100;
           });
           return row;
         });
@@ -383,7 +409,9 @@ export default function Analytics() {
         amount: item.totalMinor / 100,
       }))
     : [];
-  const hasOverallTotals = overallYearTotalsData.some((item) => item.amount > 0);
+  const hasOverallTotals = overallYearTotalsData.some(
+    (item) => item.amount > 0,
+  );
 
   const hasOverallLine =
     overallLineData.length > 0 && overallCategoryMeta.length > 0;
@@ -422,7 +450,11 @@ export default function Analytics() {
             <MaterialIcon name="help" className="h-5 w-5" variant="outlined" />
           </button>
         </div>
-        <HelpModal helpType="analytics" isOpen={showHelp} onClose={() => setShowHelp(false)} />
+        <HelpModal
+          helpType="analytics"
+          isOpen={showHelp}
+          onClose={() => setShowHelp(false)}
+        />
 
         {isMonthTab && (
           <>
@@ -466,6 +498,12 @@ export default function Analytics() {
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
+                <div className="mb-6">
+                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                    <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
+                    <div className="pf-skeleton h-72 w-full rounded-2xl" />
+                  </div>
+                </div>
               </>
             ) : !analytics ? (
               <div className="text-center py-8">{t("analytics.empty")}</div>
@@ -501,10 +539,15 @@ export default function Analytics() {
                                 dataKey="value"
                                 animationBegin={0}
                                 animationDuration={800}
-                                activeShape={{ outerRadius: 88, innerRadius: 60 } as any}
+                                activeShape={
+                                  { outerRadius: 88, innerRadius: 60 } as any
+                                }
                               >
                                 {categoryData.map((entry, index) => (
-                                  <Cell key={`cell-${index}`} fill={entry.color} />
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={entry.color}
+                                  />
                                 ))}
                                 <Label
                                   value={formatCurrency(totalExpenses * 100)}
@@ -517,7 +560,9 @@ export default function Analytics() {
                                   <CustomTooltip
                                     active={active}
                                     payload={payload}
-                                    formatter={(value: number) => formatCurrency(value * 100)}
+                                    formatter={(value: number) =>
+                                      formatCurrency(value * 100)
+                                    }
                                   />
                                 )}
                               />
@@ -648,6 +693,105 @@ export default function Analytics() {
                     )}
                   </div>
                 </div>
+
+                <div className="mb-6">
+                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
+                      {t("analytics.incomeByCategory")}
+                    </h2>
+                    {incomeCategoryData.length > 0 ? (
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:gap-6">
+                        <div className="flex-shrink-0 lg:w-1/2">
+                          <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                              <Pie
+                                data={incomeCategoryData}
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                label={({ percentage }) =>
+                                  percentage > 5
+                                    ? `${percentage.toFixed(1)}%`
+                                    : ""
+                                }
+                                outerRadius={80}
+                                innerRadius={60}
+                                fill="#10b981"
+                                dataKey="value"
+                                animationBegin={0}
+                                animationDuration={800}
+                                activeShape={
+                                  { outerRadius: 88, innerRadius: 60 } as any
+                                }
+                              >
+                                {incomeCategoryData.map((entry, index) => (
+                                  <Cell
+                                    key={`income-cell-${index}`}
+                                    fill={entry.color}
+                                  />
+                                ))}
+                                <Label
+                                  value={formatCurrency(
+                                    totalMonthlyIncome * 100,
+                                  )}
+                                  position="center"
+                                  className="fill-gray-900 dark:fill-[#e5e7eb] text-sm font-semibold"
+                                />
+                              </Pie>
+                              <Tooltip
+                                content={({ active, payload }) => (
+                                  <CustomTooltip
+                                    active={active}
+                                    payload={payload}
+                                    formatter={(value: number) =>
+                                      formatCurrency(value * 100)
+                                    }
+                                  />
+                                )}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </div>
+                        <div className="mt-4 lg:mt-0 lg:flex-1 space-y-2">
+                          {analytics.incomesByCategory.map((item, index) => (
+                            <div
+                              key={item.categoryId}
+                              className="flex items-center justify-between text-sm"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <div
+                                  className="w-3 h-3 rounded-full"
+                                  style={{
+                                    backgroundColor:
+                                      item.color ||
+                                      FALLBACK_COLORS[
+                                        index % FALLBACK_COLORS.length
+                                      ],
+                                  }}
+                                />
+                                <span className="text-gray-900 dark:text-[#e5e7eb]">
+                                  {item.categoryName}
+                                </span>
+                              </div>
+                              <div className="text-right">
+                                <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
+                                  {formatCurrency(item.totalMinor)}
+                                </span>
+                                <span className="text-gray-500 dark:text-[#a3a3a3] ml-2">
+                                  ({item.percentage.toFixed(1)}%)
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-gray-500 dark:text-[#a3a3a3]">
+                        {t("analytics.noIncomeData")}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </>
             )}
           </>
@@ -741,13 +885,22 @@ export default function Analytics() {
                                 dataKey="value"
                                 animationBegin={0}
                                 animationDuration={800}
-                                activeShape={{ outerRadius: 88, innerRadius: 60 } as any}
+                                activeShape={
+                                  { outerRadius: 88, innerRadius: 60 } as any
+                                }
                               >
-                                {yearlyIncomeCategoryData.map((entry, index) => (
-                                  <Cell key={`income-cell-${index}`} fill={entry.color} />
-                                ))}
+                                {yearlyIncomeCategoryData.map(
+                                  (entry, index) => (
+                                    <Cell
+                                      key={`income-cell-${index}`}
+                                      fill={entry.color}
+                                    />
+                                  ),
+                                )}
                                 <Label
-                                  value={formatCurrency(totalYearlyIncome * 100)}
+                                  value={formatCurrency(
+                                    totalYearlyIncome * 100,
+                                  )}
                                   position="center"
                                   className="fill-gray-900 dark:fill-[#e5e7eb] text-sm font-semibold"
                                 />
@@ -757,7 +910,9 @@ export default function Analytics() {
                                   <CustomTooltip
                                     active={active}
                                     payload={payload}
-                                    formatter={(value: number) => formatCurrency(value * 100)}
+                                    formatter={(value: number) =>
+                                      formatCurrency(value * 100)
+                                    }
                                   />
                                 )}
                               />
@@ -841,7 +996,9 @@ export default function Analytics() {
                               </span>
                               <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
                                 {monthlyIncomeStats.max.month} -{" "}
-                                {formatCurrency(monthlyIncomeStats.max.amountMinor)}
+                                {formatCurrency(
+                                  monthlyIncomeStats.max.amountMinor,
+                                )}
                               </span>
                             </div>
                             <div className="flex items-center justify-between gap-2">
@@ -850,7 +1007,9 @@ export default function Analytics() {
                               </span>
                               <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
                                 {monthlyIncomeStats.min.month} -{" "}
-                                {formatCurrency(monthlyIncomeStats.min.amountMinor)}
+                                {formatCurrency(
+                                  monthlyIncomeStats.min.amountMinor,
+                                )}
                               </span>
                             </div>
                             <div className="flex items-center justify-between gap-2">
@@ -858,7 +1017,9 @@ export default function Analytics() {
                                 {t("analytics.averageMonth")}
                               </span>
                               <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
-                                {formatCurrency(monthlyIncomeStats.averageMinor)}
+                                {formatCurrency(
+                                  monthlyIncomeStats.averageMinor,
+                                )}
                               </span>
                             </div>
                           </div>
@@ -966,13 +1127,20 @@ export default function Analytics() {
                                 dataKey="value"
                                 animationBegin={0}
                                 animationDuration={800}
-                                activeShape={{ outerRadius: 88, innerRadius: 60 } as any}
+                                activeShape={
+                                  { outerRadius: 88, innerRadius: 60 } as any
+                                }
                               >
                                 {overallCategoryData.map((entry, index) => (
-                                  <Cell key={`overall-cell-${index}`} fill={entry.color} />
+                                  <Cell
+                                    key={`overall-cell-${index}`}
+                                    fill={entry.color}
+                                  />
                                 ))}
                                 <Label
-                                  value={formatCurrency(totalOverallIncome * 100)}
+                                  value={formatCurrency(
+                                    totalOverallIncome * 100,
+                                  )}
                                   position="center"
                                   className="fill-gray-900 dark:fill-[#e5e7eb] text-sm font-semibold"
                                 />
@@ -982,7 +1150,9 @@ export default function Analytics() {
                                   <CustomTooltip
                                     active={active}
                                     payload={payload}
-                                    formatter={(value: number) => formatCurrency(value * 100)}
+                                    formatter={(value: number) =>
+                                      formatCurrency(value * 100)
+                                    }
                                   />
                                 )}
                               />
@@ -998,7 +1168,9 @@ export default function Analytics() {
                               <div className="flex items-center space-x-2">
                                 <div
                                   className="w-3 h-3 rounded-full"
-                                  style={{ backgroundColor: item.color || "#10b981" }}
+                                  style={{
+                                    backgroundColor: item.color || "#10b981",
+                                  }}
                                 />
                                 <span className="text-gray-900 dark:text-[#e5e7eb]">
                                   {item.categoryName}
@@ -1039,14 +1211,21 @@ export default function Analytics() {
                             >
                               <input
                                 type="checkbox"
-                                checked={selectedCategories.has(category.categoryId)}
-                                onChange={() => toggleCategory(category.categoryId)}
+                                checked={selectedCategories.has(
+                                  category.categoryId,
+                                )}
+                                onChange={() =>
+                                  toggleCategory(category.categoryId)
+                                }
                                 className="pf-checkbox"
                               />
                               <div className="flex items-center gap-1.5">
                                 <div
                                   className="w-3 h-3 rounded-full"
-                                  style={{ backgroundColor: category.color || "#10b981" }}
+                                  style={{
+                                    backgroundColor:
+                                      category.color || "#10b981",
+                                  }}
                                 />
                                 <span className="text-sm text-gray-700 dark:text-[#d4d4d8]">
                                   {category.categoryName}
@@ -1091,7 +1270,9 @@ export default function Analytics() {
                               </span>
                               <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
                                 {overallYearStats.max.year} -{" "}
-                                {formatCurrency(overallYearStats.max.totalMinor)}
+                                {formatCurrency(
+                                  overallYearStats.max.totalMinor,
+                                )}
                               </span>
                             </div>
                             <div className="flex items-center justify-between gap-2">
@@ -1100,7 +1281,9 @@ export default function Analytics() {
                               </span>
                               <span className="font-medium text-gray-900 dark:text-[#e5e7eb]">
                                 {overallYearStats.min.year} -{" "}
-                                {formatCurrency(overallYearStats.min.totalMinor)}
+                                {formatCurrency(
+                                  overallYearStats.min.totalMinor,
+                                )}
                               </span>
                             </div>
                             <div className="flex items-center justify-between gap-2">

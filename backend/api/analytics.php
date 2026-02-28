@@ -216,6 +216,45 @@ try {
             ];
         }, $categoryExpenses);
 
+        // Income by category
+        $categoryIncomeSql = "
+            SELECT 
+                c.id,
+                c.name,
+                c.color,
+                COALESCE(SUM(o.amount_minor), 0) as total_minor,
+                COUNT(o.id) as transaction_count
+            FROM categories c
+            LEFT JOIN operations o ON c.id = o.category_id 
+                AND o.user_id = ? 
+                AND o.type = 'income'
+                AND DATE_FORMAT(o.date, '%Y-%m-01') = DATE_FORMAT(?, '%Y-%m-01')
+            WHERE c.user_id = ? 
+                AND c.type = 'income'
+                AND c.is_archived = FALSE
+            GROUP BY c.id, c.name, c.color
+            HAVING COUNT(o.id) > 0
+            ORDER BY total_minor DESC
+        ";
+
+        $stmt = $pdo->prepare($categoryIncomeSql);
+        $stmt->execute([$userId, $month . '-01', $userId]);
+        $categoryIncome = $stmt->fetchAll();
+
+        $incomeCategoryData = array_map(function($row) use ($incomeSum) {
+            $total = (int)$row['total_minor'];
+            $percentage = $incomeSum > 0 ? round(($total / $incomeSum) * 100, 2) : 0;
+
+            return [
+                'categoryId' => $row['id'],
+                'categoryName' => $row['name'],
+                'color' => $row['color'],
+                'totalMinor' => $total,
+                'percentage' => $percentage,
+                'transactionCount' => (int)$row['transaction_count']
+            ];
+        }, $categoryIncome);
+
         // Expenses by day
         $dailyExpensesSql = "
             SELECT 
@@ -251,6 +290,7 @@ try {
                 'netMinor' => $net
             ],
             'expensesByCategory' => $categoryData,
+            'incomesByCategory' => $incomeCategoryData,
             'expensesByDay' => $dailyData
         ]);
     }
