@@ -1,28 +1,32 @@
 import { useMemo, useState, useEffect } from "react";
 import { Operation } from "../../services/api";
-import { formatCurrency, formatCurrencyParts, formatDateTime } from "../../utils/format";
+import {
+  formatCurrency,
+  formatCurrencyParts,
+  formatDateTime,
+} from "../../utils/format";
 import MaterialIcon from "../common/MaterialIcon";
 import { useI18n } from "../../i18n";
 
 const formatTime = (date: string): string => {
-  if (!date) return '';
+  if (!date) return "";
   const normalized = date.trim();
-  if (!normalized) return '';
-  
+  if (!normalized) return "";
+
   try {
-    const parsed = new Date(normalized.replace(' ', 'T'));
-    if (Number.isNaN(parsed.getTime())) return '';
-    
+    const parsed = new Date(normalized.replace(" ", "T"));
+    if (Number.isNaN(parsed.getTime())) return "";
+
     // Проверяем, есть ли время в строке
     const hasTime = /[T ]\d{2}:\d{2}/.test(normalized);
-    if (!hasTime) return '';
-    
-    return parsed.toLocaleTimeString('ru-RU', {
-      hour: '2-digit',
-      minute: '2-digit',
+    if (!hasTime) return "";
+
+    return parsed.toLocaleTimeString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   } catch {
-    return '';
+    return "";
   }
 };
 
@@ -46,16 +50,14 @@ export default function OperationsList({
 
   const actionIconBase =
     "inline-flex items-center justify-center h-8 w-8 rounded-full shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed";
-  const actionEditIcon =
-    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
-  const actionDeleteIcon =
-    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
-  const actionConfirm = "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300";
+  const actionEditIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
+  const actionDeleteIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
+  const actionConfirm =
+    "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300";
   const actionCancel =
     "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed bg-slate-200/70 text-slate-700 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]";
   const actionConfirmIcon = `${actionIconBase} bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300`;
-  const actionCancelIcon =
-    `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
+  const actionCancelIcon = `${actionIconBase} bg-slate-200/70 text-slate-600 hover:bg-slate-200 dark:bg-[#1f1f1f]/70 dark:text-[#d4d4d8] dark:hover:bg-[#252525]`;
 
   const toggleGroup = (dateKey: string) => {
     setExpandedGroups((prev) => {
@@ -72,22 +74,27 @@ export default function OperationsList({
   const formatOperationCount = (count: number) =>
     tPlural("operations.count", count, { count });
 
-  const renderOperationAmount = (amountMinor: number, type: Operation["type"]) => {
+  const renderOperationAmount = (
+    amountMinor: number,
+    type: Operation["type"],
+  ) => {
     const sign = type === "expense" ? "-" : "+";
     const parts = formatCurrencyParts(Math.abs(amountMinor));
 
     return (
       <>
-        <span className="text-xl font-semibold">
+        <span className="text-3xl font-semibold">
           {sign}
           {parts.integer}
         </span>
-        <span className="text-sm font-light opacity-70">
+        <span className="text-lg font-light opacity-70">
           {parts.decimal}
           {parts.fraction}
         </span>
         {parts.symbol && (
-          <span className="ml-1 text-xs font-light opacity-60">{parts.symbol}</span>
+          <span className="ml-1 text-md font-light opacity-60">
+            {parts.symbol}
+          </span>
         )}
       </>
     );
@@ -111,7 +118,9 @@ export default function OperationsList({
         groups.push({
           dateKey: normalizedKey,
           dateLabel:
-            normalizedKey === "unknown" ? t("operations.noDate") : formatDateTime(normalizedKey),
+            normalizedKey === "unknown"
+              ? t("operations.noDate")
+              : formatDateTime(normalizedKey),
           incomeMinor: op.type === "income" ? op.amountMinor : 0,
           expenseMinor: op.type === "expense" ? op.amountMinor : 0,
           items: [op],
@@ -133,8 +142,8 @@ export default function OperationsList({
   // Открываем только сегодняшнюю группу по умолчанию
   useEffect(() => {
     if (groupedOperations.length > 0 && expandedGroups.size === 0) {
-      const today = new Date().toISOString().split('T')[0];
-      const todayGroup = groupedOperations.find(g => g.dateKey === today);
+      const today = new Date().toISOString().split("T")[0];
+      const todayGroup = groupedOperations.find((g) => g.dateKey === today);
       if (todayGroup) {
         setExpandedGroups(new Set([today]));
       }
@@ -195,7 +204,10 @@ export default function OperationsList({
             {groupedOperations.map((group, groupIndex) => {
               const isExpanded = expandedGroups.has(group.dateKey);
               return (
-                <div key={`${group.dateKey}-${groupIndex}`} className="border border-gray-200 dark:border-[#2a2a2a] rounded-lg overflow-hidden">
+                <div
+                  key={`${group.dateKey}-${groupIndex}`}
+                  className="border border-gray-200 dark:border-[#2a2a2a] rounded-lg overflow-hidden"
+                >
                   <button
                     onClick={() => toggleGroup(group.dateKey)}
                     className="w-full px-4 pt-3 pb-3 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors"
@@ -243,13 +255,18 @@ export default function OperationsList({
                             <div className="flex min-w-0 flex-1 items-start gap-3">
                               <div
                                 className="mt-1 h-2.5 w-2.5 rounded-full"
-                                style={{ backgroundColor: op.categoryColor || "#9CA3AF" }}
+                                style={{
+                                  backgroundColor:
+                                    op.categoryColor || "#9CA3AF",
+                                }}
                               />
                               <div className="min-w-0 text-left pr-12 sm:pr-0">
                                 <div className="flex flex-wrap items-center gap-2">
                                   <span
                                     className="text-sm font-semibold truncate"
-                                    style={{ color: op.categoryColor || "#9CA3AF" }}
+                                    style={{
+                                      color: op.categoryColor || "#9CA3AF",
+                                    }}
                                   >
                                     {op.categoryName}
                                   </span>
@@ -261,7 +278,11 @@ export default function OperationsList({
                                     }`}
                                   >
                                     <MaterialIcon
-                                      name={op.type === "expense" ? "expense" : "income"}
+                                      name={
+                                        op.type === "expense"
+                                          ? "expense"
+                                          : "income"
+                                      }
                                       className="h-3 w-3"
                                     />
                                     {op.type === "expense"
@@ -284,7 +305,9 @@ export default function OperationsList({
                             <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
                               <p
                                 className={`whitespace-nowrap tabular-nums leading-none flex items-baseline ${
-                                  op.type === "expense" ? "text-red-600" : "text-green-600"
+                                  op.type === "expense"
+                                    ? "text-red-600"
+                                    : "text-green-600"
                                 }`}
                               >
                                 {renderOperationAmount(op.amountMinor, op.type)}
@@ -301,7 +324,10 @@ export default function OperationsList({
                                     title={t("common.edit")}
                                     disabled={deletingId === op.id}
                                   >
-                                    <MaterialIcon name="edit" className="h-3.5 w-3.5" />
+                                    <MaterialIcon
+                                      name="edit"
+                                      className="h-3.5 w-3.5"
+                                    />
                                   </button>
                                 )}
                                 {deleteConfirm === op.id ? (
@@ -315,7 +341,10 @@ export default function OperationsList({
                                         className={actionConfirm}
                                         disabled={deletingId === op.id}
                                       >
-                                        <MaterialIcon name="check" className="h-3.5 w-3.5" />
+                                        <MaterialIcon
+                                          name="check"
+                                          className="h-3.5 w-3.5"
+                                        />
                                         {deletingId === op.id
                                           ? t("common.deleting")
                                           : t("common.confirm")}
@@ -328,7 +357,10 @@ export default function OperationsList({
                                         className={actionCancel}
                                         disabled={deletingId === op.id}
                                       >
-                                        <MaterialIcon name="close" className="h-3.5 w-3.5" />
+                                        <MaterialIcon
+                                          name="close"
+                                          className="h-3.5 w-3.5"
+                                        />
                                         {t("common.cancel")}
                                       </button>
                                     </div>
@@ -340,10 +372,15 @@ export default function OperationsList({
                                         }}
                                         className={actionConfirmIcon}
                                         disabled={deletingId === op.id}
-                                        aria-label={t("operations.confirmDelete")}
+                                        aria-label={t(
+                                          "operations.confirmDelete",
+                                        )}
                                         title={t("common.confirm")}
                                       >
-                                        <MaterialIcon name="check" className="h-3.5 w-3.5" />
+                                        <MaterialIcon
+                                          name="check"
+                                          className="h-3.5 w-3.5"
+                                        />
                                       </button>
                                       <button
                                         onClick={(e) => {
@@ -352,10 +389,15 @@ export default function OperationsList({
                                         }}
                                         className={actionCancelIcon}
                                         disabled={deletingId === op.id}
-                                        aria-label={t("operations.cancelDelete")}
+                                        aria-label={t(
+                                          "operations.cancelDelete",
+                                        )}
                                         title={t("common.cancel")}
                                       >
-                                        <MaterialIcon name="close" className="h-3.5 w-3.5" />
+                                        <MaterialIcon
+                                          name="close"
+                                          className="h-3.5 w-3.5"
+                                        />
                                       </button>
                                     </div>
                                   </>
@@ -370,7 +412,10 @@ export default function OperationsList({
                                     title={t("common.delete")}
                                     disabled={deletingId === op.id}
                                   >
-                                    <MaterialIcon name="delete" className="h-3.5 w-3.5" />
+                                    <MaterialIcon
+                                      name="delete"
+                                      className="h-3.5 w-3.5"
+                                    />
                                   </button>
                                 )}
                               </div>
@@ -389,4 +434,3 @@ export default function OperationsList({
     </div>
   );
 }
-
