@@ -138,7 +138,7 @@ class ApiService {
       ? "?" +
         new URLSearchParams(
           Object.entries(params)
-            .filter(([_, value]) => value !== undefined && value !== null)
+            .filter(([, value]) => value !== undefined && value !== null)
             .map(([key, value]) => [key, String(value)]),
         ).toString()
       : "";

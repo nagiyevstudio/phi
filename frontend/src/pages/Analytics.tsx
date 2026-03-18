@@ -36,6 +36,35 @@ const FALLBACK_COLORS = [
   "#8b4715",
 ];
 
+function renderPieLabel({
+  percent,
+  percentage,
+}: {
+  percent?: number;
+  percentage?: number;
+}) {
+  const normalizedPercent =
+    typeof percentage === "number"
+      ? percentage
+      : typeof percent === "number"
+        ? percent * 100
+        : 0;
+
+  return normalizedPercent > 5 ? `${normalizedPercent.toFixed(1)}%` : "";
+}
+
+function formatTooltipValue(
+  value: number | string | readonly (number | string)[] | undefined,
+) {
+  const rawValue = Array.isArray(value) ? value[0] : value;
+  const numericValue =
+    typeof rawValue === "number" ? rawValue : Number(rawValue);
+
+  return Number.isFinite(numericValue)
+    ? formatCurrency(numericValue * 100)
+    : String(rawValue ?? "");
+}
+
 // Кастомный компонент Tooltip с поддержкой темной темы
 const CustomTooltip = ({ active, payload, formatter }: any) => {
   if (!active || !payload || !payload.length) {
@@ -579,11 +608,7 @@ export default function Analytics() {
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
-                                label={({ percentage }) =>
-                                  percentage > 5
-                                    ? `${percentage.toFixed(1)}%`
-                                    : ""
-                                }
+                                label={renderPieLabel}
                                 outerRadius={80}
                                 innerRadius={60}
                                 fill="#d27b30"
@@ -611,9 +636,7 @@ export default function Analytics() {
                                   <CustomTooltip
                                     active={active}
                                     payload={payload}
-                                    formatter={(value: number) =>
-                                      formatCurrency(value * 100)
-                                    }
+                              formatter={formatTooltipValue}
                                   />
                                 )}
                               />
@@ -674,9 +697,7 @@ export default function Analytics() {
                             <XAxis dataKey="date" />
                             <YAxis />
                             <Tooltip
-                              formatter={(value: number) =>
-                                formatCurrency(value * 100)
-                              }
+                              formatter={formatTooltipValue}
                             />
                             <Legend />
                             {dailyLimitMajor > 0 && (
@@ -760,11 +781,7 @@ export default function Analytics() {
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
-                                label={({ percentage }) =>
-                                  percentage > 5
-                                    ? `${percentage.toFixed(1)}%`
-                                    : ""
-                                }
+                                label={renderPieLabel}
                                 outerRadius={80}
                                 innerRadius={60}
                                 fill="#10b981"
@@ -794,9 +811,7 @@ export default function Analytics() {
                                   <CustomTooltip
                                     active={active}
                                     payload={payload}
-                                    formatter={(value: number) =>
-                                      formatCurrency(value * 100)
-                                    }
+                              formatter={formatTooltipValue}
                                   />
                                 )}
                               />
@@ -937,11 +952,7 @@ export default function Analytics() {
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
-                                label={({ percentage }) =>
-                                  percentage > 5
-                                    ? `${percentage.toFixed(1)}%`
-                                    : ""
-                                }
+                                label={renderPieLabel}
                                 outerRadius={80}
                                 innerRadius={60}
                                 fill="#10b981"
@@ -973,9 +984,7 @@ export default function Analytics() {
                                   <CustomTooltip
                                     active={active}
                                     payload={payload}
-                                    formatter={(value: number) =>
-                                      formatCurrency(value * 100)
-                                    }
+                                    formatter={formatTooltipValue}
                                   />
                                 )}
                               />
@@ -1036,9 +1045,7 @@ export default function Analytics() {
                             <XAxis dataKey="month" />
                             <YAxis />
                             <Tooltip
-                              formatter={(value: number) =>
-                                formatCurrency(value * 100)
-                              }
+                              formatter={formatTooltipValue}
                             />
                             <Legend />
                             <Line
@@ -1109,9 +1116,7 @@ export default function Analytics() {
                             <XAxis dataKey="month" />
                             <YAxis />
                             <Tooltip
-                              formatter={(value: number) =>
-                                formatCurrency(value * 100)
-                              }
+                              formatter={formatTooltipValue}
                             />
                             <Legend />
                             <Line
@@ -1217,9 +1222,7 @@ export default function Analytics() {
                           <XAxis dataKey="year" />
                           <YAxis />
                           <Tooltip
-                            formatter={(value: number) =>
-                              formatCurrency(value * 100)
-                            }
+                            formatter={formatTooltipValue}
                           />
                           <Line
                             type="monotone"
@@ -1253,11 +1256,7 @@ export default function Analytics() {
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
-                                label={({ percentage }) =>
-                                  percentage > 5
-                                    ? `${percentage.toFixed(1)}%`
-                                    : ""
-                                }
+                                label={renderPieLabel}
                                 outerRadius={80}
                                 innerRadius={60}
                                 fill="#10b981"
@@ -1287,9 +1286,7 @@ export default function Analytics() {
                                   <CustomTooltip
                                     active={active}
                                     payload={payload}
-                                    formatter={(value: number) =>
-                                      formatCurrency(value * 100)
-                                    }
+                              formatter={formatTooltipValue}
                                   />
                                 )}
                               />
@@ -1381,9 +1378,7 @@ export default function Analytics() {
                             <XAxis dataKey="year" />
                             <YAxis />
                             <Tooltip
-                              formatter={(value: number) =>
-                                formatCurrency(value * 100)
-                              }
+                              formatter={formatTooltipValue}
                             />
                             <Legend />
                             {visibleCategories.map((category) => (
