@@ -79,3 +79,25 @@ CREATE TABLE IF NOT EXISTS monthly_budgets (
 CREATE INDEX idx_monthly_budgets_user_id ON monthly_budgets(user_id);
 CREATE INDEX idx_monthly_budgets_month ON monthly_budgets(month);
 CREATE INDEX idx_monthly_budgets_user_month ON monthly_budgets(user_id, month);
+
+-- ============================================
+-- Table: api_keys
+-- ============================================
+CREATE TABLE IF NOT EXISTS api_keys (
+    id CHAR(36) PRIMARY KEY COMMENT 'Primary key, UUID',
+    user_id CHAR(36) NOT NULL COMMENT 'Owner user id',
+    name VARCHAR(100) NOT NULL COMMENT 'Human-friendly key name',
+    key_prefix VARCHAR(12) NOT NULL UNIQUE COMMENT 'Public lookup prefix',
+    key_hash CHAR(64) NOT NULL COMMENT 'HMAC-SHA256 hash of API key secret',
+    scopes TEXT NOT NULL COMMENT 'JSON array of granted scopes',
+    last_used_at DATETIME NULL COMMENT 'Last successful usage timestamp',
+    last_used_ip VARCHAR(45) NULL COMMENT 'Last successful client IP',
+    expires_at DATETIME NULL COMMENT 'Optional expiration timestamp',
+    is_active BOOLEAN NOT NULL DEFAULT TRUE COMMENT 'Can be used for authentication',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) COMMENT='API keys for external server access';
+
+CREATE INDEX idx_api_keys_user_id ON api_keys(user_id);
+CREATE INDEX idx_api_keys_is_active ON api_keys(is_active);

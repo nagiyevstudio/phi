@@ -8,6 +8,7 @@ DB_PASSWORD=5HZv27Jon-
 
 # JWT Secret (generate a strong random string for production)
 JWT_SECRET=change-this-secret-key-in-production
+API_KEY_SECRET=change-this-api-key-secret-in-production
 
 # Registration
 ALLOW_REGISTRATION=false

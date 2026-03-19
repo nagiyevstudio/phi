@@ -44,6 +44,42 @@ function generateJWT($userId, $email, $role = null) {
     return "$headerEncoded.$payloadEncoded.$signatureEncoded";
 }
 
+function generateApiKeyPrefix($bytes = 6) {
+    return strtolower(bin2hex(random_bytes($bytes)));
+}
+
+function generateApiKeySecretPart($bytes = 32) {
+    return base64UrlEncode(random_bytes($bytes));
+}
+
+function buildApiKeyToken($prefix, $secretPart) {
+    return 'phi_' . $prefix . '_' . $secretPart;
+}
+
+function parseApiKeyToken($token) {
+    if (!is_string($token) || strpos($token, 'phi_') !== 0) {
+        return null;
+    }
+
+    if (!preg_match('/^phi_([a-f0-9]{12})_([A-Za-z0-9\-_]+)$/', $token, $matches)) {
+        return null;
+    }
+
+    return [
+        'prefix' => $matches[1],
+        'secret' => $matches[2]
+    ];
+}
+
+function hashApiKeyToken($prefix, $secretPart) {
+    $config = getAuthConfig();
+    return hash_hmac('sha256', $prefix . '.' . $secretPart, $config['api_key_secret']);
+}
+
+function verifyApiKeyToken($prefix, $secretPart, $expectedHash) {
+    return hash_equals($expectedHash, hashApiKeyToken($prefix, $secretPart));
+}
+
 function validateJWT($token) {
     $config = getAuthConfig();
     $secret = $config['jwt_secret'];

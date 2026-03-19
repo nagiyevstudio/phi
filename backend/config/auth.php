@@ -22,6 +22,7 @@ return [
     'jwt_secret' => $_ENV['JWT_SECRET'] ?? 'change-this-secret-key-in-production',
     'jwt_algorithm' => 'HS256',
     'jwt_expiration' => 86400 * 7, // 7 days in seconds
+    'api_key_secret' => $_ENV['API_KEY_SECRET'] ?? ($_ENV['JWT_SECRET'] ?? 'change-this-secret-key-in-production'),
     'password_algorithm' => PASSWORD_BCRYPT,
     'password_options' => ['cost' => 12],
     'allow_registration' => $allowRegistration,

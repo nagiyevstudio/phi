@@ -23,6 +23,15 @@ function validateName($name, $maxLength = 100) {
     return $trimmed === '' || strlen($trimmed) <= $maxLength;
 }
 
+function validateNonEmptyString($value, $maxLength = 255) {
+    if (!is_string($value)) {
+        return false;
+    }
+
+    $trimmed = trim($value);
+    return $trimmed !== '' && strlen($trimmed) <= $maxLength;
+}
+
 function validateRequired($value) {
     return !empty($value) || (is_numeric($value) && $value == 0);
 }

@@ -128,6 +128,7 @@ $routes = [
     'months' => 'api/budget.php',
     'analytics' => 'api/analytics.php',
     'export' => 'api/export.php',
+    'api-keys' => 'api/api-keys.php',
 ];
 
 // Handle dynamic routes (e.g., /months/:month/budget, /operations/:id)
@@ -156,6 +157,11 @@ if ($firstPart === 'months' && count($pathParts) >= 3) {
             $params['action'] = $pathParts[2];
         }
     }
+} elseif ($firstPart === 'api-keys') {
+    $matchedRoute = 'api/api-keys.php';
+    if (count($pathParts) >= 2 && preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $pathParts[1])) {
+        $params['id'] = $pathParts[1];
+    }
 } elseif (isset($routes[$path])) {
     // Exact match
     $matchedRoute = $routes[$path];
@@ -170,6 +176,7 @@ if ($firstPart === 'months' && count($pathParts) >= 3) {
 // Store route params in a global for API files to access
 $GLOBALS['route_params'] = $params;
 $GLOBALS['request_method'] = $method;
+$GLOBALS['request_path'] = $path;
 
 // Include the matched API file
 try {
