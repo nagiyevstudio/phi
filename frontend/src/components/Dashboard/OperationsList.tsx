@@ -374,23 +374,6 @@ export default function OperationsList({
                                       op.type,
                                     )}
                                   </p>
-                                  {/* Kebab — desktop only, visible on group hover */}
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setActiveOpId(op.id);
-                                      setDeleteConfirm(null);
-                                    }}
-                                    className={`hidden sm:inline-flex opacity-0 group-hover:opacity-100 transition-opacity ${actionIconBase} text-gray-400 hover:text-gray-600 hover:bg-slate-200/70 dark:text-[#a3a3a3] dark:hover:text-[#d4d4d8] dark:hover:bg-[#252525]`}
-                                    aria-label="Действия"
-                                    title="Действия"
-                                    disabled={isDeleting}
-                                  >
-                                    <MaterialIcon
-                                      name="more-vert"
-                                      className="h-4 w-4"
-                                    />
-                                  </button>
                                 </>
                               ) : isConfirming ? (
                                 /* Confirm delete icons */
