@@ -77,7 +77,7 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen pf-app-bg">
-      <nav className="sticky top-0 z-50 bg-white/90 dark:bg-[#1a1a1a]/95 shadow">
+      <nav className="sticky top-0 z-50 pf-glass pf-glass-bar pf-glass-bar-nav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -147,7 +147,7 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
 
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 dark:border-[#2a2a2a] bg-white/95 dark:bg-[#1a1a1a]/95 backdrop-blur">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 pf-glass pf-glass-bar pf-glass-bar-dock">
         <div className="flex items-center justify-around px-2 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;

@@ -26,9 +26,8 @@ export default function Login() {
   ];
 
   const languageButtonBase =
-    'inline-flex items-center justify-center h-9 px-3 rounded-full border text-xs font-medium shadow-sm transition-colors cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-[#d27b30] focus-within:ring-offset-2 focus-within:ring-offset-white dark:focus-within:ring-offset-[#1a1a1a]';
-  const languageButtonInactive =
-    'border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]';
+    'inline-flex items-center justify-center h-9 px-3 rounded-full text-xs font-medium shadow-sm transition-colors cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-[#d27b30] focus-within:ring-offset-2 focus-within:ring-offset-white dark:focus-within:ring-offset-[#1a1a1a]';
+  const languageButtonInactive = 'pf-toggle-muted';
   const languageButtonActive = 'bg-[#d27b30] text-white border-[#d27b30] shadow-sm';
   const accessCopy = {
     ru: {
@@ -82,7 +81,8 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center pf-app-bg py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full">
+        <div className="pf-glass p-6 sm:p-8 !rounded-2xl space-y-8">
         <div>
           <div className="flex justify-center">
             <div className="inline-flex flex-wrap gap-2">
@@ -168,6 +168,7 @@ export default function Login() {
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

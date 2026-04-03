@@ -10,9 +10,8 @@ import { useI18n } from "../../i18n";
 import { routes } from "../../constants/routes";
 
 const typeButtonBase =
-  "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
-const typeAllBase =
-  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
+  "inline-flex items-center justify-center gap-2 h-10 px-4 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
+const typeAllBase = "pf-toggle-muted";
 const typeAllActive = "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
 const typeExpenseBase =
   "border-red-200 text-red-700 bg-red-50/60 hover:bg-red-100/70 dark:border-red-500/40 dark:text-red-200 dark:bg-red-500/10";
@@ -22,14 +21,12 @@ const typeIncomeBase =
 const typeIncomeActive = "bg-emerald-600 text-white border-emerald-600";
 
 const chipBase =
-  "inline-flex items-center gap-2 h-9 px-3 rounded-full border text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
-const chipAllInactive =
-  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
+  "inline-flex items-center gap-2 h-9 px-3 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
+const chipAllInactive = "pf-toggle-muted";
 const chipAllActive = "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
 const categoryActionBase =
-  "inline-flex items-center gap-2 h-10 px-3 rounded-full border text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
-const categoryActionSecondary =
-  "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
+  "inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
+const categoryActionSecondary = "pf-toggle-muted";
 const categoryActionPrimary =
   "border-[#d27b30] bg-[#d27b30] text-white hover:bg-[#b56726] hover:border-[#b56726]";
 
@@ -238,7 +235,7 @@ export default function OperationsPanel({
         </button>
       )}
 
-      <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+      <div className="pf-glass p-6 text-left !rounded-lg">
         <div className="space-y-6">
           <div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3">

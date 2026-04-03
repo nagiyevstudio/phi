@@ -207,7 +207,7 @@ export default function OperationsList({
 
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg">
+      <div className="pf-glass !rounded-lg">
         <div className="px-4 py-5 sm:p-6">
           <div className="space-y-6">
             {Array.from({ length: 3 }).map((_, groupIndex) => (
@@ -234,7 +234,7 @@ export default function OperationsList({
   }
 
   return (
-    <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg">
+    <div className="pf-glass !rounded-lg">
       <div className="px-4 py-5 sm:p-6">
         {/* Operations */}
         {operations.length === 0 ? (

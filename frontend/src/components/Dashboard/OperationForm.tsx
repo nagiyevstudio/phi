@@ -276,7 +276,7 @@ export default function OperationForm({
 
   return (
     <div className="fixed inset-0 bg-[#120c08]/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50">
-      <div className="relative top-10 mx-auto w-[92vw] max-w-lg p-6 sm:p-7 border shadow-xl rounded-3xl bg-white dark:bg-[#1a1a1a]">
+      <div className="relative top-10 mx-auto w-[92vw] max-w-lg p-6 sm:p-7 pf-glass-elevated !rounded-3xl">
         <button
           type="button"
           onClick={onCancel}

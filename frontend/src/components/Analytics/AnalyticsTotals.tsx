@@ -15,7 +15,7 @@ export default function AnalyticsTotals({ totals, isLoading }: AnalyticsTotalsPr
   const { t } = useI18n();
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+      <div className="pf-glass !rounded-lg">
         <div className="flex flex-nowrap items-center justify-between divide-x divide-gray-200 dark:divide-[#2a2a2a]">
           {Array.from({ length: 3 }).map((_, index) => (
             <div
@@ -38,7 +38,7 @@ export default function AnalyticsTotals({ totals, isLoading }: AnalyticsTotalsPr
   const muted = totals ? '' : 'opacity-60';
 
   return (
-    <div className={`bg-white dark:bg-[#1a1a1a] rounded-lg shadow ${muted}`}>
+    <div className={`pf-glass !rounded-lg ${muted}`}>
       <div className="flex flex-nowrap items-center justify-between divide-x divide-gray-200 dark:divide-[#2a2a2a]">
         <div className="flex flex-1 items-center justify-center gap-1 sm:gap-2 px-3 py-3 sm:py-4">
           <MaterialIcon name="income" className="h-4 w-4 text-emerald-500" />

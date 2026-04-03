@@ -27,18 +27,18 @@
         if (useDark) {
           root.classList.add('dark');
           root.style.colorScheme = 'dark';
-          root.style.backgroundColor = '#111827';
-          root.style.color = '#f9fafb';
+          root.style.backgroundColor = '#141414';
+          root.style.color = '#e5e7eb';
           if (themeMeta) {
-            themeMeta.setAttribute('content', '#111827');
+            themeMeta.setAttribute('content', '#141414');
           }
         } else {
           root.classList.remove('dark');
           root.style.colorScheme = 'light';
-          root.style.backgroundColor = '#f9fafb';
-          root.style.color = '#111827';
+          root.style.backgroundColor = '#f9f6f2';
+          root.style.color = '#161412';
           if (themeMeta) {
-            themeMeta.setAttribute('content', '#f9fafb');
+            themeMeta.setAttribute('content', '#f9f6f2');
           }
         }
       })();

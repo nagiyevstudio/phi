@@ -26,7 +26,7 @@ export default function BudgetCard({
   
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-[#1a1a1a] overflow-hidden shadow rounded-lg">
+      <div className="pf-glass overflow-hidden !rounded-lg">
         <div className="p-5 space-y-4">
           <div className="flex items-center gap-4">
             <div className="pf-skeleton h-10 w-10 rounded-full" />
@@ -51,7 +51,7 @@ export default function BudgetCard({
     'inline-flex items-center justify-center h-9 w-9 rounded-full bg-[#d27b30]/10 text-[#d27b30] hover:bg-[#d27b30]/20';
 
   return (
-    <div className="bg-white dark:bg-[#1a1a1a] overflow-hidden shadow rounded-lg">
+    <div className="pf-glass overflow-hidden !rounded-lg">
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-1 items-center">

@@ -20,7 +20,7 @@ export default function DailyLimitCard({
   const { t } = useI18n();
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-[#1a1a1a] overflow-hidden shadow rounded-lg">
+      <div className="pf-glass overflow-hidden !rounded-lg">
         <div className="p-5 space-y-4">
           <div className="flex items-center gap-4">
             <div className="pf-skeleton h-10 w-10 rounded-full" />
@@ -60,7 +60,7 @@ export default function DailyLimitCard({
   const displayPercentage = isOverDailyLimit ? 100 : Math.min(Math.max(percentage, 0), 100);
 
   return (
-    <div className="bg-white dark:bg-[#1a1a1a] overflow-hidden shadow rounded-lg">
+    <div className="pf-glass overflow-hidden !rounded-lg">
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-1 items-center">

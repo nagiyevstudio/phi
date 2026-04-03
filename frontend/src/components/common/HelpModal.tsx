@@ -40,7 +40,7 @@ export default function HelpModal({ helpType, isOpen, onClose }: HelpModalProps)
         }
       }}
     >
-      <div className="relative top-10 mx-auto w-[92vw] max-w-lg p-6 sm:p-7 border shadow-xl rounded-3xl bg-white dark:bg-[#1a1a1a]">
+      <div className="relative top-10 mx-auto w-[92vw] max-w-lg p-6 sm:p-7 pf-glass-elevated !rounded-3xl">
         <button
           type="button"
           onClick={onClose}

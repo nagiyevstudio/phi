@@ -5,15 +5,33 @@
 
 @layer components {
   .pf-input {
-    @apply h-11 w-full min-w-0 rounded-full border border-gray-200 bg-white/80 px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#2a2a2a] dark:bg-[#1a1a1a]/70 dark:text-[#e5e7eb];
+    @apply h-11 w-full min-w-0 rounded-full px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:text-[#e5e7eb];
+    background-color: var(--pf-glass-field-bg);
+    border: var(--pf-glass-border);
+    transition:
+      border-color var(--pf-glass-transition),
+      box-shadow var(--pf-glass-transition),
+      background-color var(--pf-glass-transition);
   }
 
   .pf-select {
-    @apply h-11 w-full min-w-0 rounded-full border border-gray-200 bg-white/80 px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#2a2a2a] dark:bg-[#1a1a1a]/70 dark:text-[#e5e7eb];
+    @apply h-11 w-full min-w-0 rounded-full px-4 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:text-[#e5e7eb];
+    background-color: var(--pf-glass-field-bg);
+    border: var(--pf-glass-border);
+    transition:
+      border-color var(--pf-glass-transition),
+      box-shadow var(--pf-glass-transition),
+      background-color var(--pf-glass-transition);
   }
 
   .pf-textarea {
-    @apply w-full min-h-[96px] rounded-2xl border border-gray-200 bg-white/80 px-4 py-3 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:border-[#2a2a2a] dark:bg-[#1a1a1a]/70 dark:text-[#e5e7eb];
+    @apply w-full min-h-[96px] rounded-2xl px-4 py-3 text-base text-gray-700 shadow-sm focus:border-[#d27b30] focus:ring-2 focus:ring-[#d27b30] dark:text-[#e5e7eb];
+    background-color: var(--pf-glass-field-bg);
+    border: var(--pf-glass-border);
+    transition:
+      border-color var(--pf-glass-transition),
+      box-shadow var(--pf-glass-transition),
+      background-color var(--pf-glass-transition);
   }
 
   .pf-checkbox {
@@ -21,7 +39,9 @@
   }
 
   .pf-color {
-    @apply h-11 w-11 rounded-full border border-gray-200 bg-white/80 shadow-sm dark:border-[#2a2a2a];
+    @apply h-11 w-11 rounded-full shadow-sm;
+    background-color: var(--pf-glass-field-bg);
+    border: var(--pf-glass-border);
   }
 
   .pf-skeleton {
@@ -29,24 +49,32 @@
   }
 }
 
+/* Фон приложения (.pf-app-bg) */
 .pf-app-bg {
-  background:
-    radial-gradient(
-      900px 520px at 0% 0%,
-      rgba(255, 255, 255, 0.7),
-      transparent 60%
-    ),
-    linear-gradient(135deg, #fffaf6 0%, #f2e9df 55%, #e6dbd1 100%);
+  position: relative;
+  isolation: isolate;
+  background-color: #f2e9df; /* Базовый цвет для светлой темы */
+}
+
+.pf-app-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/assets/bg/bg-w.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5; /* Прозрачность 50% */
+  pointer-events: none;
 }
 
 .dark .pf-app-bg {
-  background:
-    radial-gradient(
-      900px 520px at 0% 0%,
-      rgba(255, 255, 255, 0.08),
-      transparent 60%
-    ),
-    linear-gradient(135deg, #232327 0%, #18181b 55%, #0f0f12 100%);
+  background-color: #0f0f12; /* Базовый цвет для темной темы */
+}
+
+.dark .pf-app-bg::before {
+  background-image: url("/assets/bg/bg-b.jpg");
 }
 
 .shadow {
@@ -57,6 +85,163 @@
   box-shadow:
     0 0 8px rgba(255, 255, 255, 0.06),
     0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Стеклянные поверхности (токены --pf-glass-*)
+   Не задавать position — иначе перебивается sticky у шапки (Tailwind).
+   Transitions (фаза 6): только background-color | box-shadow | border-color. */
+.pf-glass {
+  border-radius: var(--pf-glass-radius);
+  border: var(--pf-glass-border);
+  box-shadow: var(--pf-glass-shadow);
+  background-color: var(--pf-glass-bg-fallback);
+  -webkit-backdrop-filter: var(--pf-glass-backdrop);
+  backdrop-filter: var(--pf-glass-backdrop);
+  transition:
+    background-color var(--pf-glass-transition),
+    box-shadow var(--pf-glass-transition),
+    border-color var(--pf-glass-transition);
+}
+
+@supports (
+  (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))
+) {
+  .pf-glass {
+    background-color: var(--pf-glass-bg);
+  }
+}
+
+.pf-glass-elevated {
+  border-radius: var(--pf-glass-radius);
+  border: var(--pf-glass-elevated-border);
+  box-shadow: var(--pf-glass-elevated-shadow);
+  background-color: var(--pf-glass-elevated-bg-fallback);
+  -webkit-backdrop-filter: var(--pf-glass-elevated-backdrop);
+  backdrop-filter: var(--pf-glass-elevated-backdrop);
+  /* те же свойства transition, что у .pf-glass */
+  transition:
+    background-color var(--pf-glass-transition),
+    box-shadow var(--pf-glass-transition),
+    border-color var(--pf-glass-transition);
+}
+
+@supports (
+  (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))
+) {
+  .pf-glass-elevated {
+    background-color: var(--pf-glass-elevated-bg);
+  }
+}
+
+/* Нет поддержки blur — остаётся плотный фон из базовых правил выше; ниже — исключения по a11y */
+
+@media (prefers-contrast: more) {
+  .pf-glass,
+  .pf-glass-elevated {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .pf-glass {
+    background-color: var(--pf-glass-bg-fallback) !important;
+  }
+
+  .pf-glass-elevated {
+    background-color: var(--pf-glass-elevated-bg-fallback) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --pf-glass-transition: 70ms ease;
+  }
+}
+
+/* Полосы под шапку / нижний док без скругления */
+.pf-glass-bar {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pf-glass-bar-nav {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.pf-glass-bar-dock {
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+/* Неактивное состояние чипов / переключателей (граница как у glass-полей) */
+.pf-toggle-muted {
+  border: var(--pf-glass-border);
+  background-color: var(--pf-glass-field-bg);
+  color: rgb(55 65 81);
+  transition:
+    background-color var(--pf-glass-transition),
+    border-color var(--pf-glass-transition);
+}
+
+.pf-toggle-muted:hover {
+  background-color: rgb(249 250 251);
+}
+
+.dark .pf-toggle-muted {
+  color: rgb(212 212 216);
+}
+
+.dark .pf-toggle-muted:hover {
+  background-color: rgb(33 33 33);
+}
+
+/* Вложенный блок внутри карточки (форма «добавить» и т.п.) */
+.pf-surface-nested {
+  border-radius: var(--pf-glass-radius-sm);
+  border: 1px solid rgb(17 12 6 / 0.08);
+  background-color: rgb(0 0 0 / 0.03);
+}
+
+.dark .pf-surface-nested {
+  border-color: rgb(255 255 255 / 0.1);
+  background-color: rgb(255 255 255 / 0.04);
+}
+
+/* Кнопка-иконка квадратная (навигация по месяцу) */
+.pf-icon-btn {
+  display: inline-flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: var(--pf-glass-border);
+  border-radius: 0.375rem;
+  background-color: var(--pf-glass-field-bg);
+  color: rgb(55 65 81);
+  transition: background-color var(--pf-glass-transition);
+}
+
+.pf-icon-btn:hover {
+  background-color: rgb(249 250 251);
+}
+
+.dark .pf-icon-btn {
+  color: rgb(212 212 216);
+}
+
+.dark .pf-icon-btn:hover {
+  background-color: rgb(37 37 37);
+}
+
+.pf-icon-btn:focus {
+  outline: none;
+}
+
+.pf-icon-btn:focus-visible {
+  outline: 2px solid var(--pf-focus-ring);
+  outline-offset: 2px;
 }
 
 .pf-input[type="date"],
@@ -215,16 +400,62 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Glass surfaces — панель / карточка (фаза 2, использование в фазе 3) */
+  --pf-glass-bg: rgb(255 255 255 / 0.5);
+  --pf-glass-bg-fallback: rgb(255 252 248 / 0.93);
+  --pf-glass-blur: 16px;
+  --pf-glass-backdrop: blur(var(--pf-glass-blur)) saturate(1.06);
+  --pf-glass-border: 1px solid rgb(255 255 255 / 0.55);
+  --pf-glass-shadow: 0 10px 28px rgb(17 12 6 / 0.09);
+  --pf-glass-radius: 1.25rem;
+  --pf-glass-radius-sm: 1rem;
+
+  /* Модалки и «выпуклые» слои */
+  --pf-glass-elevated-bg: rgb(255 255 255 / 0.66);
+  --pf-glass-elevated-bg-fallback: rgb(255 254 252 / 0.97);
+  --pf-glass-elevated-blur: 22px;
+  --pf-glass-elevated-backdrop: blur(var(--pf-glass-elevated-blur))
+    saturate(1.08);
+  --pf-glass-elevated-border: 1px solid rgb(255 255 255 / 0.62);
+  --pf-glass-elevated-shadow: 0 22px 48px rgb(17 12 6 / 0.12);
+
+  /* Длительность переходов на стекле и полях; при prefers-reduced-motion укорачивается ниже */
+  --pf-glass-transition: 180ms ease;
+  --pf-focus-ring: #d27b30;
+
+  /* Поля без backdrop-blur — плотная подложка, те же границы */
+  --pf-glass-field-bg: rgb(255 255 255 / 0.88);
+}
+
+:root.dark {
+  --pf-glass-bg: rgb(32 32 36 / 0.52);
+  --pf-glass-bg-fallback: rgb(26 26 29 / 0.94);
+  --pf-glass-blur: 18px;
+  --pf-glass-border: 1px solid rgb(255 255 255 / 0.1);
+  --pf-glass-shadow:
+    0 12px 32px rgb(0 0 0 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.04);
+
+  --pf-glass-elevated-bg: rgb(40 40 44 / 0.6);
+  --pf-glass-elevated-bg-fallback: rgb(34 34 38 / 0.96);
+  --pf-glass-elevated-blur: 26px;
+  --pf-glass-elevated-border: 1px solid rgb(255 255 255 / 0.12);
+  --pf-glass-elevated-shadow:
+    0 26px 56px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.06);
+
+  --pf-glass-field-bg: rgb(30 30 34 / 0.9);
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-}
-
-html {
-  scroll-behavior: smooth;
+  min-height: 100dvh;
 }
 
 .material-symbols-outlined {
@@ -263,6 +494,8 @@ html {
 
 #root {
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
   text-align: initial;
 }
@@ -271,5 +504,11 @@ html {
   :root {
     color: #1f130c;
     background-color: #fffaf6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

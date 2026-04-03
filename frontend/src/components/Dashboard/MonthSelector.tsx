@@ -54,20 +54,20 @@ export default function MonthSelector({
   };
 
   return (
-    <div className="mb-6 rounded-lg bg-white p-4 shadow dark:bg-[#1a1a1a]">
+    <div className="mb-6 pf-glass p-4 !rounded-lg">
       <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
         {showNavigation && (
           <div className="flex items-center justify-center gap-2 sm:justify-start">
             <button
               onClick={handlePrevious}
-              className="inline-flex h-10 w-10 items-center justify-center text-gray-700 dark:text-[#d4d4d8] bg-white dark:bg-[#1f1f1f] border border-gray-300 dark:border-[#3a3a3a] rounded-md hover:bg-gray-50 dark:hover:bg-[#252525]"
+              className="pf-icon-btn"
               aria-label={t("monthSelector.prev")}
             >
               <MaterialIcon name="chevron-left" className="h-5 w-5" />
             </button>
             <button
               onClick={handleNext}
-              className="inline-flex h-10 w-10 items-center justify-center text-gray-700 dark:text-[#d4d4d8] bg-white dark:bg-[#1f1f1f] border border-gray-300 dark:border-[#3a3a3a] rounded-md hover:bg-gray-50 dark:hover:bg-[#252525]"
+              className="pf-icon-btn"
               aria-label={t("monthSelector.next")}
             >
               <MaterialIcon name="chevron-right" className="h-5 w-5" />

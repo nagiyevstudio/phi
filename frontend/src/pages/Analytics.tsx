@@ -142,10 +142,10 @@ export default function Analytics() {
     { value: "overall", label: t("analytics.tabOverall"), icon: "wallet" },
   ] as const;
   const tabBase =
-    "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
+    "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
   const tabActive = "border-[#d27b30] bg-[#d27b30] text-white";
   const tabInactive =
-    "border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]";
+    "pf-toggle-muted";
 
   const { data: analytics, isLoading: isMonthLoading } = useQuery({
     queryKey: ["analytics", selectedMonth],
@@ -549,37 +549,37 @@ export default function Analytics() {
                   <AnalyticsTotals isLoading />
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-40 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-44 rounded-full mb-3" />
                     <div className="pf-skeleton h-6 w-32 rounded-full" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-44 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
@@ -594,7 +594,7 @@ export default function Analytics() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.expensesByCategory")}
                     </h2>
@@ -685,7 +685,7 @@ export default function Analytics() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.expensesByDay")}
                     </h2>
@@ -767,7 +767,7 @@ export default function Analytics() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.incomeByCategory")}
                     </h2>
@@ -868,31 +868,31 @@ export default function Analytics() {
             {isYearlyIncomeLoading ? (
               <>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-44 rounded-full mb-3" />
                     <div className="pf-skeleton h-6 w-32 rounded-full" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-44 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-48 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-52 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
@@ -923,7 +923,7 @@ export default function Analytics() {
                   </div>
                 )}
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb]">
                         {t("analytics.incomeForYear", { year: selectedYear })}
@@ -938,7 +938,7 @@ export default function Analytics() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.incomeByCategory")}
                     </h2>
@@ -1033,7 +1033,7 @@ export default function Analytics() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.incomeByMonth")}
                     </h2>
@@ -1104,7 +1104,7 @@ export default function Analytics() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.expensesByMonth")}
                     </h2>
@@ -1191,13 +1191,13 @@ export default function Analytics() {
                   <div className="pf-skeleton h-5 w-56 rounded-full" />
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-56 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="pf-skeleton h-5 w-60 rounded-full mb-4" />
                     <div className="pf-skeleton h-72 w-full rounded-2xl" />
                   </div>
@@ -1211,7 +1211,7 @@ export default function Analytics() {
                   </h2>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.totalIncomeByYear")}
                     </h3>
@@ -1242,7 +1242,7 @@ export default function Analytics() {
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb] mb-4">
                       {t("analytics.incomeByCategoryAll")}
                     </h3>
@@ -1331,7 +1331,7 @@ export default function Analytics() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-lg shadow">
+                  <div className="pf-glass p-6 !rounded-lg">
                     <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                       <h3 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb]">
                         {t("analytics.incomeByCategoryYear")}

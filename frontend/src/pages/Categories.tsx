@@ -133,7 +133,7 @@ export default function Categories() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+        <div className="pf-glass p-6 text-left !rounded-lg">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-medium text-gray-900 dark:text-[#e5e7eb]">
@@ -173,7 +173,7 @@ export default function Categories() {
           </div>
 
           {showAddForm && (
-            <div className="mb-4 p-4 bg-gray-50 dark:bg-[#1f1f1f] rounded-lg">
+            <div className="mb-4 p-4 pf-surface-nested">
               <div className="flex flex-wrap items-center gap-2">
                 <input
                   type="text"

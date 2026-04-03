@@ -36,9 +36,8 @@ export default function Settings() {
   }, [themePreference]);
 
   const themeButtonBase =
-    'inline-flex items-center justify-center h-10 px-4 rounded-full border text-sm font-medium shadow-sm transition-colors cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-[#d27b30] focus-within:ring-offset-2 focus-within:ring-offset-white dark:focus-within:ring-offset-[#1a1a1a]';
-  const themeButtonInactive =
-    'border-gray-200 text-gray-700 bg-white/80 hover:bg-gray-50 dark:border-[#2a2a2a] dark:text-[#d4d4d8] dark:bg-[#1a1a1a]/70 dark:hover:bg-[#212121]';
+    'inline-flex items-center justify-center h-10 px-4 rounded-full text-sm font-medium shadow-sm transition-colors cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-[#d27b30] focus-within:ring-offset-2 focus-within:ring-offset-white dark:focus-within:ring-offset-[#1a1a1a]';
+  const themeButtonInactive = 'pf-toggle-muted';
   const themeButtonActive =
     'bg-[#d27b30] text-white border-[#d27b30] shadow-sm';
   const cardTitle = 'text-lg font-medium text-gray-900 dark:text-[#e5e7eb]';
@@ -121,7 +120,7 @@ export default function Settings() {
     <Layout>
       <div className="px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-3">
-          <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+          <div className="pf-glass p-6 text-left !rounded-lg">
             <div className="flex items-center gap-2 mb-4">
               <span className={cardIcon}>
                 <MaterialIcon name="settings" className="h-4 w-4" />
@@ -156,7 +155,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+          <div className="pf-glass p-6 text-left !rounded-lg">
             <div className="flex items-center gap-2 mb-4">
               <span className={cardIcon}>
                 <MaterialIcon name="archive" className="h-4 w-4" />
@@ -252,7 +251,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+          <div className="pf-glass p-6 text-left !rounded-lg">
             <div className="flex items-center gap-2 mb-4">
               <span className={cardIcon}>
                 <MaterialIcon name="wallet" className="h-4 w-4" />
@@ -267,7 +266,7 @@ export default function Settings() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+          <div className="pf-glass p-6 text-left !rounded-lg">
             <div className="flex items-center gap-2 mb-4">
               <span className={cardIcon}>
                 <MaterialIcon name="grid" className="h-4 w-4" />
@@ -299,7 +298,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+          <div className="pf-glass p-6 text-left !rounded-lg">
             <div className="flex items-center gap-2 mb-4">
               <span className={cardIcon}>
                 <MaterialIcon name="menu" className="h-4 w-4" />
@@ -334,7 +333,7 @@ export default function Settings() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+          <div className="pf-glass p-6 text-left !rounded-lg">
             <div className="flex items-center gap-2 mb-4">
               <span className={cardIcon}>
                 <MaterialIcon name="logout" className="h-4 w-4" />
@@ -350,7 +349,7 @@ export default function Settings() {
             </button>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow rounded-lg p-6 text-left">
+          <div className="pf-glass p-6 text-left !rounded-lg">
             <div className="flex items-center gap-2 mb-4">
               <img src={logoUrl} alt={t('common.appName')} className="h-8 w-auto" />
               <h2 className={cardTitle}>{t('common.appName')}</h2>
