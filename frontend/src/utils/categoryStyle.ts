@@ -22,9 +22,25 @@ export function getCategoryStyle(color: string | null, isActive: boolean) {
   const rgb = hexToRgb(baseColor);
   const backgroundColor =
     isActive && rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.16)` : 'transparent';
+
+  // Полупрозрачный бордер (25%)
+  const borderColor = rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25)` : baseColor;
+
   return {
-    borderColor: baseColor,
+    borderColor,
     color: baseColor,
     backgroundColor,
+  };
+}
+
+export function getCategoryLabelStyle(color: string | null) {
+  const baseColor = color || fallbackCategoryColor;
+  const rgb = hexToRgb(baseColor);
+  const borderColor = rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25)` : baseColor;
+
+  return {
+    color: baseColor,
+    borderColor,
+    backgroundColor: rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.05)` : 'transparent',
   };
 }

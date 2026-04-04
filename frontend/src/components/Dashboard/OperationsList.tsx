@@ -257,9 +257,8 @@ export default function OperationsList({
                     <span className="hidden sm:inline-flex">
                       <MaterialIcon
                         name="chevron-right"
-                        className={`h-5 w-5 text-gray-500 dark:text-[#a3a3a3] transition-transform ${
-                          isExpanded ? "rotate-90" : ""
-                        }`}
+                        className={`h-5 w-5 text-gray-500 dark:text-[#a3a3a3] transition-transform ${isExpanded ? "rotate-90" : ""
+                          }`}
                       />
                     </span>
                     <span className="text-sm font-semibold text-gray-700 dark:text-[#d4d4d8]">
@@ -299,11 +298,10 @@ export default function OperationsList({
                             data-op-id={op.id}
                             style={{ touchAction: "manipulation" }}
                             onClick={(e) => handleRowClick(op.id, e)}
-                            className={`group relative flex items-center justify-between px-3 py-2.5 cursor-pointer transition-colors ${
-                              isActive
-                                ? "bg-gray-50 dark:bg-[#252525]"
-                                : "hover:bg-gray-50 dark:hover:bg-[#252525]"
-                            }`}
+                            className={`group relative flex items-center justify-between px-3 py-2.5 cursor-pointer transition-colors ${isActive
+                              ? "bg-gray-50 dark:bg-[#252525]"
+                              : "hover:bg-gray-50 dark:hover:bg-[#252525]"
+                              }`}
                           >
                             {/* Left: dot + category + badge + time + note */}
                             <div className="flex min-w-0 flex-1 items-center gap-2.5">
@@ -325,11 +323,10 @@ export default function OperationsList({
                                     {op.categoryName}
                                   </span>
                                   <span
-                                    className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium ${
-                                      op.type === "expense"
-                                        ? "bg-red-500/10 text-red-700 dark:text-red-300"
-                                        : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
-                                    }`}
+                                    className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium ${op.type === "expense"
+                                      ? "bg-red-500/10 text-red-700 dark:text-red-300"
+                                      : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+                                      }`}
                                   >
                                     <MaterialIcon
                                       name={
@@ -363,11 +360,10 @@ export default function OperationsList({
                                 <>
                                   {/* Price */}
                                   <p
-                                    className={`whitespace-nowrap tabular-nums leading-none flex items-baseline ${
-                                      op.type === "expense"
-                                        ? "text-red-600"
-                                        : "text-green-600"
-                                    }`}
+                                    className={`whitespace-nowrap tabular-nums leading-none flex items-baseline ${op.type === "expense"
+                                      ? "text-red-600"
+                                      : "text-green-600"
+                                      }`}
                                   >
                                     {renderOperationAmount(
                                       op.amountMinor,

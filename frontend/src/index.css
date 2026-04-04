@@ -53,7 +53,8 @@
 .pf-app-bg {
   position: relative;
   isolation: isolate;
-  background-color: #f2e9df; /* Базовый цвет для светлой темы */
+  background-color: #f2e9df;
+  /* Базовый цвет для светлой темы */
 }
 
 .pf-app-bg::before {
@@ -65,12 +66,14 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.5; /* Прозрачность 50% */
+  opacity: 0.5;
+  /* Прозрачность 50% */
   pointer-events: none;
 }
 
 .dark .pf-app-bg {
-  background-color: #0f0f12; /* Базовый цвет для темной темы */
+  background-color: #0f0f12;
+  /* Базовый цвет для темной темы */
 }
 
 .dark .pf-app-bg::before {
@@ -103,9 +106,7 @@
     border-color var(--pf-glass-transition);
 }
 
-@supports (
-  (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))
-) {
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .pf-glass {
     background-color: var(--pf-glass-bg);
   }
@@ -125,9 +126,7 @@
     border-color var(--pf-glass-transition);
 }
 
-@supports (
-  (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))
-) {
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .pf-glass-elevated {
     background-color: var(--pf-glass-elevated-bg);
   }
@@ -136,6 +135,7 @@
 /* Нет поддержки blur — остаётся плотный фон из базовых правил выше; ниже — исключения по a11y */
 
 @media (prefers-contrast: more) {
+
   .pf-glass,
   .pf-glass-elevated {
     -webkit-backdrop-filter: none !important;
@@ -253,25 +253,49 @@
   max-width: 100%;
 }
 
+/* Floating Action Button - Glass Style */
+.pf-glass-fab {
+  border-radius: 9999px;
+
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+
+  box-shadow: 0 4px 16px rgba(17, 12, 6, 0.05);
+  transition: transform var(--pf-glass-transition), box-shadow var(--pf-glass-transition), background-color var(--pf-glass-transition);
+}
+
+.dark .pf-glass-fab {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pf-glass-fab:active {
+  transform: scale(0.92);
+}
+
+.pf-fab-icon {
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24 !important;
+}
+
 .pf-landing {
   background:
-    radial-gradient(
-      1100px 680px at 5% -2%,
+    radial-gradient(1100px 680px at 5% -2%,
       rgba(251, 211, 174, 0.56),
       rgba(251, 211, 174, 0.04) 50%,
-      transparent 65%
-    ),
+      transparent 65%),
     linear-gradient(125deg, #fcf4eb 0%, #f6e7d9 52%, #eedac6 100%);
 }
 
 .dark .pf-landing {
   background:
-    radial-gradient(
-      1100px 680px at 5% -2%,
+    radial-gradient(1100px 680px at 5% -2%,
       rgba(222, 149, 94, 0.28),
       rgba(222, 149, 94, 0.02) 45%,
-      transparent 65%
-    ),
+      transparent 65%),
     linear-gradient(125deg, #1f1814 0%, #17120e 54%, #100d0b 100%);
 }
 
@@ -283,32 +307,26 @@
   height: 640px;
   border-radius: 9999px;
   pointer-events: none;
-  background: radial-gradient(
-    circle,
-    rgba(226, 146, 73, 0.22),
-    rgba(226, 146, 73, 0)
-  );
+  background: radial-gradient(circle,
+      rgba(226, 146, 73, 0.22),
+      rgba(226, 146, 73, 0));
   filter: blur(2px);
 }
 
 .pf-landing-card {
   border: 1px solid rgba(176, 124, 86, 0.28);
   border-radius: 1rem;
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 252, 246, 0.72)
-  );
+  background: linear-gradient(160deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 252, 246, 0.72));
   box-shadow: 0 8px 24px rgba(69, 41, 19, 0.07);
 }
 
 .dark .pf-landing-card {
   border: 1px solid rgba(130, 96, 70, 0.48);
-  background: linear-gradient(
-    160deg,
-    rgba(47, 35, 27, 0.88),
-    rgba(30, 24, 20, 0.88)
-  );
+  background: linear-gradient(160deg,
+      rgba(47, 35, 27, 0.88),
+      rgba(30, 24, 20, 0.88));
   box-shadow: none;
 }
 
@@ -346,6 +364,7 @@
 
 /* Дополнительные ограничения для нативных date/time полей в iOS WebKit */
 @supports (-webkit-touch-callout: none) {
+
   .pf-input[type="date"],
   .pf-input[type="time"],
   .pf-input[type="datetime-local"],
@@ -415,8 +434,7 @@
   --pf-glass-elevated-bg: rgb(255 255 255 / 0.66);
   --pf-glass-elevated-bg-fallback: rgb(255 254 252 / 0.97);
   --pf-glass-elevated-blur: 22px;
-  --pf-glass-elevated-backdrop: blur(var(--pf-glass-elevated-blur))
-    saturate(1.08);
+  --pf-glass-elevated-backdrop: blur(var(--pf-glass-elevated-blur)) saturate(1.08);
   --pf-glass-elevated-border: 1px solid rgb(255 255 255 / 0.62);
   --pf-glass-elevated-shadow: 0 22px 48px rgb(17 12 6 / 0.12);
 

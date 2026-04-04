@@ -21,7 +21,7 @@ const typeIncomeBase =
 const typeIncomeActive = "bg-emerald-600 text-white border-emerald-600";
 
 const chipBase =
-  "inline-flex items-center gap-2 h-9 px-3 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
+  "inline-flex items-center gap-2 h-9 px-3 rounded-full border text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#1a1a1a]";
 const chipAllInactive = "pf-toggle-muted";
 const chipAllActive = "bg-[#d27b30] text-white border-[#d27b30] shadow-sm";
 const categoryActionBase =
@@ -95,9 +95,8 @@ export default function OperationsPanel({
   }, [activeCategories, typeFilter]);
   const categoryTypeParam = typeFilter === "all" ? "" : `&type=${typeFilter}`;
   const addCategoryHref = `${routes.app.categories}?action=add${categoryTypeParam}`;
-  const editCategoryHref = `${routes.app.categories}${
-    typeFilter === "all" ? "" : `?type=${typeFilter}`
-  }`;
+  const editCategoryHref = `${routes.app.categories}${typeFilter === "all" ? "" : `?type=${typeFilter}`
+    }`;
 
   useEffect(() => {
     if (categoryFilter === "all") {
@@ -147,9 +146,8 @@ export default function OperationsPanel({
               setTypeFilter("all");
               setCategoryFilter("all");
             }}
-            className={`${typeButtonBase} ${
-              typeFilter === "all" ? typeAllActive : typeAllBase
-            }`}
+            className={`${typeButtonBase} ${typeFilter === "all" ? typeAllActive : typeAllBase
+              }`}
             aria-pressed={typeFilter === "all"}
           >
             {t("filters.all")}
@@ -160,9 +158,8 @@ export default function OperationsPanel({
               setTypeFilter("expense");
               setCategoryFilter("all");
             }}
-            className={`${typeButtonBase} ${
-              typeFilter === "expense" ? typeExpenseActive : typeExpenseBase
-            }`}
+            className={`${typeButtonBase} ${typeFilter === "expense" ? typeExpenseActive : typeExpenseBase
+              }`}
             aria-pressed={typeFilter === "expense"}
           >
             <MaterialIcon name="expense" className="h-4 w-4" />
@@ -174,9 +171,8 @@ export default function OperationsPanel({
               setTypeFilter("income");
               setCategoryFilter("all");
             }}
-            className={`${typeButtonBase} ${
-              typeFilter === "income" ? typeIncomeActive : typeIncomeBase
-            }`}
+            className={`${typeButtonBase} ${typeFilter === "income" ? typeIncomeActive : typeIncomeBase
+              }`}
             aria-pressed={typeFilter === "income"}
           >
             <MaterialIcon name="income" className="h-4 w-4" />
@@ -228,10 +224,10 @@ export default function OperationsPanel({
       {onAdd && (
         <button
           onClick={onAdd}
-          className="sm:hidden fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-6 z-50 h-14 w-14 rounded-full bg-[#d27b30] text-white shadow-lg shadow-[#d27b30]/30 hover:bg-[#b56726] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30] flex items-center justify-center"
+          className="sm:hidden fixed flex items-center justify-center z-50 pf-glass-fab bottom-[calc(5rem+env(safe-area-inset-bottom))] right-6 h-12 w-12 text-[#d27b30] dark:text-[#f0b27a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d27b30]"
           aria-label={t("operations.add")}
         >
-          <MaterialIcon name="add" className="h-6 w-6 -translate-y-[1px]" />
+          <MaterialIcon name="add" className="h-6 w-6 pf-fab-icon" />
         </button>
       )}
 
@@ -267,9 +263,8 @@ export default function OperationsPanel({
               <button
                 type="button"
                 onClick={() => setCategoryFilter("all")}
-                className={`${chipBase} ${
-                  categoryFilter === "all" ? chipAllActive : chipAllInactive
-                }`}
+                className={`${chipBase} ${categoryFilter === "all" ? chipAllActive : chipAllInactive
+                  }`}
                 aria-pressed={categoryFilter === "all"}
               >
                 {t("filters.all")}
