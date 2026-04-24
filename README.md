@@ -5,12 +5,14 @@
 ## Технологии
 
 ### Backend
+
 - PHP 8.x (чистый PHP + PDO)
 - MySQL 5.7+ / MariaDB 10.2+
 - JWT для аутентификации
 - REST API
 
 ### Frontend
+
 - React 18
 - TypeScript
 - Vite
@@ -223,16 +225,19 @@ npm run build
 ## Формулы расчетов
 
 ### Остаток бюджета
+
 ```
 remaining = planned - expenseSum
 ```
 
 ### Оставшиеся дни месяца
+
 - Для текущего месяца: `daysLeft = (lastDayOfMonth - today) + 1`
 - Для прошлого месяца: `daysLeft = 0`
 - Для будущего месяца: `daysLeft = количество дней в месяце`
 
 ### Дневной лимит
+
 ```
 dailyLimit = max(0, remaining) / max(1, daysLeft)
 ```

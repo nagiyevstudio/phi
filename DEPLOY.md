@@ -4,10 +4,10 @@
 
 ## Как работает
 
-| Что изменилось | Что запускается |
-| --- | --- |
-| `frontend/**` | workflow `deploy-frontend.yml` |
-| `backend/**` | workflow `deploy-backend.yml` |
+| Что изменилось | Что запускается                |
+| -------------- | ------------------------------ |
+| `frontend/**`  | workflow `deploy-frontend.yml` |
+| `backend/**`   | workflow `deploy-backend.yml`  |
 
 Ручных команд деплоя нет: достаточно сделать `git push`.
 
@@ -20,10 +20,12 @@ npm run release:prepare
 ```
 
 Команда:
-- поднимает версию в `package.json` и `frontend/package.json`
-- добавляет запись в `BUILDS.txt`
-- синхронизирует `DEVLOG.md`
 
+- поднимает версию в `package.json` и `frontend/package.json`
+
+- добавляет запись в `BUILDS.txt`
+
+- синхронизирует `DEVLOG.md`
 2. Закоммитить и запушить:
 
 ```bash
